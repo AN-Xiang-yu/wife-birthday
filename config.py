@@ -40,7 +40,7 @@ class ChatConfig:
     """开场页对话配置"""
     
     # 最大尝试次数
-    MAX_ATTEMPTS: int = 3
+    MAX_ATTEMPTS: int = 4
     
     # 关键词匹配规则（可自定义）
     # 格式：{关键词: 回复内容}
