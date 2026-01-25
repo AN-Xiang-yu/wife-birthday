@@ -8,14 +8,14 @@
 // ============================================================
 // 配置常量（从后端 config.py 注入）
 // ============================================================
-const FINAL_MESSAGE = window.AppConfig?.FINAL_MESSAGE;
+const FINAL_MESSAGE = window.AppConfig ? .FINAL_MESSAGE;
 
 // ============================================================
 // 状态
 // ============================================================
 const IntroState = {
     attemptCount: 0,
-    maxAttempts: window.AppConfig?.MAX_ATTEMPTS || 3,
+    maxAttempts: window.AppConfig ? .MAX_ATTEMPTS || 3,
     isProcessing: false,
     isReturnMode: false, // 是否是返回模式
     returnMessageIndex: 0 // 返回模式下的消息索引
@@ -167,6 +167,9 @@ function playReturnMessages() {
 async function playFinalMessages(messages) {
     const messagesArray = Array.isArray(messages) ? messages : FINAL_MESSAGES;
 
+    // 禁用输入区域
+    disableInput('听我说完...');
+
     for (const msg of messagesArray) {
         await App.delay(msg.delay);
 
@@ -178,20 +181,40 @@ async function playFinalMessages(messages) {
         typingIndicator.remove();
         addMessage(msg.text, 'system');
     }
+
+    // 最终消息播放完成后，保持禁用状态（因为接下来会显示信封卡片）
 }
 
 /**
  * 播放首次进入页面的消息
  */
-function playInitialMessages() {
+async function playInitialMessages() {
     if (!chatMessages) return;
     chatMessages.innerHTML = '';
 
-    InitialMessages.forEach((msg) => {
-        setTimeout(() => {
-            addMessage(msg.text, 'system');
-        }, msg.delay);
-    });
+    // 禁用输入区域，直到初始消息播放完成
+    disableInput('听我说完...');
+
+    for (const msg of InitialMessages) {
+        await App.delay(msg.delay);
+
+        // 显示打字指示器
+        const typingIndicator = showTypingIndicator();
+        await App.delay(800);
+
+        // 移除打字指示器并显示消息
+        typingIndicator.remove();
+        addMessage(msg.text, 'system');
+    }
+
+    // 所有消息显示完成后，启用输入
+    await App.delay(500);
+    enableInput();
+
+    // 显示提示
+    if (attemptHint && !IntroState.isReturnMode) {
+        attemptHint.textContent = '想想今天是什么日子？';
+    }
 
     // 不在初始时显示信封，等用户互动结束后再显示
 }
@@ -255,23 +278,39 @@ function showLetterInviteCard() {
     chatMessages.appendChild(container);
     chatMessages.scrollTop = chatMessages.scrollHeight;
 
-    // 禁用输入区域
-    disableInput();
+    // 禁用输入区域并隐藏提示
+    disableInput('故事已经开始...');
+    if (attemptHint) {
+        attemptHint.style.display = 'none';
+    }
 }
 
 /**
  * 禁用输入区域
+ * @param {string} message - 禁用时显示的占位符文本
  */
-function disableInput() {
+function disableInput(message = '故事已经开始...') {
     if (chatInput) {
         chatInput.disabled = true;
-        chatInput.placeholder = '故事已经开始...';
+        chatInput.placeholder = message;
     }
     if (chatSend) {
         chatSend.disabled = true;
     }
-    if (attemptHint) {
-        attemptHint.style.display = 'none';
+}
+
+/**
+ * 启用输入区域
+ */
+function enableInput() {
+    if (IntroState.isReturnMode) return; // 返回模式下不启用输入
+
+    if (chatInput) {
+        chatInput.disabled = false;
+        chatInput.placeholder = '说点什么吧...';
+    }
+    if (chatSend) {
+        chatSend.disabled = false;
     }
 }
 
@@ -338,6 +377,11 @@ async function handleUserInput() {
             if (response.hint) {
                 attemptHint.textContent = response.hint;
             }
+
+            // 系统消息显示完成后，重新启用输入
+            IntroState.isProcessing = false;
+            chatSend.disabled = false;
+            chatInput.focus();
         }
 
     } catch (error) {
@@ -347,11 +391,12 @@ async function handleUserInput() {
         // 显示温柔的错误提示（不是"错误"）
         attemptHint.textContent = '让我想想...';
         console.error('对话处理失败:', error);
-    }
 
-    IntroState.isProcessing = false;
-    chatSend.disabled = false;
-    chatInput.focus();
+        // 错误时也要重新启用输入
+        IntroState.isProcessing = false;
+        chatSend.disabled = false;
+        chatInput.focus();
+    }
 }
 
 // ============================================================
@@ -359,10 +404,10 @@ async function handleUserInput() {
 // ============================================================
 
 // 发送按钮点击
-chatSend?.addEventListener('click', handleUserInput);
+chatSend ? .addEventListener('click', handleUserInput);
 
 // 回车发送
-chatInput?.addEventListener('keypress', (e) => {
+chatInput ? .addEventListener('keypress', (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault();
         handleUserInput();
@@ -374,7 +419,7 @@ document.addEventListener('pageEnter', (e) => {
     if (e.detail.pageName === 'intro') {
         if (!IntroState.isReturnMode) {
             playInitialMessages();
-            chatInput?.focus();
+            chatInput ? .focus();
         }
     }
 });
@@ -387,13 +432,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!IntroState.isReturnMode) {
         playInitialMessages();
     }
-
-    // 初始延迟显示第一条提示
-    setTimeout(() => {
-        if (!IntroState.isReturnMode && attemptHint) {
-            attemptHint.textContent = '想想今天是什么日子？';
-        }
-    }, 2000);
 });
 
 // 导出给全局使用

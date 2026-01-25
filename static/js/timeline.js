@@ -71,13 +71,13 @@ function createTimelineEvent(event, index) {
     
     // 添加图片（如果有）
     if (event.image) {
-        cardChildren.push(
-            App.createElement('img', {
-                className: 'event-image',
-                src: `/static/${event.image}`,
-                alt: event.title
-            })
-        );
+        const img = App.createElement('img', {
+            className: 'event-image clickable',
+            src: `/static/${event.image}`,
+            alt: event.title,
+            onClick: () => openImagePreview(`/static/${event.image}`, event.title)
+        });
+        cardChildren.push(img);
     }
     
     // 添加情感备注（如果有）
@@ -96,6 +96,85 @@ function createTimelineEvent(event, index) {
     
     return eventEl;
 }
+
+// ============================================================
+// 图片预览
+// ============================================================
+
+/**
+ * 打开图片预览灯箱
+ * @param {string} imageSrc - 图片路径
+ * @param {string} title - 图片标题
+ */
+function openImagePreview(imageSrc, title) {
+    // 检查是否已存在灯箱
+    let lightbox = document.getElementById('image-lightbox');
+    
+    if (!lightbox) {
+        // 创建灯箱容器
+        lightbox = App.createElement('div', {
+            id: 'image-lightbox',
+            className: 'image-lightbox',
+            onClick: closeImagePreview
+        }, [
+            App.createElement('div', {
+                className: 'lightbox-content',
+                onClick: (e) => e.stopPropagation() // 防止点击图片时关闭
+            }, [
+                App.createElement('img', {
+                    className: 'lightbox-image',
+                    src: imageSrc,
+                    alt: title
+                }),
+                App.createElement('div', { className: 'lightbox-title' }, title),
+                App.createElement('button', {
+                    className: 'lightbox-close',
+                    onClick: closeImagePreview
+                }, '×')
+            ])
+        ]);
+        
+        document.body.appendChild(lightbox);
+    } else {
+        // 更新现有灯箱
+        const img = lightbox.querySelector('.lightbox-image');
+        const titleEl = lightbox.querySelector('.lightbox-title');
+        img.src = imageSrc;
+        img.alt = title;
+        titleEl.textContent = title;
+    }
+    
+    // 淡入显示
+    requestAnimationFrame(() => {
+        lightbox.classList.add('active');
+    });
+    
+    // 禁止背景滚动
+    document.body.style.overflow = 'hidden';
+}
+
+/**
+ * 关闭图片预览灯箱
+ */
+function closeImagePreview() {
+    const lightbox = document.getElementById('image-lightbox');
+    if (lightbox) {
+        lightbox.classList.remove('active');
+        setTimeout(() => {
+            lightbox.remove();
+        }, 300);
+    }
+    
+    // 恢复背景滚动
+    document.body.style.overflow = '';
+}
+
+// 监听ESC键关闭灯箱
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeImagePreview();
+    }
+});
 
 // ============================================================
 // 滚动触发
