@@ -80,6 +80,7 @@ def process_chat_input(
         Dict: {
             "response": str,        # 系统回复
             "should_proceed": bool, # 是否应进入下一页面
+            "is_final": bool,       # 是否为最终引导语
             "hint": Optional[str],  # 温柔提示
             "matched": bool         # 是否匹配到关键词
         }
@@ -92,6 +93,7 @@ def process_chat_input(
         return {
             "response": ChatConfig.FINAL_MESSAGE,
             "should_proceed": True,
+            "is_final": True,
             "hint": None,
             "matched": True  # 最后一次视为"成功"
         }
@@ -101,7 +103,8 @@ def process_chat_input(
         if keyword in cleaned_input:
             return {
                 "response": response,
-                "should_proceed": True,
+                "should_proceed": False,
+                "is_final": False,
                 "hint": None,
                 "matched": True
             }
@@ -114,6 +117,7 @@ def process_chat_input(
     return {
         "response": default_response,
         "should_proceed": False,
+        "is_final": False,
         "hint": _get_gentle_hint(attempt_count),
         "matched": False
     }
