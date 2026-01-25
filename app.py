@@ -56,6 +56,7 @@ def chat() -> Dict[str, Any]:
         Dict: {
             "response": str,        # 系统回复
             "should_proceed": bool, # 是否应进入下一页面
+            "is_final": bool,       # 是否为最终引导语
             "hint": Optional[str]   # 温柔的提示（非错误）
         }
     """

@@ -288,23 +288,18 @@ async function handleUserInput() {
 
         // 更新尝试次数
         IntroState.attemptCount++;
+        
+        const isFinalMessage = Boolean(response.is_final);
 
         // 更新提示
-        if (response.hint && !response.should_proceed) {
+        if (response.hint && !isFinalMessage) {
             attemptHint.textContent = response.hint;
         }
 
         // 检查是否应该进入下一页
-        if (response.should_proceed) {
+        if (isFinalMessage) {
+            await App.delay(1200);
             showLetterInviteCard();
-        } else {
-            // 检查是否达到最大尝试次数
-            if (IntroState.attemptCount >= IntroState.maxAttempts) {
-                await App.delay(1500);
-                // 显示最终引导消息
-                addMessage(FINAL_MESSAGE, 'system');
-                showLetterInviteCard();
-            }
         }
 
     } catch (error) {
