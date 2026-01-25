@@ -8,14 +8,14 @@
 // ============================================================
 // 配置常量（从后端 config.py 注入）
 // ============================================================
-const FINAL_MESSAGE = window.AppConfig ? .FINAL_MESSAGE;
+const FINAL_MESSAGE = window.AppConfig?.FINAL_MESSAGE;
 
 // ============================================================
 // 状态
 // ============================================================
 const IntroState = {
     attemptCount: 0,
-    maxAttempts: window.AppConfig ? .MAX_ATTEMPTS || 3,
+    maxAttempts: window.AppConfig?.MAX_ATTEMPTS || 3,
     isProcessing: false,
     isReturnMode: false, // 是否是返回模式
     returnMessageIndex: 0 // 返回模式下的消息索引
@@ -404,10 +404,10 @@ async function handleUserInput() {
 // ============================================================
 
 // 发送按钮点击
-chatSend ? .addEventListener('click', handleUserInput);
+chatSend?.addEventListener('click', handleUserInput);
 
 // 回车发送
-chatInput ? .addEventListener('keypress', (e) => {
+chatInput?.addEventListener('keypress', (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault();
         handleUserInput();
@@ -419,7 +419,7 @@ document.addEventListener('pageEnter', (e) => {
     if (e.detail.pageName === 'intro') {
         if (!IntroState.isReturnMode) {
             playInitialMessages();
-            chatInput ? .focus();
+            chatInput?.focus();
         }
     }
 });

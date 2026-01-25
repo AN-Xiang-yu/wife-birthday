@@ -6,15 +6,13 @@
  */
 
 #page-timeline {
-    background: linear-gradient(
-        180deg,
-        var(--color-bg) 0%,
-        var(--color-bg-alt) 100%
-    );
+    background: linear-gradient( 180deg, var(--color-bg) 0%, var(--color-bg-alt) 100%);
     padding-bottom: var(--spacing-xxl);
 }
 
+
 /* 时间线容器 */
+
 .timeline-container {
     position: relative;
     width: 100%;
@@ -22,24 +20,22 @@
     padding: var(--spacing-xl) 0;
 }
 
+
 /* 时间线主线 */
+
 .timeline-line {
     position: absolute;
     left: 50%;
     top: 0;
     bottom: 0;
     width: 2px;
-    background: linear-gradient(
-        180deg,
-        transparent 0%,
-        var(--color-accent) 10%,
-        var(--color-accent) 90%,
-        transparent 100%
-    );
+    background: linear-gradient( 180deg, transparent 0%, var(--color-accent) 10%, var(--color-accent) 90%, transparent 100%);
     transform: translateX(-50%);
 }
 
+
 /* 时间线事件列表 */
+
 .timeline-events {
     position: relative;
     display: flex;
@@ -47,7 +43,9 @@
     gap: var(--spacing-xxl);
 }
 
+
 /* 单个时间线事件 */
+
 .timeline-event {
     display: flex;
     align-items: center;
@@ -61,7 +59,9 @@
     transform: translateY(0);
 }
 
+
 /* 交替布局 */
+
 .timeline-event:nth-child(odd) {
     flex-direction: row;
     padding-right: calc(50% + var(--spacing-lg));
@@ -72,7 +72,9 @@
     padding-left: calc(50% + var(--spacing-lg));
 }
 
+
 /* 时间节点圆点 */
+
 .timeline-event::before {
     content: '';
     position: absolute;
@@ -99,7 +101,9 @@
     border-color: var(--color-primary-dark);
 }
 
+
 /* 事件内容卡片 */
+
 .event-card {
     background: var(--color-card);
     border-radius: var(--radius-lg);
@@ -118,7 +122,9 @@
     box-shadow: var(--shadow-hover);
 }
 
+
 /* 事件日期 */
+
 .event-date {
     font-size: var(--text-sm);
     color: var(--color-accent);
@@ -126,7 +132,9 @@
     margin-bottom: var(--spacing-xs);
 }
 
+
 /* 事件标题 */
+
 .event-title {
     font-family: var(--font-serif);
     font-size: var(--text-xl);
@@ -134,14 +142,18 @@
     margin-bottom: var(--spacing-sm);
 }
 
+
 /* 事件描述 */
+
 .event-description {
     font-size: var(--text-base);
     color: var(--color-text-light);
     line-height: 1.6;
 }
 
+
 /* 事件图片 */
+
 .event-image {
     width: 100%;
     height: 180px;
@@ -161,7 +173,9 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
+
 /* 情感备注（为什么重要） */
+
 .event-emotion {
     margin-top: var(--spacing-sm);
     padding-top: var(--spacing-sm);
@@ -171,7 +185,9 @@
     font-style: italic;
 }
 
+
 /* 滚动提示 */
+
 .scroll-hint {
     position: fixed;
     bottom: var(--spacing-lg);
@@ -202,12 +218,24 @@
 }
 
 @keyframes bounce {
-    0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
-    40% { transform: translateX(-50%) translateY(10px); }
-    60% { transform: translateX(-50%) translateY(5px); }
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+        transform: translateX(-50%) translateY(0);
+    }
+    40% {
+        transform: translateX(-50%) translateY(10px);
+    }
+    60% {
+        transform: translateX(-50%) translateY(5px);
+    }
 }
 
+
 /* 图片预览灯箱 */
+
 .image-lightbox {
     position: fixed;
     top: 0;
@@ -293,12 +321,13 @@
     transform: rotate(90deg);
 }
 
+
 /* 响应式 - 移动端单列布局 */
+
 @media (max-width: 768px) {
     .timeline-line {
         left: 20px;
     }
-    
     .timeline-event,
     .timeline-event:nth-child(odd),
     .timeline-event:nth-child(even) {
@@ -306,20 +335,16 @@
         padding-left: 50px;
         padding-right: 0;
     }
-    
     .timeline-event::before {
         left: 20px;
     }
-    
     .event-card {
         max-width: 100%;
     }
-    
     .lightbox-close {
         top: 10px;
         right: 10px;
     }
-    
     .lightbox-content {
         max-width: 95%;
     }

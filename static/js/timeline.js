@@ -44,14 +44,14 @@ async function loadTimelineData() {
  */
 function renderTimeline() {
     if (!timelineEvents) return;
-    
+
     timelineEvents.innerHTML = '';
-    
+
     TimelineState.events.forEach((event, index) => {
         const eventEl = createTimelineEvent(event, index);
         timelineEvents.appendChild(eventEl);
     });
-    
+
     // 初始化滚动观察器
     initScrollObserver();
 }
@@ -68,7 +68,7 @@ function createTimelineEvent(event, index) {
         App.createElement('h3', { className: 'event-title' }, event.title),
         App.createElement('p', { className: 'event-description' }, event.description)
     ];
-    
+
     // 添加图片（如果有）
     if (event.image) {
         const img = App.createElement('img', {
@@ -79,21 +79,21 @@ function createTimelineEvent(event, index) {
         });
         cardChildren.push(img);
     }
-    
+
     // 添加情感备注（如果有）
     if (event.emotion_note) {
         cardChildren.push(
             App.createElement('p', { className: 'event-emotion' }, event.emotion_note)
         );
     }
-    
+
     const card = App.createElement('div', { className: 'event-card' }, cardChildren);
-    
+
     const eventEl = App.createElement('div', {
         className: `timeline-event ${event.is_highlighted ? 'highlighted' : ''}`,
         'data-index': index
     }, card);
-    
+
     return eventEl;
 }
 
@@ -109,7 +109,7 @@ function createTimelineEvent(event, index) {
 function openImagePreview(imageSrc, title) {
     // 检查是否已存在灯箱
     let lightbox = document.getElementById('image-lightbox');
-    
+
     if (!lightbox) {
         // 创建灯箱容器
         lightbox = App.createElement('div', {
@@ -133,7 +133,7 @@ function openImagePreview(imageSrc, title) {
                 }, '×')
             ])
         ]);
-        
+
         document.body.appendChild(lightbox);
     } else {
         // 更新现有灯箱
@@ -143,12 +143,12 @@ function openImagePreview(imageSrc, title) {
         img.alt = title;
         titleEl.textContent = title;
     }
-    
+
     // 淡入显示
     requestAnimationFrame(() => {
         lightbox.classList.add('active');
     });
-    
+
     // 禁止背景滚动
     document.body.style.overflow = 'hidden';
 }
@@ -164,7 +164,7 @@ function closeImagePreview() {
             lightbox.remove();
         }, 300);
     }
-    
+
     // 恢复背景滚动
     document.body.style.overflow = '';
 }
@@ -188,18 +188,18 @@ function initScrollObserver() {
     if (TimelineState.observer) {
         TimelineState.observer.disconnect();
     }
-    
+
     const options = {
         root: null,
         rootMargin: '-10% 0px -10% 0px',
         threshold: 0.3
     };
-    
+
     TimelineState.observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('visible');
-                
+
                 // 检查是否是最后一个事件
                 const index = parseInt(entry.target.dataset.index);
                 if (index === TimelineState.events.length - 1) {
@@ -209,7 +209,7 @@ function initScrollObserver() {
             }
         });
     }, options);
-    
+
     // 观察所有时间线事件
     document.querySelectorAll('.timeline-event').forEach(event => {
         TimelineState.observer.observe(event);
@@ -224,19 +224,19 @@ function showContinueButton() {
     if (scrollHint) {
         scrollHint.classList.add('hidden');
     }
-    
+
     // 检查是否已存在继续按钮
     if (document.querySelector('#page-timeline .proceed-btn')) return;
-    
+
     const btn = App.createElement('button', {
         className: 'proceed-btn',
         onClick: () => App.navigateTo('moments')
     }, '继续我们的故事');
-    
+
     // 添加到时间线容器末尾
     const container = document.querySelector('#page-timeline .timeline-container');
     container.appendChild(btn);
-    
+
     // 淡入动画
     btn.style.opacity = '0';
     requestAnimationFrame(() => {
@@ -251,9 +251,9 @@ function showContinueButton() {
 function handleScroll() {
     const page = document.getElementById('page-timeline');
     if (!page.classList.contains('active')) return;
-    
+
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    
+
     if (scrollTop > 100 && scrollHint) {
         scrollHint.style.opacity = '0';
     }
@@ -279,7 +279,7 @@ window.addEventListener('scroll', handleScroll, { passive: true });
 
 document.addEventListener('DOMContentLoaded', () => {
     // 如果初始页面就是时间线，立即加载
-    if (document.getElementById('page-timeline')?.classList.contains('active')) {
+    if (document.getElementById('page-timeline') ? .classList.contains('active')) {
         loadTimelineData();
     }
 });
