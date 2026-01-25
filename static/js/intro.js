@@ -25,6 +25,12 @@ const ReturnMessages = [
     { delay: 7000, text: "每一个瞬间，都值得被记住", action: "showContinueButton" }
 ];
 
+// 初始进入页面的消息（每次进入页面都重新播放）
+const InitialMessages = [
+    { delay: 500, text: "嘿，你来了" },
+    { delay: 1500, text: "我等你很久了..." }
+];
+
 // ============================================================
 // DOM 元素
 // ============================================================
@@ -135,6 +141,20 @@ function playReturnMessages() {
             if (msg.action === 'showContinueButton') {
                 showReturnContinueButton();
             }
+        }, msg.delay);
+    });
+}
+
+/**
+ * 播放首次进入页面的消息
+ */
+function playInitialMessages() {
+    if (!chatMessages) return;
+    chatMessages.innerHTML = '';
+
+    InitialMessages.forEach((msg) => {
+        setTimeout(() => {
+            addMessage(msg.text, 'system');
         }, msg.delay);
     });
 }
@@ -278,6 +298,7 @@ chatInput?.addEventListener('keypress', (e) => {
 document.addEventListener('pageEnter', (e) => {
     if (e.detail.pageName === 'intro') {
         if (!IntroState.isReturnMode) {
+            playInitialMessages();
             chatInput?.focus();
         }
     }
@@ -288,6 +309,10 @@ document.addEventListener('pageEnter', (e) => {
 // ============================================================
 
 document.addEventListener('DOMContentLoaded', () => {
+    if (!IntroState.isReturnMode) {
+        playInitialMessages();
+    }
+
     // 初始延迟显示第一条提示
     setTimeout(() => {
         if (!IntroState.isReturnMode && attemptHint) {
