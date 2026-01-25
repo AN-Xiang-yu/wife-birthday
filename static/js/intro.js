@@ -6,14 +6,19 @@
  */
 
 // ============================================================
+// 配置常量（从后端 config.py 注入）
+// ============================================================
+const FINAL_MESSAGE = window.AppConfig?.FINAL_MESSAGE;
+
+// ============================================================
 // 状态
 // ============================================================
 const IntroState = {
     attemptCount: 0,
-    maxAttempts: 3,
+    maxAttempts: window.AppConfig?.MAX_ATTEMPTS || 3,
     isProcessing: false,
-    isReturnMode: false,  // 是否是返回模式
-    returnMessageIndex: 0  // 返回模式下的消息索引
+    isReturnMode: false, // 是否是返回模式
+    returnMessageIndex: 0 // 返回模式下的消息索引
 };
 
 // 返回模式下显示的新消息
@@ -27,8 +32,12 @@ const ReturnMessages = [
 
 // 初始进入页面的消息（每次进入页面都重新播放）
 const InitialMessages = [
-    { delay: 500, text: "嘿，你来了" },
-    { delay: 1500, text: "我等你很久了..." }
+    { delay: 500, text: "嘿，亲爱的，你终于来啦" },
+    { delay: 1500, text: "我等你很久了..." },
+    {
+        delay: 2500,
+        text: "知道今天是什么日子吗？"
+    }
 ];
 
 // 进入故事的信封卡片
@@ -57,24 +66,24 @@ const attemptHint = document.getElementById('attempt-hint');
  */
 function addMessage(text, type = 'system', animate = true) {
     const avatar = type === 'system' ? '💭' : '💬';
-    
+
     const messageEl = App.createElement('div', {
         className: `message ${type}`
     }, [
         App.createElement('span', { className: 'avatar' }, avatar),
         App.createElement('div', { className: 'bubble' }, text)
     ]);
-    
+
     if (animate) {
         messageEl.style.opacity = '0';
         messageEl.style.transform = 'translateY(10px)';
     }
-    
+
     chatMessages.appendChild(messageEl);
-    
+
     // 滚动到底部
     chatMessages.scrollTop = chatMessages.scrollHeight;
-    
+
     // 触发动画
     if (animate) {
         requestAnimationFrame(() => {
@@ -102,10 +111,10 @@ function showTypingIndicator() {
             App.createElement('span')
         ])
     ]);
-    
+
     chatMessages.appendChild(indicator);
     chatMessages.scrollTop = chatMessages.scrollHeight;
-    
+
     return indicator;
 }
 
@@ -119,18 +128,18 @@ function showTypingIndicator() {
 function enterReturnMode() {
     IntroState.isReturnMode = true;
     IntroState.returnMessageIndex = 0;
-    
+
     // 隐藏输入区域
     const inputArea = document.querySelector('.chat-input-area');
     if (inputArea) {
         inputArea.style.display = 'none';
     }
-    
+
     // 隐藏提示
     if (attemptHint) {
         attemptHint.style.display = 'none';
     }
-    
+
     // 开始播放返回消息
     playReturnMessages();
 }
@@ -142,7 +151,7 @@ function playReturnMessages() {
     ReturnMessages.forEach((msg, index) => {
         setTimeout(() => {
             addMessage(msg.text, 'system');
-            
+
             // 检查是否有特殊动作
             if (msg.action === 'showContinueButton') {
                 showReturnContinueButton();
@@ -183,7 +192,7 @@ function showReturnContinueButton() {
                 transition: 'opacity 0.5s ease'
             }
         });
-        
+
         const btn = App.createElement('button', {
             className: 'proceed-btn',
             onClick: () => App.navigateTo('timeline'),
@@ -191,11 +200,11 @@ function showReturnContinueButton() {
                 marginTop: '0'
             }
         }, '再次走进我们的故事');
-        
+
         btnContainer.appendChild(btn);
         chatMessages.appendChild(btnContainer);
         chatMessages.scrollTop = chatMessages.scrollHeight;
-        
+
         // 淡入
         requestAnimationFrame(() => {
             btnContainer.style.opacity = '1';
@@ -247,36 +256,36 @@ function resetForReturnMode() {
 async function handleUserInput() {
     // 返回模式下不允许输入
     if (IntroState.isReturnMode) return;
-    
+
     const userInput = chatInput.value.trim();
-    
+
     if (!userInput || IntroState.isProcessing) return;
-    
+
     IntroState.isProcessing = true;
     chatSend.disabled = true;
-    
+
     // 显示用户消息
     addMessage(userInput, 'user');
     chatInput.value = '';
-    
+
     // 显示打字指示器
     await App.delay(500);
     const typingIndicator = showTypingIndicator();
-    
+
     try {
         // 发送请求到后端
         const response = await App.postRequest('/api/chat', {
             user_input: userInput,
             attempt_count: IntroState.attemptCount
         });
-        
+
         // 移除打字指示器
         await App.delay(1000);
         typingIndicator.remove();
-        
+
         // 显示系统回复
         addMessage(response.response, 'system');
-        
+
         // 更新尝试次数
         IntroState.attemptCount++;
         
@@ -286,22 +295,22 @@ async function handleUserInput() {
         if (response.hint && !isFinalMessage) {
             attemptHint.textContent = response.hint;
         }
-        
+
         // 检查是否应该进入下一页
         if (isFinalMessage) {
             await App.delay(1200);
             showLetterInviteCard();
         }
-        
+
     } catch (error) {
         // 移除打字指示器
         typingIndicator.remove();
-        
+
         // 显示温柔的错误提示（不是"错误"）
         attemptHint.textContent = '让我想想...';
         console.error('对话处理失败:', error);
     }
-    
+
     IntroState.isProcessing = false;
     chatSend.disabled = false;
     chatInput.focus();

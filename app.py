@@ -10,7 +10,7 @@ from typing import Dict, Any, Optional
 import json
 import os
 
-from config import Config
+from config import ChatConfig, Config
 from utils.helpers import load_json_data, validate_password, process_chat_input
 
 
@@ -29,7 +29,12 @@ def index() -> str:
     Returns:
         str: 渲染后的 HTML 页面
     """
-    return render_template("index.html")
+    # 传递前端需要的配置
+    frontend_config = {
+        "FINAL_MESSAGE": ChatConfig.FINAL_MESSAGE,
+        "MAX_ATTEMPTS": ChatConfig.MAX_ATTEMPTS
+    }
+    return render_template("index.html", config=frontend_config)
 
 
 # ============================================================
@@ -62,7 +67,7 @@ def chat() -> Dict[str, Any]:
     result = process_chat_input(
         user_input=user_input,
         attempt_count=attempt_count,
-        max_attempts=3
+        max_attempts=ChatConfig.MAX_ATTEMPTS
     )
     
     return jsonify(result)
