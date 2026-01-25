@@ -1,63 +1,61 @@
 {
-  "meta": {
-    "title": "我们的故事",
-    "description": "5-8个关键时间节点，每个都回答：为什么这一刻对我重要？"
-  },
-  
-  "events": [
-    {
-      "id": 1,
-      "date": "2023年X月X日",
-      "title": "初遇",
-      "description": "第一次见到你的那天...",
-      "emotion_note": "为什么重要：这是一切的开始",
-      "image": "images/photos/timeline1.jpg",
-      "is_highlighted": true
+    "meta": {
+        "title": "我们的故事",
+        "description": "5-8个关键时间节点，每个都回答：为什么这一刻对我重要？"
     },
-    {
-      "id": 2,
-      "date": "2023年X月X日",
-      "title": "第一次...",
-      "description": "我们的第一个里程碑",
-      "emotion_note": "为什么重要：...",
-      "image": "images/photos/timeline2.jpg",
-      "is_highlighted": false
-    },
-    {
-      "id": 3,
-      "date": "2023年X月X日",
-      "title": "那个转折点",
-      "description": "故事在这里有了新的方向",
-      "emotion_note": "为什么重要：...",
-      "image": "images/photos/timeline3.jpg",
-      "is_highlighted": false
-    },
-    {
-      "id": 4,
-      "date": "2024年X月X日",
-      "title": "一起经历的事",
-      "description": "某个共同的回忆",
-      "emotion_note": "为什么重要：...",
-      "image": "images/photos/timeline4.jpg",
-      "is_highlighted": true
-    },
-    {
-      "id": 5,
-      "date": "2024年X月X日",
-      "title": "那个特别的日子",
-      "description": "一个值得纪念的时刻",
-      "emotion_note": "为什么重要：...",
-      "image": "images/photos/timeline5.jpg",
-      "is_highlighted": false
-    },
-    {
-      "id": 6,
-      "date": "2025年X月X日",
-      "title": "直到今天",
-      "description": "故事还在继续...",
-      "emotion_note": "为什么重要：因为有你",
-      "image": "images/photos/timeline6.jpg",
-      "is_highlighted": true
-    }
-  ]
+
+    "events": [{
+            "id": 1,
+            "date": "2025年2月8日",
+            "title": "初遇",
+            "description": "那一天，我第一次通过你妈妈给我的手机号加上了你。你回我的第一句话是“您好”。第二天早上10点44分，我怀着一点忐忑给你打了电话，把你从睡梦中吵醒。你迷迷糊糊地接起电话，而我在挂断之后，却开始认真担心，自己是不是给你留下了不太好的第一印象。",
+            "emotion_note": "为什么重要：这是一切开始前，我第一次在意你的感受。",
+            "image": "images/photos/初遇.jpg",
+            "is_highlighted": true
+        }, {
+            "id": 2,
+            "date": "2023年X月X日",
+            "title": "第一次...",
+            "description": "我们的第一个里程碑",
+            "emotion_note": "为什么重要：...",
+            "image": "images/photos/初遇.jpg",
+            "is_highlighted": false
+        },
+        {
+            "id": 3,
+            "date": "2023年X月X日",
+            "title": "那个转折点",
+            "description": "故事在这里有了新的方向",
+            "emotion_note": "为什么重要：...",
+            "image": "images/photos/timeline3.jpg",
+            "is_highlighted": false
+        },
+        {
+            "id": 4,
+            "date": "2024年X月X日",
+            "title": "一起经历的事",
+            "description": "某个共同的回忆",
+            "emotion_note": "为什么重要：...",
+            "image": "images/photos/timeline4.jpg",
+            "is_highlighted": true
+        },
+        {
+            "id": 5,
+            "date": "2024年X月X日",
+            "title": "那个特别的日子",
+            "description": "一个值得纪念的时刻",
+            "emotion_note": "为什么重要：...",
+            "image": "images/photos/timeline5.jpg",
+            "is_highlighted": false
+        },
+        {
+            "id": 6,
+            "date": "2025年X月X日",
+            "title": "直到今天",
+            "description": "故事还在继续...",
+            "emotion_note": "为什么重要：因为有你",
+            "image": "images/photos/timeline6.jpg",
+            "is_highlighted": true
+        }
+    ]
 }
