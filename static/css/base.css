@@ -9,24 +9,24 @@
    CSS 变量定义
 ============================================================ */
 :root {
-    /* 主色调 - 温暖柔和 */
-    --color-primary: #e8c4a2;          /* 温暖米色 */
-    --color-primary-dark: #d4a574;     /* 深一点的暖色 */
-    --color-secondary: #f5e6d3;        /* 浅米色背景 */
+    /* 主色调 - 粉红柔和 */
+    --color-primary: #f7b5c8;          /* 温柔粉 */
+    --color-primary-dark: #f28bb0;     /* 深一点的粉 */
+    --color-secondary: #fde3ec;        /* 浅粉背景 */
     
     /* 文字颜色 */
-    --color-text: #3d3d3d;             /* 主文字 - 柔和深灰 */
-    --color-text-light: #6b6b6b;       /* 次要文字 */
-    --color-text-muted: #999999;       /* 提示文字 */
+    --color-text: #4a2b35;             /* 主文字 - 暖深粉灰 */
+    --color-text-light: #6d4a59;       /* 次要文字 */
+    --color-text-muted: #a07a8b;       /* 提示文字 */
     
     /* 背景色 */
-    --color-bg: #faf8f5;               /* 页面背景 - 温暖白 */
-    --color-bg-alt: #f0ebe4;           /* 备用背景 */
+    --color-bg: #fff5f8;               /* 页面背景 - 粉白 */
+    --color-bg-alt: #fdeff4;           /* 备用背景 */
     --color-card: #ffffff;             /* 卡片背景 */
     
     /* 强调色 */
-    --color-accent: #c9a87c;           /* 金棕色强调 */
-    --color-accent-soft: rgba(201, 168, 124, 0.2);
+    --color-accent: #e37aa0;           /* 粉色强调 */
+    --color-accent-soft: rgba(227, 122, 160, 0.2);
     
     /* 阴影 */
     --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.05);
