@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>给你的生日礼物</title>
+    
+    <!-- 全局样式 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    
+    <!-- 页面样式 -->
+    {% block page_styles %}{% endblock %}
+</head>
+<body>
+    <!-- 页面容器 -->
+    <main id="app">
+        {% block content %}{% endblock %}
+    </main>
+    
+    <!-- 页面切换进度指示器（可选） -->
+    <nav id="progress-indicator" class="hidden">
+        <span class="dot" data-page="intro"></span>
+        <span class="dot" data-page="timeline"></span>
+        <span class="dot" data-page="moments"></span>
+        <span class="dot" data-page="letter"></span>
+        <span class="dot" data-page="secret"></span>
+        <span class="dot" data-page="playful"></span>
+        <span class="dot" data-page="ending"></span>
+    </nav>
+    
+    <!-- 全局脚本 -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    
+    <!-- 页面脚本 -->
+    {% block page_scripts %}{% endblock %}
+</body>
+</html>

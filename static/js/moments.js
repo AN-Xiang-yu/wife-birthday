@@ -1,0 +1,130 @@
+/**
+ * 故事放大页 · 卡片翻转逻辑
+ * 
+ * 可翻转的卡片，展示深层感受
+ * 情绪：回忆深化
+ */
+
+// ============================================================
+// 状态
+// ============================================================
+const MomentsState = {
+    cards: [],
+    isLoaded: false
+};
+
+// ============================================================
+// DOM 元素
+// ============================================================
+const momentsContainer = document.getElementById('moments-container');
+const momentsProceed = document.getElementById('moments-proceed');
+
+// ============================================================
+// 瞬间卡片渲染
+// ============================================================
+
+/**
+ * 加载瞬间数据
+ */
+async function loadMomentsData() {
+    try {
+        const response = await App.getRequest('/api/content/moments');
+        MomentsState.cards = response.cards || [];
+        renderMoments();
+        MomentsState.isLoaded = true;
+    } catch (error) {
+        console.error('加载瞬间数据失败:', error);
+    }
+}
+
+/**
+ * 渲染所有瞬间卡片
+ */
+function renderMoments() {
+    if (!momentsContainer) return;
+    
+    momentsContainer.innerHTML = '';
+    
+    MomentsState.cards.forEach((card, index) => {
+        const cardEl = createMomentCard(card, index);
+        momentsContainer.appendChild(cardEl);
+        
+        // 延迟动画
+        setTimeout(() => {
+            cardEl.classList.add('fade-in');
+        }, index * 200);
+    });
+}
+
+/**
+ * 创建单个瞬间卡片
+ * @param {Object} card - 卡片数据
+ * @param {number} index - 卡片索引
+ * @returns {HTMLElement}
+ */
+function createMomentCard(card, index) {
+    // 正面内容
+    const frontContent = [
+        card.image 
+            ? App.createElement('img', {
+                className: 'moment-front-image',
+                src: `/static/${card.image}`,
+                alt: card.surface.title
+            })
+            : App.createElement('div', { className: 'moment-front-image' }),
+        App.createElement('div', { className: 'moment-front-content' }, [
+            App.createElement('h3', { className: 'moment-front-title' }, card.surface.title),
+            App.createElement('p', { className: 'moment-front-brief' }, card.surface.brief)
+        ]),
+        App.createElement('span', { className: 'moment-flip-hint' }, '点击翻转')
+    ];
+    
+    // 背面内容
+    const backContent = [
+        App.createElement('div', { className: 'moment-back-section moment-what-happened' }, [
+            App.createElement('span', { className: 'moment-back-label' }, '发生了什么'),
+            App.createElement('p', { className: 'moment-back-text' }, card.deep.what_happened)
+        ]),
+        App.createElement('div', { className: 'moment-back-section moment-what-felt' }, [
+            App.createElement('span', { className: 'moment-back-label' }, '我的感受'),
+            App.createElement('p', { className: 'moment-back-text' }, card.deep.what_i_felt)
+        ]),
+        App.createElement('span', { className: 'moment-back-hint' }, '再次点击翻回')
+    ];
+    
+    const front = App.createElement('div', { className: 'moment-front' }, frontContent);
+    const back = App.createElement('div', { className: 'moment-back' }, backContent);
+    const inner = App.createElement('div', { className: 'moment-card-inner' }, [front, back]);
+    
+    const cardEl = App.createElement('div', {
+        className: 'moment-card',
+        'data-index': index,
+        onClick: () => toggleCard(cardEl)
+    }, inner);
+    
+    return cardEl;
+}
+
+/**
+ * 翻转卡片
+ * @param {HTMLElement} cardEl - 卡片元素
+ */
+function toggleCard(cardEl) {
+    cardEl.classList.toggle('flipped');
+}
+
+// ============================================================
+// 事件绑定
+// ============================================================
+
+// 页面进入时加载数据
+document.addEventListener('pageEnter', (e) => {
+    if (e.detail.pageName === 'moments' && !MomentsState.isLoaded) {
+        loadMomentsData();
+    }
+});
+
+// 继续按钮
+momentsProceed?.addEventListener('click', () => {
+    App.navigateTo('letter');
+});

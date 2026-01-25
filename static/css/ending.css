@@ -1,0 +1,79 @@
+/**
+ * 结尾祝福页 · 落点样式
+ * 
+ * 极简设计，留白为主
+ * 情绪：余温
+ * 
+ * 注：主要样式已在 secret.css 中定义
+ * 此文件用于额外的结尾页定制
+ */
+
+/* 结尾页额外定制（如有需要） */
+
+/* 背景粒子效果（可选） */
+#page-ending .particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+#page-ending .particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--color-accent);
+    border-radius: 50%;
+    opacity: 0.3;
+    animation: float 15s infinite ease-in-out;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0) translateX(0);
+    }
+    25% {
+        transform: translateY(-20px) translateX(10px);
+    }
+    50% {
+        transform: translateY(-10px) translateX(-10px);
+    }
+    75% {
+        transform: translateY(-30px) translateX(5px);
+    }
+}
+
+/* 渐变文字效果（生日快乐） */
+.blessing-animated {
+    background: linear-gradient(
+        90deg,
+        var(--color-text) 0%,
+        var(--color-accent) 50%,
+        var(--color-text) 100%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 3s linear infinite;
+}
+
+@keyframes shimmer {
+    to {
+        background-position: 200% center;
+    }
+}
+
+/* 心跳动画（可选） */
+.heartbeat {
+    animation: heartbeat 1.5s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    14% { transform: scale(1.1); }
+    28% { transform: scale(1); }
+    42% { transform: scale(1.1); }
+    70% { transform: scale(1); }
+}

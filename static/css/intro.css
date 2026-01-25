@@ -1,0 +1,177 @@
+/**
+ * 开场页 · 对话式引入样式
+ * 
+ * 模拟聊天界面，建立亲密感
+ * 情绪：好奇 → 参与
+ */
+
+/* 聊天容器 */
+.chat-container {
+    width: 100%;
+    max-width: 500px;
+    height: 80vh;
+    max-height: 700px;
+    display: flex;
+    flex-direction: column;
+    background: var(--color-card);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+}
+
+/* 消息区域 */
+.chat-messages {
+    flex: 1;
+    padding: var(--spacing-lg);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+/* 单条消息 */
+.message {
+    display: flex;
+    align-items: flex-end;
+    gap: var(--spacing-sm);
+    max-width: 85%;
+    animation: messageIn 0.4s ease forwards;
+}
+
+@keyframes messageIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 系统消息（左侧） */
+.message.system {
+    align-self: flex-start;
+}
+
+/* 用户消息（右侧） */
+.message.user {
+    align-self: flex-end;
+    flex-direction: row-reverse;
+}
+
+/* 头像 */
+.message .avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.message.system .avatar {
+    background: var(--color-secondary);
+}
+
+.message.user .avatar {
+    background: var(--color-primary);
+}
+
+/* 消息气泡 */
+.message .bubble {
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--radius-md);
+    font-size: var(--text-base);
+    line-height: 1.5;
+}
+
+.message.system .bubble {
+    background: var(--color-secondary);
+    border-bottom-left-radius: 4px;
+}
+
+.message.user .bubble {
+    background: var(--color-primary);
+    border-bottom-right-radius: 4px;
+}
+
+/* 输入区域 */
+.chat-input-area {
+    padding: var(--spacing-md);
+    border-top: 1px solid var(--color-secondary);
+    display: flex;
+    gap: var(--spacing-sm);
+    background: var(--color-bg);
+}
+
+.chat-input-area input {
+    flex: 1;
+    border-radius: var(--radius-full);
+    padding: var(--spacing-sm) var(--spacing-md);
+}
+
+.send-btn {
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--color-primary);
+    color: var(--color-text);
+    border-radius: var(--radius-full);
+    font-weight: 500;
+}
+
+.send-btn:hover {
+    background: var(--color-primary-dark);
+}
+
+.send-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* 尝试提示 */
+.attempt-hint {
+    text-align: center;
+    padding: var(--spacing-sm);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    min-height: 2rem;
+}
+
+/* 打字动画指示器 */
+.typing-indicator {
+    display: flex;
+    gap: 4px;
+    padding: var(--spacing-sm) var(--spacing-md);
+}
+
+.typing-indicator span {
+    width: 8px;
+    height: 8px;
+    background: var(--color-text-muted);
+    border-radius: 50%;
+    animation: typing 1.4s infinite;
+}
+
+.typing-indicator span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes typing {
+    0%, 60%, 100% { transform: translateY(0); }
+    30% { transform: translateY(-8px); }
+}
+
+/* 响应式 */
+@media (max-width: 768px) {
+    .chat-container {
+        height: 90vh;
+        max-height: none;
+        border-radius: 0;
+    }
+}

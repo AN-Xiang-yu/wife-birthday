@@ -1,0 +1,206 @@
+/**
+ * 时间线页 · 滚动触发逻辑
+ * 
+ * 滚动时依次显示时间线事件
+ * 情绪：回忆
+ */
+
+// ============================================================
+// 状态
+// ============================================================
+const TimelineState = {
+    events: [],
+    isLoaded: false,
+    observer: null
+};
+
+// ============================================================
+// DOM 元素
+// ============================================================
+const timelineEvents = document.getElementById('timeline-events');
+const scrollHint = document.querySelector('#page-timeline .scroll-hint');
+
+// ============================================================
+// 时间线渲染
+// ============================================================
+
+/**
+ * 加载时间线数据
+ */
+async function loadTimelineData() {
+    try {
+        const response = await App.getRequest('/api/timeline');
+        TimelineState.events = response.events || [];
+        renderTimeline();
+        TimelineState.isLoaded = true;
+    } catch (error) {
+        console.error('加载时间线失败:', error);
+        // 使用备用数据或显示错误
+    }
+}
+
+/**
+ * 渲染时间线
+ */
+function renderTimeline() {
+    if (!timelineEvents) return;
+    
+    timelineEvents.innerHTML = '';
+    
+    TimelineState.events.forEach((event, index) => {
+        const eventEl = createTimelineEvent(event, index);
+        timelineEvents.appendChild(eventEl);
+    });
+    
+    // 初始化滚动观察器
+    initScrollObserver();
+}
+
+/**
+ * 创建单个时间线事件元素
+ * @param {Object} event - 事件数据
+ * @param {number} index - 事件索引
+ * @returns {HTMLElement}
+ */
+function createTimelineEvent(event, index) {
+    const cardChildren = [
+        App.createElement('span', { className: 'event-date' }, event.date),
+        App.createElement('h3', { className: 'event-title' }, event.title),
+        App.createElement('p', { className: 'event-description' }, event.description)
+    ];
+    
+    // 添加图片（如果有）
+    if (event.image) {
+        cardChildren.push(
+            App.createElement('img', {
+                className: 'event-image',
+                src: `/static/${event.image}`,
+                alt: event.title
+            })
+        );
+    }
+    
+    // 添加情感备注（如果有）
+    if (event.emotion_note) {
+        cardChildren.push(
+            App.createElement('p', { className: 'event-emotion' }, event.emotion_note)
+        );
+    }
+    
+    const card = App.createElement('div', { className: 'event-card' }, cardChildren);
+    
+    const eventEl = App.createElement('div', {
+        className: `timeline-event ${event.is_highlighted ? 'highlighted' : ''}`,
+        'data-index': index
+    }, card);
+    
+    return eventEl;
+}
+
+// ============================================================
+// 滚动触发
+// ============================================================
+
+/**
+ * 初始化滚动观察器
+ */
+function initScrollObserver() {
+    // 清除旧的观察器
+    if (TimelineState.observer) {
+        TimelineState.observer.disconnect();
+    }
+    
+    const options = {
+        root: null,
+        rootMargin: '-10% 0px -10% 0px',
+        threshold: 0.3
+    };
+    
+    TimelineState.observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                
+                // 检查是否是最后一个事件
+                const index = parseInt(entry.target.dataset.index);
+                if (index === TimelineState.events.length - 1) {
+                    // 最后一个事件可见后，添加继续按钮
+                    showContinueButton();
+                }
+            }
+        });
+    }, options);
+    
+    // 观察所有时间线事件
+    document.querySelectorAll('.timeline-event').forEach(event => {
+        TimelineState.observer.observe(event);
+    });
+}
+
+/**
+ * 显示继续按钮
+ */
+function showContinueButton() {
+    // 隐藏滚动提示
+    if (scrollHint) {
+        scrollHint.classList.add('hidden');
+    }
+    
+    // 检查是否已存在继续按钮
+    if (document.querySelector('#page-timeline .proceed-btn')) return;
+    
+    const btn = App.createElement('button', {
+        className: 'proceed-btn',
+        onClick: () => App.navigateTo('moments')
+    }, '继续我们的故事');
+    
+    // 添加到时间线容器末尾
+    const container = document.querySelector('#page-timeline .timeline-container');
+    container.appendChild(btn);
+    
+    // 淡入动画
+    btn.style.opacity = '0';
+    requestAnimationFrame(() => {
+        btn.style.transition = 'opacity 0.5s ease';
+        btn.style.opacity = '1';
+    });
+}
+
+/**
+ * 处理滚动隐藏提示
+ */
+function handleScroll() {
+    const page = document.getElementById('page-timeline');
+    if (!page.classList.contains('active')) return;
+    
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    
+    if (scrollTop > 100 && scrollHint) {
+        scrollHint.style.opacity = '0';
+    }
+}
+
+// ============================================================
+// 事件绑定
+// ============================================================
+
+// 页面进入时加载数据
+document.addEventListener('pageEnter', (e) => {
+    if (e.detail.pageName === 'timeline' && !TimelineState.isLoaded) {
+        loadTimelineData();
+    }
+});
+
+// 滚动监听
+window.addEventListener('scroll', handleScroll, { passive: true });
+
+// ============================================================
+// 初始化
+// ============================================================
+
+document.addEventListener('DOMContentLoaded', () => {
+    // 如果初始页面就是时间线，立即加载
+    if (document.getElementById('page-timeline')?.classList.contains('active')) {
+        loadTimelineData();
+    }
+});

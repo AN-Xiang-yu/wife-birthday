@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+
+{% block page_styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/intro.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/timeline.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/moments.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/letter.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/secret.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/ending.css') }}">
+{% endblock %}
+
+{% block content %}
+<!-- ============================================================
+     1. 开场页 · 对话式引入
+     情绪：好奇 → 参与
+============================================================ -->
+<section id="page-intro" class="page active">
+    <div class="chat-container">
+        <div class="chat-messages" id="chat-messages">
+            <!-- 初始系统消息 -->
+            <div class="message system">
+                <span class="avatar">💭</span>
+                <div class="bubble">嘿，你来了</div>
+            </div>
+            <div class="message system">
+                <span class="avatar">💭</span>
+                <div class="bubble">我等你很久了...</div>
+            </div>
+        </div>
+        
+        <div class="chat-input-area">
+            <input type="text" 
+                   id="chat-input" 
+                   placeholder="说点什么吧..."
+                   maxlength="100">
+            <button id="chat-send" class="send-btn">发送</button>
+        </div>
+        
+        <div class="attempt-hint" id="attempt-hint"></div>
+    </div>
+</section>
+
+<!-- ============================================================
+     2. 时间线页 · 我们的故事
+     情绪：回忆
+============================================================ -->
+<section id="page-timeline" class="page">
+    <header class="page-header">
+        <h1>我们的故事</h1>
+        <p class="subtitle">那些被时间记住的瞬间</p>
+    </header>
+    
+    <div class="timeline-container">
+        <div class="timeline-line"></div>
+        <div class="timeline-events" id="timeline-events">
+            <!-- 时间线事件将通过 JS 动态加载 -->
+        </div>
+    </div>
+    
+    <div class="scroll-hint">
+        <span>向下滑动</span>
+        <div class="scroll-arrow"></div>
+    </div>
+</section>
+
+<!-- ============================================================
+     3. 故事放大页 · 那些被记住的瞬间
+     情绪：回忆深化
+============================================================ -->
+<section id="page-moments" class="page">
+    <header class="page-header">
+        <h1>那些被记住的瞬间</h1>
+        <p class="subtitle">每一个细节，都是我的珍藏</p>
+    </header>
+    
+    <div class="moments-container" id="moments-container">
+        <!-- 瞬间卡片将通过 JS 动态加载 -->
+    </div>
+    
+    <button class="proceed-btn" id="moments-proceed">继续我们的故事</button>
+</section>
+
+<!-- ============================================================
+     4. 信件页 · 我想对你说的话
+     情绪：共鸣（情绪高峰）
+============================================================ -->
+<section id="page-letter" class="page">
+    <div class="letter-container">
+        <div class="letter-paper">
+            <header class="letter-header">
+                <span class="letter-date">此刻</span>
+            </header>
+            
+            <div class="letter-content" id="letter-content">
+                <!-- 信件段落将分步展示 -->
+            </div>
+            
+            <footer class="letter-footer">
+                <span class="signature">永远爱你的人</span>
+            </footer>
+        </div>
+        
+        <button class="letter-next-btn" id="letter-next">继续阅读</button>
+    </div>
+</section>
+
+<!-- ============================================================
+     5. 彩蛋页一 · 密码解锁
+     情绪：私密感
+============================================================ -->
+<section id="page-secret" class="page">
+    <div class="secret-container">
+        <div class="secret-lock" id="secret-lock">
+            <h2>这里有一个秘密</h2>
+            <p>只有你知道答案</p>
+            
+            <div class="password-input-group">
+                <input type="text" 
+                       id="password-input" 
+                       placeholder="输入我们的秘密..."
+                       maxlength="50">
+                <button id="password-submit">解锁</button>
+            </div>
+            
+            <div class="password-hint" id="password-hint"></div>
+        </div>
+        
+        <div class="secret-unlocked hidden" id="secret-unlocked">
+            <div class="secret-content" id="secret-content">
+                <!-- 解锁内容将在验证成功后显示 -->
+            </div>
+            <button class="proceed-btn" id="secret-proceed">继续</button>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     6. 彩蛋页二 · 选择式问题
+     情绪：轻松
+============================================================ -->
+<section id="page-playful" class="page">
+    <div class="playful-container">
+        <h2>最后一个小问题</h2>
+        
+        <div class="question-card" id="question-card">
+            <p class="question-text" id="question-text">
+                <!-- 问题将通过 JS 加载 -->
+            </p>
+            
+            <div class="options-group" id="options-group">
+                <!-- 选项将通过 JS 加载 -->
+            </div>
+        </div>
+        
+        <div class="playful-response hidden" id="playful-response">
+            <p class="response-text"></p>
+            <p class="final-message">不管你选什么，答案都是——我很幸运遇见你</p>
+            <button class="proceed-btn" id="playful-proceed">走向最后</button>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     7. 结尾祝福页 · 落点
+     情绪：余温
+============================================================ -->
+<section id="page-ending" class="page">
+    <div class="ending-container">
+        <div class="blessing-text">
+            <h1 class="blessing">生日快乐</h1>
+            <p class="her-name">亲爱的</p>
+        </div>
+        
+        <div class="ending-date">
+            <span>2025年X月X日</span>
+        </div>
+        
+        <p class="final-note">愿每一天都如今天这般特别</p>
+        
+        <button class="restart-btn" id="restart-btn">从头再看一遍</button>
+    </div>
+</section>
+{% endblock %}
+
+{% block page_scripts %}
+<script src="{{ url_for('static', filename='js/intro.js') }}"></script>
+<script src="{{ url_for('static', filename='js/timeline.js') }}"></script>
+<script src="{{ url_for('static', filename='js/moments.js') }}"></script>
+<script src="{{ url_for('static', filename='js/letter.js') }}"></script>
+<script src="{{ url_for('static', filename='js/secret.js') }}"></script>
+{% endblock %}

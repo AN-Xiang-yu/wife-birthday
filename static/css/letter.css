@@ -1,0 +1,159 @@
+/**
+ * 信件页 · 我想对你说的话样式
+ * 
+ * 信纸风格，分段展示
+ * 情绪：共鸣（情绪高峰）
+ */
+
+#page-letter {
+    background: linear-gradient(
+        180deg,
+        var(--color-bg) 0%,
+        #f5efe8 100%
+    );
+}
+
+/* 信件容器 */
+.letter-container {
+    width: 100%;
+    max-width: 650px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* 信纸 */
+.letter-paper {
+    width: 100%;
+    background: var(--color-card);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    padding: var(--spacing-xl) var(--spacing-lg);
+    position: relative;
+    
+    /* 信纸纹理效果 */
+    background-image: 
+        linear-gradient(
+            rgba(0, 0, 0, 0.02) 1px,
+            transparent 1px
+        );
+    background-size: 100% 2rem;
+    background-position: 0 var(--spacing-xl);
+}
+
+/* 信纸装饰边 */
+.letter-paper::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(
+        180deg,
+        var(--color-accent) 0%,
+        var(--color-primary) 100%
+    );
+    border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+}
+
+/* 信件头部 */
+.letter-header {
+    text-align: right;
+    margin-bottom: var(--spacing-lg);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--color-secondary);
+}
+
+.letter-date {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    font-style: italic;
+}
+
+/* 信件内容区 */
+.letter-content {
+    min-height: 300px;
+}
+
+/* 单个段落 */
+.letter-paragraph {
+    opacity: 0;
+    transform: translateY(20px);
+    margin-bottom: var(--spacing-lg);
+    transition: all 0.6s ease;
+}
+
+.letter-paragraph.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.letter-paragraph-label {
+    font-size: var(--text-sm);
+    color: var(--color-accent);
+    font-weight: 500;
+    margin-bottom: var(--spacing-xs);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.letter-paragraph-text {
+    font-family: var(--font-serif);
+    font-size: var(--text-lg);
+    color: var(--color-text);
+    line-height: 1.9;
+    text-align: justify;
+    white-space: pre-line;
+}
+
+/* 信件底部 */
+.letter-footer {
+    margin-top: var(--spacing-xl);
+    padding-top: var(--spacing-md);
+    text-align: right;
+}
+
+.signature {
+    font-family: var(--font-serif);
+    font-size: var(--text-xl);
+    color: var(--color-text);
+    font-style: italic;
+}
+
+/* 继续阅读按钮 */
+.letter-next-btn {
+    margin-top: var(--spacing-lg);
+    padding: var(--spacing-sm) var(--spacing-lg);
+    background: transparent;
+    border: 2px solid var(--color-primary);
+    color: var(--color-text);
+    border-radius: var(--radius-full);
+    font-size: var(--text-base);
+    transition: all var(--transition-fast);
+}
+
+.letter-next-btn:hover {
+    background: var(--color-primary);
+}
+
+.letter-next-btn.hidden {
+    display: none;
+}
+
+/* 信件完成状态 */
+.letter-complete .letter-footer {
+    animation: fadeIn 0.6s ease forwards;
+}
+
+/* 响应式 */
+@media (max-width: 768px) {
+    .letter-paper {
+        padding: var(--spacing-lg) var(--spacing-md);
+    }
+    
+    .letter-paragraph-text {
+        font-size: var(--text-base);
+        text-align: left;
+    }
+}

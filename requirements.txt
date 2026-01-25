@@ -1,0 +1,10 @@
+# 生日纪念网站 · Python 依赖
+
+# Web 框架
+Flask==3.0.0
+
+# 可选：用于更好的 JSON 处理
+python-dotenv==1.0.0
+
+# 可选：部署相关
+gunicorn==21.2.0
