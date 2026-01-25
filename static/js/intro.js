@@ -18,7 +18,8 @@ const IntroState = {
     maxAttempts: window.AppConfig?.MAX_ATTEMPTS || 3,
     isProcessing: false,
     isReturnMode: false, // 是否是返回模式
-    returnMessageIndex: 0 // 返回模式下的消息索引
+    returnMessageIndex: 0, // 返回模式下的消息索引
+    isLetterTransitioning: false
 };
 
 // 返回模式下显示的新消息
@@ -262,7 +263,7 @@ function showLetterInviteCard() {
 
     const card = App.createElement('button', {
         className: 'letter-invite',
-        onClick: () => App.navigateTo('timeline')
+        onClick: () => playLetterTransition()
     }, [
         App.createElement('div', { className: 'letter-invite__image' }),
         App.createElement('div', { className: 'letter-invite__text' }, [
@@ -283,6 +284,58 @@ function showLetterInviteCard() {
     if (attemptHint) {
         attemptHint.style.display = 'none';
     }
+}
+
+/**
+ * 播放信封打开过场动画
+ */
+function playLetterTransition() {
+    if (IntroState.isLetterTransitioning) return;
+    IntroState.isLetterTransitioning = true;
+
+    const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+    if (prefersReducedMotion) {
+        App.navigateTo('timeline');
+        IntroState.isLetterTransitioning = false;
+        return;
+    }
+
+    const overlay = App.createElement('div', {
+        className: 'letter-transition-overlay',
+        'aria-hidden': 'true'
+    });
+
+    const envelope = App.createElement('div', {
+        className: 'letter-transition-envelope'
+    }, [
+        App.createElement('div', { className: 'letter-transition-letter' }, [
+            App.createElement('div', { className: 'letter-transition-letter-title' }, 'Lover')
+        ]),
+        App.createElement('div', { className: 'letter-transition-back' }),
+        App.createElement('div', { className: 'letter-transition-pocket' }),
+        App.createElement('div', { className: 'letter-transition-flap' }),
+        App.createElement('div', { className: 'letter-transition-heart' })
+    ]);
+
+    overlay.appendChild(envelope);
+    document.body.appendChild(overlay);
+
+    const navigateDelay = 1050;
+    const fadeOutDelay = 1100;
+    const cleanupDelay = 1500;
+
+    setTimeout(() => {
+        App.navigateTo('timeline');
+    }, navigateDelay);
+
+    setTimeout(() => {
+        overlay.classList.add('letter-transition-overlay--fade-out');
+    }, fadeOutDelay);
+
+    setTimeout(() => {
+        overlay.remove();
+        IntroState.isLetterTransitioning = false;
+    }, cleanupDelay);
 }
 
 /**
