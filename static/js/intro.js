@@ -31,6 +31,12 @@ const InitialMessages = [
     { delay: 1500, text: "我等你很久了..." }
 ];
 
+// 进入故事的信封卡片
+const LetterInvite = {
+    text: "先点开它，我们再继续。",
+    action: "showLetterInvite"
+};
+
 // ============================================================
 // DOM 元素
 // ============================================================
@@ -157,6 +163,10 @@ function playInitialMessages() {
             addMessage(msg.text, 'system');
         }, msg.delay);
     });
+
+    setTimeout(() => {
+        showLetterInviteCard();
+    }, 2600);
 }
 
 /**
@@ -191,6 +201,32 @@ function showReturnContinueButton() {
             btnContainer.style.opacity = '1';
         });
     }, 500);
+}
+
+/**
+ * 显示信封邀请卡片
+ */
+function showLetterInviteCard() {
+    if (!chatMessages || IntroState.isReturnMode) return;
+    if (chatMessages.querySelector('.letter-invite-container')) return;
+
+    const card = App.createElement('button', {
+        className: 'letter-invite',
+        onClick: () => App.navigateTo('timeline')
+    }, [
+        App.createElement('div', { className: 'letter-invite__image' }),
+        App.createElement('div', { className: 'letter-invite__text' }, [
+            App.createElement('p', { className: 'letter-invite__title' }, '一封写给你的信'),
+            App.createElement('p', { className: 'letter-invite__hint' }, '轻轻点开，故事就开始了')
+        ])
+    ]);
+
+    const container = App.createElement('div', {
+        className: 'letter-invite-container'
+    }, card);
+
+    chatMessages.appendChild(container);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
 /**
@@ -251,17 +287,14 @@ async function handleUserInput() {
         
         // 检查是否应该进入下一页
         if (response.should_proceed) {
-            // 延迟后进入时间线页
-            await App.delay(2000);
-            App.navigateTo('timeline');
+            showLetterInviteCard();
         } else {
             // 检查是否达到最大尝试次数
             if (IntroState.attemptCount >= IntroState.maxAttempts) {
                 await App.delay(1500);
                 // 显示最终引导消息
-                addMessage('好啦，让我带你走进我们的故事...', 'system');
-                await App.delay(2000);
-                App.navigateTo('timeline');
+                addMessage('好啦，让我把它慢慢说给你听。', 'system');
+                showLetterInviteCard();
             }
         }
         
