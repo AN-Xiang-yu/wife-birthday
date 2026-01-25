@@ -161,6 +161,26 @@ function playReturnMessages() {
 }
 
 /**
+ * 播放最终引导消息序列
+ * @param {Array} messages - 消息数组
+ */
+async function playFinalMessages(messages) {
+    const messagesArray = Array.isArray(messages) ? messages : FINAL_MESSAGES;
+
+    for (const msg of messagesArray) {
+        await App.delay(msg.delay);
+
+        // 显示打字指示器
+        const typingIndicator = showTypingIndicator();
+        await App.delay(800);
+
+        // 移除打字指示器并显示消息
+        typingIndicator.remove();
+        addMessage(msg.text, 'system');
+    }
+}
+
+/**
  * 播放首次进入页面的消息
  */
 function playInitialMessages() {
@@ -173,9 +193,7 @@ function playInitialMessages() {
         }, msg.delay);
     });
 
-    setTimeout(() => {
-        showLetterInviteCard();
-    }, 2600);
+    // 不在初始时显示信封，等用户互动结束后再显示
 }
 
 /**
@@ -236,6 +254,25 @@ function showLetterInviteCard() {
 
     chatMessages.appendChild(container);
     chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    // 禁用输入区域
+    disableInput();
+}
+
+/**
+ * 禁用输入区域
+ */
+function disableInput() {
+    if (chatInput) {
+        chatInput.disabled = true;
+        chatInput.placeholder = '故事已经开始...';
+    }
+    if (chatSend) {
+        chatSend.disabled = true;
+    }
+    if (attemptHint) {
+        attemptHint.style.display = 'none';
+    }
 }
 
 /**
@@ -283,23 +320,24 @@ async function handleUserInput() {
         await App.delay(1000);
         typingIndicator.remove();
 
-        // 显示系统回复
-        addMessage(response.response, 'system');
-
-        // 更新尝试次数
-        IntroState.attemptCount++;
-        
         const isFinalMessage = Boolean(response.is_final);
 
-        // 更新提示
-        if (response.hint && !isFinalMessage) {
-            attemptHint.textContent = response.hint;
-        }
-
-        // 检查是否应该进入下一页
+        // 如果是最终消息，逐条显示
         if (isFinalMessage) {
+            await playFinalMessages(response.response);
             await App.delay(1200);
             showLetterInviteCard();
+        } else {
+            // 显示普通系统回复
+            addMessage(response.response, 'system');
+
+            // 更新尝试次数
+            IntroState.attemptCount++;
+
+            // 更新提示
+            if (response.hint) {
+                attemptHint.textContent = response.hint;
+            }
         }
 
     } catch (error) {

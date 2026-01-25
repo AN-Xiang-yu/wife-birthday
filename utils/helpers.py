@@ -91,8 +91,9 @@ def process_chat_input(
     # 检查是否达到最大尝试次数
     if attempt_count >= max_attempts - 1:
         return {
-            "response": ChatConfig.FINAL_MESSAGE,
+            "response": ChatConfig.FINAL_MESSAGES,
             "should_proceed": True,
+            "is_final": True,
             "is_final": True,
             "hint": None,
             "matched": True  # 最后一次视为"成功"

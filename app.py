@@ -31,7 +31,7 @@ def index() -> str:
     """
     # 传递前端需要的配置
     frontend_config = {
-        "FINAL_MESSAGE": ChatConfig.FINAL_MESSAGE,
+        "FINAL_MESSAGES": ChatConfig.FINAL_MESSAGES,
         "MAX_ATTEMPTS": ChatConfig.MAX_ATTEMPTS
     }
     return render_template("index.html", config=frontend_config)
