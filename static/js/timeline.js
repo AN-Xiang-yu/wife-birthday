@@ -14,6 +14,14 @@ const TimelineState = {
     observer: null
 };
 
+const TimelineEffects = {
+    isInitialized: false,
+    atmosphere: null,
+    rainLayer: null,
+    clickHandler: null,
+    rainInterval: null
+};
+
 // ============================================================
 // DOM 元素
 // ============================================================
@@ -114,6 +122,146 @@ function renderTimeline() {
 
     // 初始化滚动观察器
     initScrollObserver();
+}
+
+// ============================================================
+// 氛围效果：小心心 & 玫瑰花雨 + 点击动画
+// ============================================================
+
+const rainSymbols = [
+    { symbol: '💗', className: 'heart' },
+    { symbol: '🌹', className: 'rose' }
+];
+
+/**
+ * 初始化时间线氛围效果
+ */
+function initTimelineAtmosphere() {
+    if (TimelineEffects.isInitialized) return;
+
+    const page = document.getElementById('page-timeline');
+    if (!page) return;
+
+    TimelineEffects.atmosphere = App.createElement('div', {
+        className: 'timeline-atmosphere',
+        'aria-hidden': 'true'
+    });
+    TimelineEffects.rainLayer = App.createElement('div', {
+        className: 'timeline-rain-layer'
+    });
+
+    TimelineEffects.atmosphere.appendChild(TimelineEffects.rainLayer);
+    page.appendChild(TimelineEffects.atmosphere);
+
+    seedRainItems();
+    startRainLoop();
+    bindTimelineClickEffect(page);
+
+    TimelineEffects.isInitialized = true;
+}
+
+/**
+ * 生成稀疏的心与玫瑰花雨
+ */
+function seedRainItems() {
+    if (!TimelineEffects.rainLayer) return;
+
+    const totalItems = 36;
+    TimelineEffects.rainLayer.innerHTML = '';
+
+    for (let i = 0; i < totalItems; i += 1) {
+        TimelineEffects.rainLayer.appendChild(createRainItem(true));
+    }
+}
+
+/**
+ * 启动持续飘落
+ */
+function startRainLoop() {
+    if (TimelineEffects.rainInterval) return;
+    TimelineEffects.rainInterval = window.setInterval(() => {
+        if (!TimelineEffects.rainLayer) return;
+        TimelineEffects.rainLayer.appendChild(createRainItem());
+    }, 650);
+}
+
+/**
+ * 创建单个花雨元素
+ * @param {boolean} useDelay - 是否使用延迟
+ * @returns {HTMLElement}
+ */
+function createRainItem(useDelay = false) {
+    const config = rainSymbols[Math.floor(Math.random() * rainSymbols.length)];
+    const item = document.createElement('span');
+    item.className = `timeline-rain-item ${config.className}`;
+    item.textContent = config.symbol;
+
+    const left = Math.random() * 100;
+    const duration = 6 + Math.random() * 6;
+    const delay = useDelay ? Math.random() * 6 : 0;
+    const size = 14 + Math.random() * 18;
+    const opacity = 0.5 + Math.random() * 0.5;
+    const drift = (Math.random() * 2 - 1) * 80;
+
+    item.style.left = `${left}%`;
+    item.style.fontSize = `${size}px`;
+    item.style.opacity = `${opacity}`;
+    item.style.setProperty('--fall-duration', `${duration}s`);
+    item.style.setProperty('--fall-delay', `${delay}s`);
+    item.style.setProperty('--fall-drift', `${drift}px`);
+
+    item.addEventListener('animationend', () => {
+        item.remove();
+    });
+
+    return item;
+}
+/**
+ * 绑定点击动画
+ * @param {HTMLElement} page - 时间线页面元素
+ */
+function bindTimelineClickEffect(page) {
+    if (TimelineEffects.clickHandler) return;
+
+    TimelineEffects.clickHandler = (event) => {
+        if (!page.classList.contains('active')) return;
+        createClickBurst(event.clientX, event.clientY);
+    };
+
+    page.addEventListener('click', TimelineEffects.clickHandler);
+}
+
+/**
+ * 生成点击动画
+ * @param {number} x - 点击 X 坐标
+ * @param {number} y - 点击 Y 坐标
+ */
+function createClickBurst(x, y) {
+    const burstCount = 4;
+    const container = document.body;
+
+    for (let i = 0; i < burstCount; i += 1) {
+        const config = rainSymbols[Math.floor(Math.random() * rainSymbols.length)];
+        const item = document.createElement('span');
+        item.className = `timeline-click-effect ${config.className}`;
+        item.textContent = config.symbol;
+
+        const size = 16 + Math.random() * 12;
+        const shift = (Math.random() * 2 - 1) * 50;
+        const rotation = (Math.random() * 2 - 1) * 30;
+
+        item.style.left = `${x}px`;
+        item.style.top = `${y}px`;
+        item.style.fontSize = `${size}px`;
+        item.style.setProperty('--click-shift', `${shift}px`);
+        item.style.setProperty('--click-rotate', `${rotation}deg`);
+
+        container.appendChild(item);
+
+        item.addEventListener('animationend', () => {
+            item.remove();
+        });
+    }
 }
 
 /**
@@ -329,15 +477,9 @@ document.addEventListener('pageEnter', (e) => {
     if (pageName === 'timeline' && !TimelineState.isLoaded) {
         loadTimelineData();
     }
-
-    if (timelineMusicPages.has(pageName)) {
-        if (timelineAudio?.paused) {
-            playTimelineMusic();
-        }
-        return;
+    if (e.detail.pageName === 'timeline') {
+        initTimelineAtmosphere();
     }
-
-    fadeOutTimelineMusic();
 });
 
 // 滚动监听
@@ -349,9 +491,11 @@ window.addEventListener('scroll', handleScroll, { passive: true });
 
 document.addEventListener('DOMContentLoaded', () => {
     // 如果初始页面就是时间线，立即加载
-    const activeTimelinePage = document.getElementById('page-timeline');
-    if (activeTimelinePage?.classList.contains('active')) {
+    if (document.getElementById('page-timeline')?.classList.contains('active')) {
         loadTimelineData();
         playTimelineMusic();
+    }
+    if (document.getElementById('page-timeline')?.classList.contains('active')) {
+        initTimelineAtmosphere();
     }
 });

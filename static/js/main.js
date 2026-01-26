@@ -305,9 +305,27 @@ document.addEventListener('DOMContentLoaded', () => {
     initProgressIndicator();
     
     // 确保初始页面正确显示
-    const introPage = document.getElementById('page-intro');
-    if (introPage) {
-        introPage.classList.add('active');
+    const desiredStart = Number(window.AppConfig?.START_PAGE ?? 1);
+    const maxStartIndex = Math.min(3, AppState.pages.length - 1);
+    const startIndex = Math.min(
+        Math.max(Number.isFinite(desiredStart) ? desiredStart - 1 : 0, 0),
+        maxStartIndex
+    );
+
+    const pages = document.querySelectorAll('.page');
+    pages.forEach(page => page.classList.remove('active'));
+
+    const targetPageName = AppState.pages[startIndex];
+    const targetPage = document.getElementById(`page-${targetPageName}`);
+    if (targetPage) {
+        targetPage.classList.add('active');
+        AppState.currentPage = startIndex;
+        updateProgressIndicator();
+
+        const event = new CustomEvent('pageEnter', {
+            detail: { pageName: targetPageName }
+        });
+        document.dispatchEvent(event);
     }
 });
 

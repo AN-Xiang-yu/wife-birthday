@@ -33,7 +33,7 @@ def index() -> str:
     frontend_config = {
         "FINAL_MESSAGES": ChatConfig.FINAL_MESSAGES,
         "MAX_ATTEMPTS": ChatConfig.MAX_ATTEMPTS,
-        "TIMELINE_MUSIC_PATH": Config.TIMELINE_MUSIC_PATH
+        "START_PAGE": Config.START_PAGE
     }
     return render_template("index.html", config=frontend_config)
 
