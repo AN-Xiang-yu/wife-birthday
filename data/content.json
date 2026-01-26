@@ -1,115 +1,110 @@
 {
-  "intro": {
-    "title": "嘿，你来了",
-    "initial_message": "我等你很久了...",
-    "placeholder": "说点什么吧...",
-    "system_avatar": "💭",
-    "user_avatar": "💬"
-  },
-  
-  "timeline": {
-    "title": "我们的故事",
-    "subtitle": "那些被时间记住的瞬间",
-    "scroll_hint": "向下滑动，走进记忆"
-  },
-  
-  "moments": {
-    "title": "那些被记住的瞬间",
-    "subtitle": "每一个细节，都是我的珍藏",
-    "cards": [
-      {
-        "id": 1,
-        "surface": {
-          "title": "那天的阳光",
-          "brief": "2023年某月某日"
-        },
-        "deep": {
-          "what_happened": "在这里写发生了什么...",
-          "what_i_felt": "在这里写你当时的感受..."
-        },
-        "image": "images/photos/moment1.jpg"
-      },
-      {
-        "id": 2,
-        "surface": {
-          "title": "那个拥抱",
-          "brief": "某个特别的时刻"
-        },
-        "deep": {
-          "what_happened": "在这里写发生了什么...",
-          "what_i_felt": "在这里写你当时的感受..."
-        },
-        "image": "images/photos/moment2.jpg"
-      },
-      {
-        "id": 3,
-        "surface": {
-          "title": "第三个瞬间",
-          "brief": "另一个特别的日子"
-        },
-        "deep": {
-          "what_happened": "在这里写发生了什么...",
-          "what_i_felt": "在这里写你当时的感受..."
-        },
-        "image": "images/photos/moment3.jpg"
-      }
-    ]
-  },
-  
-  "letter": {
-    "title": "我想对你说的话",
-    "paragraphs": [
-      {
-        "section": "现在",
-        "content": "写下这些话的时候，我在想...\n\n（第一段：你此刻写下这些话的原因）"
-      },
-      {
-        "section": "理解",
-        "content": "这些年，我看见的你...\n\n（第二段：你如何看见她、理解她）"
-      },
-      {
-        "section": "态度",
-        "content": "所以，我想说...\n\n（第三段：不是承诺，而是你选择的方式）"
-      }
-    ],
-    "signature": "永远爱你的人"
-  },
-  
-  "secret": {
-    "title": "这里有一个秘密",
-    "subtitle": "只有你知道答案",
-    "placeholder": "输入我们的秘密...",
-    "button_text": "解锁"
-  },
-  
-  "playful": {
-    "title": "最后一个小问题",
-    "questions": [
-      {
-        "question": "如果我们的故事是一首歌，你觉得它是？",
-        "options": [
-          {
-            "text": "温暖的民谣",
-            "response": "就像我们，简单却动人"
-          },
-          {
-            "text": "欢快的流行曲",
-            "response": "因为和你在一起总是开心"
-          },
-          {
-            "text": "悠长的古典乐",
-            "response": "绵长而深沉，正如我对你"
-          }
+    "intro": {
+        "title": "嘿，你来了",
+        "initial_message": "我等你很久了...",
+        "placeholder": "说点什么吧...",
+        "system_avatar": "images/photos/chat/相宇.jpg",
+        "user_avatar": "images/photos/chat/千禧.jpg"
+    },
+
+    "timeline": {
+        "title": "我们的故事",
+        "subtitle": "那些被时间记住的瞬间",
+        "scroll_hint": "向下滑动，走进记忆"
+    },
+
+    "moments": {
+        "title": "那些被记住的瞬间",
+        "subtitle": "每一个细节，都是我的珍藏",
+        "cards": [{
+                "id": 1,
+                "surface": {
+                    "title": "那天的阳光",
+                    "brief": "2023年某月某日"
+                },
+                "deep": {
+                    "what_happened": "在这里写发生了什么...",
+                    "what_i_felt": "在这里写你当时的感受..."
+                },
+                "image": "images/photos/moment1.jpg"
+            },
+            {
+                "id": 2,
+                "surface": {
+                    "title": "那个拥抱",
+                    "brief": "某个特别的时刻"
+                },
+                "deep": {
+                    "what_happened": "在这里写发生了什么...",
+                    "what_i_felt": "在这里写你当时的感受..."
+                },
+                "image": "images/photos/moment2.jpg"
+            },
+            {
+                "id": 3,
+                "surface": {
+                    "title": "第三个瞬间",
+                    "brief": "另一个特别的日子"
+                },
+                "deep": {
+                    "what_happened": "在这里写发生了什么...",
+                    "what_i_felt": "在这里写你当时的感受..."
+                },
+                "image": "images/photos/moment3.jpg"
+            }
         ]
-      }
-    ],
-    "final_message": "不管你选什么，答案都是——我很幸运遇见你"
-  },
-  
-  "ending": {
-    "blessing": "生日快乐",
-    "name": "亲爱的",
-    "date": "2025年X月X日",
-    "final_note": "愿每一天都如今天这般特别"
-  }
+    },
+
+    "letter": {
+        "title": "我想对你说的话",
+        "paragraphs": [{
+                "section": "现在",
+                "content": "写下这些话的时候，我在想...\n\n（第一段：你此刻写下这些话的原因）"
+            },
+            {
+                "section": "理解",
+                "content": "这些年，我看见的你...\n\n（第二段：你如何看见她、理解她）"
+            },
+            {
+                "section": "态度",
+                "content": "所以，我想说...\n\n（第三段：不是承诺，而是你选择的方式）"
+            }
+        ],
+        "signature": "永远爱你的人"
+    },
+
+    "secret": {
+        "title": "这里有一个秘密",
+        "subtitle": "只有你知道答案",
+        "placeholder": "输入我们的秘密...",
+        "button_text": "解锁"
+    },
+
+    "playful": {
+        "title": "最后一个小问题",
+        "questions": [{
+            "question": "如果我们的故事是一首歌，你觉得它是？",
+            "options": [{
+                    "text": "温暖的民谣",
+                    "response": "就像我们，简单却动人"
+                },
+                {
+                    "text": "欢快的流行曲",
+                    "response": "因为和你在一起总是开心"
+                },
+                {
+                    "text": "悠长的古典乐",
+                    "response": "绵长而深沉，正如我对你"
+                }
+            ]
+        }],
+        "final_message": "不管你选什么，答案都是——我很幸运遇见你"
+    },
+
+    "ending": {
+        "blessing": "生日快乐",
+        "name": "亲爱的",
+        "date": "2025年X月X日",
+        "final_note": "愿每一天都如今天这般特别"
+    }
 }

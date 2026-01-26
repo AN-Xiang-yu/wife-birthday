@@ -68,12 +68,16 @@ const attemptHint = document.getElementById('attempt-hint');
  * @param {boolean} animate - 是否使用动画
  */
 function addMessage(text, type = 'system', animate = true) {
-    const avatar = type === 'system' ? '💭' : '💬';
+    const avatarPath = type === 'system' ? '/static/images/photos/chat/相宇.jpg' : '/static/images/photos/chat/千禧.jpg';
+    const avatarImg = App.createElement('img', {
+        src: avatarPath,
+        alt: type === 'system' ? '相宇' : '千禧'
+    });
 
     const messageEl = App.createElement('div', {
         className: `message ${type}`
     }, [
-        App.createElement('span', { className: 'avatar' }, avatar),
+        App.createElement('span', { className: 'avatar' }, [avatarImg]),
         App.createElement('div', { className: 'bubble' }, text)
     ]);
 
@@ -102,10 +106,15 @@ function addMessage(text, type = 'system', animate = true) {
  * @returns {HTMLElement} - 指示器元素（用于后续移除）
  */
 function showTypingIndicator() {
+    const avatarImg = App.createElement('img', {
+        src: '/static/images/photos/chat/相宇.jpg',
+        alt: '相宇'
+    });
+
     const indicator = App.createElement('div', {
         className: 'message system'
     }, [
-        App.createElement('span', { className: 'avatar' }, '💭'),
+        App.createElement('span', { className: 'avatar' }, [avatarImg]),
         App.createElement('div', {
             className: 'bubble typing-indicator'
         }, [
