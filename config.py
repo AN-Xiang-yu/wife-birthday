@@ -39,7 +39,7 @@ class Config:
     ]
 
     # 起始页面（1-4 对应开场/时间线/故事放大/信件）
-    START_PAGE: int = 2
+    START_PAGE: int = 1
 
 
 class ChatConfig:
@@ -122,7 +122,7 @@ class RainEffectConfig:
     INITIAL_ITEMS: int = 36
     
     # 最大花雨数量（防止堆积）
-    MAX_ITEMS: int = 120
+    MAX_ITEMS: int = 52
     
     # 花雨生成间隔（毫秒）
     SPAWN_INTERVAL: int = 650
