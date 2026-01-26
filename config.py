@@ -39,7 +39,7 @@ class Config:
     ]
 
     # 起始页面（1-4 对应开场/时间线/故事放大/信件）
-    START_PAGE: int = 1
+    START_PAGE: int = 2
 
 
 class ChatConfig:
@@ -113,6 +113,19 @@ class SecretConfig:
     这是只属于我们的秘密...
     （在这里写下你想对她说的隐藏话语）
     """
+
+
+class RainEffectConfig:
+    """花雨效果配置"""
+    
+    # 初始花雨数量（页面加载时）
+    INITIAL_ITEMS: int = 36
+    
+    # 最大花雨数量（防止堆积）
+    MAX_ITEMS: int = 120
+    
+    # 花雨生成间隔（毫秒）
+    SPAWN_INTERVAL: int = 650
 
 
 class ContentConfig:

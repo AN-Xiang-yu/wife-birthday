@@ -166,7 +166,7 @@ function initTimelineAtmosphere() {
 function seedRainItems() {
     if (!TimelineEffects.rainLayer) return;
 
-    const totalItems = 36;
+    const totalItems = window.AppConfig?.RAIN_INITIAL_ITEMS || 36;
     TimelineEffects.rainLayer.innerHTML = '';
 
     for (let i = 0; i < totalItems; i += 1) {
@@ -180,7 +180,7 @@ function seedRainItems() {
 function pruneRainItems() {
     if (!TimelineEffects.rainLayer) return;
 
-    const maxItems = 120;
+    const maxItems = window.AppConfig?.RAIN_MAX_ITEMS || 120;
     const items = TimelineEffects.rainLayer.querySelectorAll('.timeline-rain-item');
     if (items.length <= maxItems) return;
 
@@ -195,11 +195,12 @@ function pruneRainItems() {
  */
 function startRainLoop() {
     if (TimelineEffects.rainInterval) return;
+    const interval = window.AppConfig?.RAIN_SPAWN_INTERVAL || 650;
     TimelineEffects.rainInterval = window.setInterval(() => {
         if (!TimelineEffects.rainLayer) return;
         pruneRainItems();
         TimelineEffects.rainLayer.appendChild(createRainItem());
-    }, 650);
+    }, interval);
 }
 
 /**
@@ -506,6 +507,7 @@ document.addEventListener('pageEnter', (e) => {
     if (e.detail.pageName === 'timeline') {
         initTimelineAtmosphere();
         startRainLoop();
+        playTimelineMusic(); // 播放音乐
     } else {
         stopRainLoop();
     }
