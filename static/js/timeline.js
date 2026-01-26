@@ -20,22 +20,64 @@ const TimelineState = {
 const timelineEvents = document.getElementById('timeline-events');
 const scrollHint = document.querySelector('#page-timeline .scroll-hint');
 const timelineAudio = document.getElementById('timeline-music');
+const timelineMusicPages = new Set([
+    'timeline',
+    'moments',
+    'letter',
+    'secret',
+    'playful',
+    'ending'
+]);
+let timelineFadeRequestId = null;
 
 // ============================================================
 // 音乐控制
 // ============================================================
 
+function clearTimelineFade() {
+    if (timelineFadeRequestId) {
+        cancelAnimationFrame(timelineFadeRequestId);
+        timelineFadeRequestId = null;
+    }
+}
+
 function playTimelineMusic() {
     if (!timelineAudio) return;
+    clearTimelineFade();
+    timelineAudio.currentTime = 0;
     timelineAudio.play().catch((error) => {
         console.warn('时间线音乐自动播放被阻止:', error);
     });
 }
 
-function stopTimelineMusic() {
+function fadeOutTimelineMusic(duration = 1500) {
     if (!timelineAudio) return;
-    timelineAudio.pause();
-    timelineAudio.currentTime = 0;
+    if (timelineAudio.paused) {
+        timelineAudio.currentTime = 0;
+        timelineAudio.volume = 1;
+        return;
+    }
+
+    clearTimelineFade();
+    const startVolume = timelineAudio.volume;
+    const startTime = performance.now();
+
+    const step = (now) => {
+        const progress = Math.min((now - startTime) / duration, 1);
+        timelineAudio.volume = startVolume * (1 - progress);
+
+        if (progress < 1) {
+            timelineFadeRequestId = requestAnimationFrame(step);
+            return;
+        }
+
+        timelineAudio.pause();
+        timelineAudio.currentTime = 0;
+        timelineAudio.volume = startVolume;
+        timelineFadeRequestId = null;
+    };
+
+    timelineFadeRequestId = requestAnimationFrame(step);
 }
 
 // ============================================================
@@ -283,14 +325,19 @@ function handleScroll() {
 
 // 页面进入时加载数据
 document.addEventListener('pageEnter', (e) => {
-    if (e.detail.pageName === 'timeline') {
-        if (!TimelineState.isLoaded) {
-            loadTimelineData();
-        }
-        playTimelineMusic();
-    } else {
-        stopTimelineMusic();
+    const pageName = e.detail.pageName;
+    if (pageName === 'timeline' && !TimelineState.isLoaded) {
+        loadTimelineData();
     }
+
+    if (timelineMusicPages.has(pageName)) {
+        if (timelineAudio?.paused) {
+            playTimelineMusic();
+        }
+        return;
+    }
+
+    fadeOutTimelineMusic();
 });
 
 // 滚动监听
@@ -302,7 +349,8 @@ window.addEventListener('scroll', handleScroll, { passive: true });
 
 document.addEventListener('DOMContentLoaded', () => {
     // 如果初始页面就是时间线，立即加载
-    if (document.getElementById('page-timeline')?.classList.contains('active')) {
+    const activeTimelinePage = document.getElementById('page-timeline');
+    if (activeTimelinePage?.classList.contains('active')) {
         loadTimelineData();
         playTimelineMusic();
     }
