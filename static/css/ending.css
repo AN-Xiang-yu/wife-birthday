@@ -77,3 +77,130 @@
     42% { transform: scale(1.1); }
     70% { transform: scale(1); }
 }
+
+/* 离子效果的心形装饰 */
+.ion-heart {
+    position: relative;
+    width: 140px;
+    height: 120px;
+    margin: 32px auto 12px;
+    display: grid;
+    place-items: center;
+    filter: drop-shadow(0 0 18px rgba(255, 120, 178, 0.35));
+}
+
+.ion-heart .ion-core {
+    position: relative;
+    width: 84px;
+    height: 74px;
+    transform: rotate(-45deg);
+    background: linear-gradient(135deg, #ff7ab6 0%, #ff97c7 45%, #ffc1de 100%);
+    border-radius: 16px;
+    box-shadow: 0 12px 26px rgba(255, 122, 182, 0.35);
+    animation: ion-pulse 2.8s ease-in-out infinite;
+}
+
+.ion-heart .ion-core::before,
+.ion-heart .ion-core::after {
+    content: "";
+    position: absolute;
+    width: 84px;
+    height: 74px;
+    border-radius: 50%;
+    background: inherit;
+}
+
+.ion-heart .ion-core::before {
+    top: -42px;
+    left: 0;
+}
+
+.ion-heart .ion-core::after {
+    left: 42px;
+    top: 0;
+}
+
+.ion-heart .ion-ring {
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 160, 208, 0.35);
+    animation: ion-rotate 7s linear infinite;
+}
+
+.ion-heart .ion-ring::before,
+.ion-heart .ion-ring::after {
+    content: "";
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #ffd6ea;
+    box-shadow:
+        0 0 8px rgba(255, 214, 234, 0.8),
+        0 0 14px rgba(255, 160, 208, 0.6);
+}
+
+.ion-heart .ion-ring::before {
+    top: 6px;
+    left: 28px;
+}
+
+.ion-heart .ion-ring::after {
+    bottom: 18px;
+    right: 20px;
+}
+
+.ion-heart::before,
+.ion-heart::after {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #ffe4f1;
+    box-shadow: 0 0 10px rgba(255, 228, 241, 0.9);
+    animation: ion-drift 6s ease-in-out infinite;
+}
+
+.ion-heart::before {
+    left: 8px;
+    top: 26px;
+}
+
+.ion-heart::after {
+    right: 6px;
+    bottom: 22px;
+    animation-delay: -2.4s;
+}
+
+@keyframes ion-pulse {
+    0%, 100% {
+        transform: rotate(-45deg) scale(1);
+        filter: brightness(1);
+    }
+    50% {
+        transform: rotate(-45deg) scale(1.08);
+        filter: brightness(1.08);
+    }
+}
+
+@keyframes ion-rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes ion-drift {
+    0%, 100% {
+        transform: translateY(0) translateX(0);
+        opacity: 0.7;
+    }
+    50% {
+        transform: translateY(-10px) translateX(6px);
+        opacity: 1;
+    }
+}
