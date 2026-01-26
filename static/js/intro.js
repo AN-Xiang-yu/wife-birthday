@@ -22,6 +22,8 @@ const IntroState = {
     isLetterTransitioning: false
 };
 
+const randomBetween = (min, max) => Math.random() * (max - min) + min;
+
 // 返回模式下显示的新消息
 const ReturnMessages = [
     { delay: 500, text: "你又回来了..." },
@@ -326,6 +328,30 @@ function playLetterTransition() {
         App.createElement('div', { className: 'letter-transition-heart' })
     ]);
 
+    const bloomContainer = App.createElement('div', {
+        className: 'letter-transition-blooms',
+        'aria-hidden': 'true'
+    });
+
+    const bloomIcons = ['🌸', '🌹', '💮', '🌷', '🌺'];
+    const bloomCount = 26;
+    for (let i = 0; i < bloomCount; i += 1) {
+        const bloom = App.createElement('span', {
+            className: 'letter-transition-bloom',
+            style: {
+                '--x': `${randomBetween(-140, 140)}px`,
+                '--y': `${randomBetween(-180, -50)}px`,
+                '--fall': `${randomBetween(60, 140)}px`,
+                '--delay': `${randomBetween(0, 0.35)}s`,
+                '--duration': `${randomBetween(1.1, 1.8)}s`,
+                '--size': `${randomBetween(18, 30)}px`
+            }
+        }, bloomIcons[i % bloomIcons.length]);
+
+        bloomContainer.appendChild(bloom);
+    }
+
+    envelope.appendChild(bloomContainer);
     overlay.appendChild(envelope);
     document.body.appendChild(overlay);
 

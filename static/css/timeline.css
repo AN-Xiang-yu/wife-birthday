@@ -216,7 +216,7 @@
 /* 时间线氛围 */
 
 .timeline-atmosphere {
-    position: absolute;
+    position: fixed;
     inset: 0;
     pointer-events: none;
     overflow: hidden;

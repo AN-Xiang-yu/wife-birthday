@@ -175,14 +175,40 @@ function seedRainItems() {
 }
 
 /**
+ * 限制花雨数量，避免长期停留导致元素堆积
+ */
+function pruneRainItems() {
+    if (!TimelineEffects.rainLayer) return;
+
+    const maxItems = 120;
+    const items = TimelineEffects.rainLayer.querySelectorAll('.timeline-rain-item');
+    if (items.length <= maxItems) return;
+
+    const overflow = items.length - maxItems;
+    for (let i = 0; i < overflow; i += 1) {
+        items[i].remove();
+    }
+}
+
+/**
  * 启动持续飘落
  */
 function startRainLoop() {
     if (TimelineEffects.rainInterval) return;
     TimelineEffects.rainInterval = window.setInterval(() => {
         if (!TimelineEffects.rainLayer) return;
+        pruneRainItems();
         TimelineEffects.rainLayer.appendChild(createRainItem());
     }, 650);
+}
+
+/**
+ * 停止花雨循环
+ */
+function stopRainLoop() {
+    if (!TimelineEffects.rainInterval) return;
+    window.clearInterval(TimelineEffects.rainInterval);
+    TimelineEffects.rainInterval = null;
 }
 
 /**
@@ -479,6 +505,9 @@ document.addEventListener('pageEnter', (e) => {
     }
     if (e.detail.pageName === 'timeline') {
         initTimelineAtmosphere();
+        startRainLoop();
+    } else {
+        stopRainLoop();
     }
 });
 
@@ -498,4 +527,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById('page-timeline')?.classList.contains('active')) {
         initTimelineAtmosphere();
     }
+});
+
+document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) {
+        if (document.getElementById('page-timeline')?.classList.contains('active')) {
+            startRainLoop();
+        }
+        return;
+    }
+    stopRainLoop();
 });
