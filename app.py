@@ -36,7 +36,8 @@ def index() -> str:
         "START_PAGE": Config.START_PAGE,
         "RAIN_INITIAL_ITEMS": RainEffectConfig.INITIAL_ITEMS,
         "RAIN_MAX_ITEMS": RainEffectConfig.MAX_ITEMS,
-        "RAIN_SPAWN_INTERVAL": RainEffectConfig.SPAWN_INTERVAL
+        "RAIN_SPAWN_INTERVAL": RainEffectConfig.SPAWN_INTERVAL,
+        "TIMELINE_MUSIC_PATH": Config.TIMELINE_MUSIC_PATH
     }
     return render_template("index.html", config=frontend_config)
 
