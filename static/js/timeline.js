@@ -19,6 +19,24 @@ const TimelineState = {
 // ============================================================
 const timelineEvents = document.getElementById('timeline-events');
 const scrollHint = document.querySelector('#page-timeline .scroll-hint');
+const timelineAudio = document.getElementById('timeline-music');
+
+// ============================================================
+// 音乐控制
+// ============================================================
+
+function playTimelineMusic() {
+    if (!timelineAudio) return;
+    timelineAudio.play().catch((error) => {
+        console.warn('时间线音乐自动播放被阻止:', error);
+    });
+}
+
+function stopTimelineMusic() {
+    if (!timelineAudio) return;
+    timelineAudio.pause();
+    timelineAudio.currentTime = 0;
+}
 
 // ============================================================
 // 时间线渲染
@@ -265,8 +283,13 @@ function handleScroll() {
 
 // 页面进入时加载数据
 document.addEventListener('pageEnter', (e) => {
-    if (e.detail.pageName === 'timeline' && !TimelineState.isLoaded) {
-        loadTimelineData();
+    if (e.detail.pageName === 'timeline') {
+        if (!TimelineState.isLoaded) {
+            loadTimelineData();
+        }
+        playTimelineMusic();
+    } else {
+        stopTimelineMusic();
     }
 });
 
@@ -281,5 +304,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // 如果初始页面就是时间线，立即加载
     if (document.getElementById('page-timeline')?.classList.contains('active')) {
         loadTimelineData();
+        playTimelineMusic();
     }
 });

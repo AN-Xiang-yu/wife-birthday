@@ -63,6 +63,13 @@
     <p class="subtitle">那些被时间记住的瞬间</p>
   </header>
 
+  <audio
+    id="timeline-music"
+    src="{{ url_for('static', filename='music/timeline.mp3') }}"
+    preload="auto"
+    loop
+  ></audio>
+
   <div class="timeline-container">
     <div class="timeline-line"></div>
     <div class="timeline-events" id="timeline-events">
