@@ -24,7 +24,7 @@ class Config:
     STATIC_DIR: str = os.path.join(BASE_DIR, "static")
 
     # 资源路径（相对于 static 目录）
-    TIMELINE_MUSIC_PATH: str = "music/我们的歌.mp3"
+    TIMELINE_MUSIC_PATH: str = "music/我们的歌.MP3"
     
     # ========== 页面配置 ==========
     # 页面顺序（情绪节奏）
@@ -38,6 +38,9 @@ class Config:
         "ending"      # 结尾页：落点
     ]
 
+    # 起始页面（1-4 对应开场/时间线/故事放大/信件）
+    START_PAGE: int = 2
+
 
 class ChatConfig:
     """开场页对话配置"""
@@ -50,7 +53,6 @@ class ChatConfig:
     KEYWORDS: Dict[str, str] = {
         "生日": "你已经想到了一个很重要的词。不过，我想说的还不止这些。",
         "礼物": "如果只是礼物，那就太简单了。我准备的东西，没法放进盒子里。",
-        "爱": "这个字太大了。我更想用一些具体的瞬间来回答你。",
     }
     
     # 默认回复（未匹配到关键词时）
@@ -88,14 +90,6 @@ class ChatConfig:
             {"delay": 2400, "text": "我准备的，不是那种拆开就结束的礼物。"},
             {"delay": 3100, "text": "它藏在一些我们一起走过的瞬间里。"}
         ],
-
-        # ===== 命中「爱」 =====
-        "爱": [
-            {"delay": 1000, "text": "你能想到这个字，其实我一点都不意外。"},
-            {"delay": 1700, "text": "只是我一直觉得，它太大了。"},
-            {"delay": 2400, "text": "大到一句话根本装不下。"},
-            {"delay": 3100, "text": "所以我想用故事，慢慢告诉你。"}
-        ],
     }
 
 
@@ -119,6 +113,19 @@ class SecretConfig:
     这是只属于我们的秘密...
     （在这里写下你想对她说的隐藏话语）
     """
+
+
+class RainEffectConfig:
+    """花雨效果配置"""
+    
+    # 初始花雨数量（页面加载时）
+    INITIAL_ITEMS: int = 36
+    
+    # 最大花雨数量（防止堆积）
+    MAX_ITEMS: int = 120
+    
+    # 花雨生成间隔（毫秒）
+    SPAWN_INTERVAL: int = 650
 
 
 class ContentConfig:

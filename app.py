@@ -10,7 +10,7 @@ from typing import Dict, Any, Optional
 import json
 import os
 
-from config import ChatConfig, Config
+from config import ChatConfig, Config, RainEffectConfig
 from utils.helpers import load_json_data, validate_password, process_chat_input
 
 
@@ -33,6 +33,10 @@ def index() -> str:
     frontend_config = {
         "FINAL_MESSAGES": ChatConfig.FINAL_MESSAGES,
         "MAX_ATTEMPTS": ChatConfig.MAX_ATTEMPTS,
+        "START_PAGE": Config.START_PAGE,
+        "RAIN_INITIAL_ITEMS": RainEffectConfig.INITIAL_ITEMS,
+        "RAIN_MAX_ITEMS": RainEffectConfig.MAX_ITEMS,
+        "RAIN_SPAWN_INTERVAL": RainEffectConfig.SPAWN_INTERVAL,
         "TIMELINE_MUSIC_PATH": Config.TIMELINE_MUSIC_PATH
     }
     return render_template("index.html", config=frontend_config)
