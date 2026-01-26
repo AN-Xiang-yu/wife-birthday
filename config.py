@@ -24,7 +24,7 @@ class Config:
     STATIC_DIR: str = os.path.join(BASE_DIR, "static")
 
     # 资源路径（相对于 static 目录）
-    TIMELINE_MUSIC_PATH: str = "music/timeline.mp3"
+    TIMELINE_MUSIC_PATH: str = "music/我们的歌.mp3"
     
     # ========== 页面配置 ==========
     # 页面顺序（情绪节奏）
