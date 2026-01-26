@@ -18,7 +18,8 @@ const TimelineEffects = {
     isInitialized: false,
     atmosphere: null,
     rainLayer: null,
-    clickHandler: null
+    clickHandler: null,
+    rainInterval: null
 };
 
 // ============================================================
@@ -93,6 +94,7 @@ function initTimelineAtmosphere() {
     page.appendChild(TimelineEffects.atmosphere);
 
     seedRainItems();
+    startRainLoop();
     bindTimelineClickEffect(page);
 
     TimelineEffects.isInitialized = true;
@@ -104,33 +106,56 @@ function initTimelineAtmosphere() {
 function seedRainItems() {
     if (!TimelineEffects.rainLayer) return;
 
-    const totalItems = 14;
+    const totalItems = 36;
     TimelineEffects.rainLayer.innerHTML = '';
 
     for (let i = 0; i < totalItems; i += 1) {
-        const config = rainSymbols[Math.floor(Math.random() * rainSymbols.length)];
-        const item = document.createElement('span');
-        item.className = `timeline-rain-item ${config.className}`;
-        item.textContent = config.symbol;
-
-        const left = Math.random() * 100;
-        const duration = 8 + Math.random() * 8;
-        const delay = Math.random() * 10;
-        const size = 14 + Math.random() * 16;
-        const opacity = 0.4 + Math.random() * 0.5;
-        const drift = (Math.random() * 2 - 1) * 60;
-
-        item.style.left = `${left}%`;
-        item.style.fontSize = `${size}px`;
-        item.style.opacity = `${opacity}`;
-        item.style.setProperty('--fall-duration', `${duration}s`);
-        item.style.setProperty('--fall-delay', `${delay}s`);
-        item.style.setProperty('--fall-drift', `${drift}px`);
-
-        TimelineEffects.rainLayer.appendChild(item);
+        TimelineEffects.rainLayer.appendChild(createRainItem(true));
     }
 }
 
+/**
+ * 启动持续飘落
+ */
+function startRainLoop() {
+    if (TimelineEffects.rainInterval) return;
+    TimelineEffects.rainInterval = window.setInterval(() => {
+        if (!TimelineEffects.rainLayer) return;
+        TimelineEffects.rainLayer.appendChild(createRainItem());
+    }, 650);
+}
+
+/**
+ * 创建单个花雨元素
+ * @param {boolean} useDelay - 是否使用延迟
+ * @returns {HTMLElement}
+ */
+function createRainItem(useDelay = false) {
+    const config = rainSymbols[Math.floor(Math.random() * rainSymbols.length)];
+    const item = document.createElement('span');
+    item.className = `timeline-rain-item ${config.className}`;
+    item.textContent = config.symbol;
+
+    const left = Math.random() * 100;
+    const duration = 6 + Math.random() * 6;
+    const delay = useDelay ? Math.random() * 6 : 0;
+    const size = 14 + Math.random() * 18;
+    const opacity = 0.5 + Math.random() * 0.5;
+    const drift = (Math.random() * 2 - 1) * 80;
+
+    item.style.left = `${left}%`;
+    item.style.fontSize = `${size}px`;
+    item.style.opacity = `${opacity}`;
+    item.style.setProperty('--fall-duration', `${duration}s`);
+    item.style.setProperty('--fall-delay', `${delay}s`);
+    item.style.setProperty('--fall-drift', `${drift}px`);
+
+    item.addEventListener('animationend', () => {
+        item.remove();
+    });
+
+    return item;
+}
 /**
  * 绑定点击动画
  * @param {HTMLElement} page - 时间线页面元素

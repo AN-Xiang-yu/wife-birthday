@@ -234,7 +234,7 @@
     animation: timelineFall var(--fall-duration, 10s) linear infinite;
     animation-delay: var(--fall-delay, 0s);
     opacity: 0;
-    filter: drop-shadow(0 2px 6px rgba(255, 105, 180, 0.35));
+    filter: drop-shadow(0 3px 8px rgba(255, 105, 180, 0.45));
 }
 
 .timeline-rain-item.rose {
@@ -246,7 +246,7 @@
         transform: translate3d(0, -10%, 0) rotate(0deg);
         opacity: 0;
     }
-    12% {
+    20% {
         opacity: 0.8;
     }
     100% {
