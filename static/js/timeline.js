@@ -279,7 +279,7 @@ window.addEventListener('scroll', handleScroll, { passive: true });
 
 document.addEventListener('DOMContentLoaded', () => {
     // 如果初始页面就是时间线，立即加载
-    if (document.getElementById('page-timeline') ? .classList.contains('active')) {
+    if (document.getElementById('page-timeline')?.classList.contains('active')) {
         loadTimelineData();
     }
 });

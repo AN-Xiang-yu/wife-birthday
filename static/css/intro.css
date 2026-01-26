@@ -5,7 +5,9 @@
  * 情绪：好奇 → 参与
  */
 
+
 /* 聊天容器 */
+
 .chat-container {
     width: 100%;
     max-width: 500px;
@@ -19,7 +21,9 @@
     overflow: hidden;
 }
 
+
 /* 消息区域 */
+
 .chat-messages {
     flex: 1;
     padding: var(--spacing-lg);
@@ -29,7 +33,9 @@
     gap: var(--spacing-md);
 }
 
+
 /* 单条消息 */
+
 .message {
     display: flex;
     align-items: flex-end;
@@ -49,18 +55,24 @@
     }
 }
 
+
 /* 系统消息（左侧） */
+
 .message.system {
     align-self: flex-start;
 }
 
+
 /* 用户消息（右侧） */
+
 .message.user {
     align-self: flex-end;
     flex-direction: row-reverse;
 }
 
+
 /* 头像 */
+
 .message .avatar {
     width: 36px;
     height: 36px;
@@ -70,6 +82,13 @@
     justify-content: center;
     font-size: 1.2rem;
     flex-shrink: 0;
+    overflow: hidden;
+}
+
+.message .avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .message.system .avatar {
@@ -80,7 +99,9 @@
     background: var(--color-primary);
 }
 
+
 /* 消息气泡 */
+
 .message .bubble {
     padding: var(--spacing-sm) var(--spacing-md);
     border-radius: var(--radius-md);
@@ -98,7 +119,9 @@
     border-bottom-right-radius: 4px;
 }
 
+
 /* 输入区域 */
+
 .chat-input-area {
     padding: var(--spacing-md);
     border-top: 1px solid var(--color-secondary);
@@ -130,7 +153,9 @@
     cursor: not-allowed;
 }
 
+
 /* 尝试提示 */
+
 .attempt-hint {
     text-align: center;
     padding: var(--spacing-sm);
@@ -139,7 +164,9 @@
     min-height: 2rem;
 }
 
+
 /* 信封邀请卡片 */
+
 .letter-invite-container {
     display: flex;
     justify-content: center;
@@ -186,7 +213,9 @@
     color: var(--color-text-muted);
 }
 
+
 /* 信封过场动画 */
+
 .letter-transition-overlay {
     position: fixed;
     inset: 0;
@@ -297,37 +326,70 @@
 }
 
 @keyframes letter-overlay-fade-in {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 @keyframes letter-overlay-fade-out {
-    from { opacity: 1; }
-    to { opacity: 0; }
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
 }
 
 @keyframes letter-envelope-pop {
-    from { transform: scale(0.92); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
+    from {
+        transform: scale(0.92);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
 @keyframes letter-flap-open {
-    0% { transform: rotateX(0deg); }
-    100% { transform: rotateX(160deg); }
+    0% {
+        transform: rotateX(0deg);
+    }
+    100% {
+        transform: rotateX(160deg);
+    }
 }
 
 @keyframes letter-slide-up {
-    0% { transform: translate(-50%, 25%); }
-    100% { transform: translate(-50%, -35%); }
+    0% {
+        transform: translate(-50%, 25%);
+    }
+    100% {
+        transform: translate(-50%, -35%);
+    }
 }
 
 @keyframes letter-heart-pop {
-    0% { transform: translate(-50%, -50%) rotate(45deg) scale(0.2); opacity: 0; }
-    60% { transform: translate(-50%, -60%) rotate(45deg) scale(1.05); opacity: 1; }
-    100% { transform: translate(-50%, -55%) rotate(45deg) scale(0.95); opacity: 1; }
+    0% {
+        transform: translate(-50%, -50%) rotate(45deg) scale(0.2);
+        opacity: 0;
+    }
+    60% {
+        transform: translate(-50%, -60%) rotate(45deg) scale(1.05);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -55%) rotate(45deg) scale(0.95);
+        opacity: 1;
+    }
 }
 
+
 /* 打字动画指示器 */
+
 .typing-indicator {
     display: flex;
     gap: 4px;
@@ -351,11 +413,19 @@
 }
 
 @keyframes typing {
-    0%, 60%, 100% { transform: translateY(0); }
-    30% { transform: translateY(-8px); }
+    0%,
+    60%,
+    100% {
+        transform: translateY(0);
+    }
+    30% {
+        transform: translateY(-8px);
+    }
 }
 
+
 /* 响应式 */
+
 @media (max-width: 768px) {
     .chat-container {
         height: 90vh;
