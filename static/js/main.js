@@ -125,6 +125,12 @@ function restartFromEnding() {
             
             // 更新进度指示器
             updateProgressIndicator();
+
+            // 触发页面进入事件（用于音乐淡出等逻辑）
+            const event = new CustomEvent('pageEnter', {
+                detail: { pageName: 'intro' }
+            });
+            document.dispatchEvent(event);
             
             // 触发返回模式
             if (window.IntroModule && window.IntroModule.resetForReturnMode) {

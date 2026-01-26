@@ -88,29 +88,33 @@ def process_chat_input(
     # 清理输入
     cleaned_input = user_input.strip().lower()
     
-    # 检查是否达到最大尝试次数
+    # 优先检查关键词匹配（无论尝试次数）
+    for keyword in ChatConfig.KEYWORDS.keys():
+        if keyword in cleaned_input:
+            # 匹配到关键词，返回对应的最终引导消息序列
+            final_messages = ChatConfig.FINAL_MESSAGES_BY_KEYWORD.get(
+                keyword, 
+                ChatConfig.FINAL_MESSAGES  # 如果没有配置，使用默认最终消息
+            )
+            return {
+                "response": final_messages,
+                "should_proceed": True,
+                "is_final": True,
+                "hint": None,
+                "matched": True
+            }
+    
+    # 未匹配到关键词，检查是否达到最大尝试次数
     if attempt_count >= max_attempts - 1:
         return {
             "response": ChatConfig.FINAL_MESSAGES,
             "should_proceed": True,
             "is_final": True,
-            "is_final": True,
             "hint": None,
             "matched": True  # 最后一次视为"成功"
         }
     
-    # 尝试匹配关键词
-    for keyword, response in ChatConfig.KEYWORDS.items():
-        if keyword in cleaned_input:
-            return {
-                "response": response,
-                "should_proceed": False,
-                "is_final": False,
-                "hint": None,
-                "matched": True
-            }
-    
-    # 未匹配到关键词，返回默认回复
+    # 未匹配到关键词，返回默认回复（改为消息序列格式）
     default_response = ChatConfig.DEFAULT_RESPONSES[
         min(attempt_count, len(ChatConfig.DEFAULT_RESPONSES) - 1)
     ]
@@ -118,7 +122,8 @@ def process_chat_input(
     return {
         "response": default_response,
         "should_proceed": False,
-        "is_final": False,
+        "is_final": False,  # 设为 False，但前端会根据 response 是否为列表来决定播放方式
+        "is_sequence": True,  # 标记为消息序列
         "hint": _get_gentle_hint(attempt_count),
         "matched": False
     }
