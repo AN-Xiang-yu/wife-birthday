@@ -490,11 +490,7 @@ document.addEventListener('pageEnter', (e) => {
 // 初始化
 // ============================================================
 
-document.addEventListener('DOMContentLoaded', () => {
-    if (!IntroState.isReturnMode) {
-        playInitialMessages();
-    }
-});
+// 初始化已由 pageEnter 事件处理，无需在 DOMContentLoaded 中重复调用
 
 // 导出给全局使用
 window.IntroModule = {
