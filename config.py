@@ -22,6 +22,9 @@ class Config:
     BASE_DIR: str = os.path.dirname(os.path.abspath(__file__))
     DATA_DIR: str = os.path.join(BASE_DIR, "data")
     STATIC_DIR: str = os.path.join(BASE_DIR, "static")
+
+    # 资源路径（相对于 static 目录）
+    TIMELINE_MUSIC_PATH: str = "music/timeline.mp3"
     
     # ========== 页面配置 ==========
     # 页面顺序（情绪节奏）

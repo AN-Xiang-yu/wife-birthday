@@ -65,7 +65,7 @@
 
   <audio
     id="timeline-music"
-    src="{{ url_for('static', filename='music/timeline.mp3') }}"
+    src="{{ url_for('static', filename=config.TIMELINE_MUSIC_PATH) }}"
     preload="auto"
     loop
   ></audio>
