@@ -38,7 +38,8 @@ def index() -> str:
         "RAIN_MAX_ITEMS": RainEffectConfig.MAX_ITEMS,
         "RAIN_SPAWN_INTERVAL": RainEffectConfig.SPAWN_INTERVAL,
         "TIMELINE_MUSIC_PATH": Config.TIMELINE_MUSIC_PATH,
-        "SECRET_TITLE_TYPING_INTERVAL_MS": SecretConfig.TITLE_TYPING_INTERVAL_MS
+        "SECRET_TITLE_TYPING_INTERVAL_MS": SecretConfig.TITLE_TYPING_INTERVAL_MS,
+        "SECRET_HINT_TYPING_INTERVAL_MS": SecretConfig.HINT_TYPING_INTERVAL_MS
     }
     return render_template("index.html", config=frontend_config)
 

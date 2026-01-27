@@ -117,6 +117,9 @@ class SecretConfig:
     # 标题打字速度（毫秒/字符）
     TITLE_TYPING_INTERVAL_MS: int = 120
 
+    # 提示打字速度（毫秒/字符）
+    HINT_TYPING_INTERVAL_MS: int = 90
+
 
 class RainEffectConfig:
     """花雨效果配置"""

@@ -31,6 +31,7 @@ let secretTitleTimer = null;
 let secretSubtitleTimer = null;
 let passwordHintTimer = null;
 const secretTitleTypingInterval = window.AppConfig?.SECRET_TITLE_TYPING_INTERVAL_MS || 120;
+const secretHintTypingInterval = window.AppConfig?.SECRET_HINT_TYPING_INTERVAL_MS || 90;
 
 // ============================================================
 // DOM 元素 - 密码页
@@ -69,7 +70,7 @@ function prepareTypingText(element) {
     return fullText;
 }
 
-function typeText(element, text, currentTimer, withCursor = false) {
+function typeText(element, text, currentTimer, interval, withCursor = false, onComplete) {
     if (!element) return null;
 
     if (withCursor) {
@@ -86,21 +87,50 @@ function typeText(element, text, currentTimer, withCursor = false) {
         element.textContent = text.slice(0, index);
         if (index >= text.length) {
             clearInterval(timerId);
+            if (withCursor) {
+                element.classList.remove('typing');
+            }
+            if (onComplete) {
+                onComplete();
+            }
         }
-    }, secretTitleTypingInterval);
+    }, interval);
 
     return timerId;
 }
 
 function startSecretTitleTyping() {
     const titleText = prepareTypingText(secretTitle);
+    const subtitleText = prepareTypingText(secretSubtitle);
+
     if (titleText) {
-        secretTitleTimer = typeText(secretTitle, titleText, secretTitleTimer, true);
+        secretTitleTimer = typeText(
+            secretTitle,
+            titleText,
+            secretTitleTimer,
+            secretTitleTypingInterval,
+            true,
+            () => {
+                if (subtitleText) {
+                    secretSubtitleTimer = typeText(
+                        secretSubtitle,
+                        subtitleText,
+                        secretSubtitleTimer,
+                        secretTitleTypingInterval
+                    );
+                }
+            }
+        );
+        return;
     }
 
-    const subtitleText = prepareTypingText(secretSubtitle);
     if (subtitleText) {
-        secretSubtitleTimer = typeText(secretSubtitle, subtitleText, secretSubtitleTimer);
+        secretSubtitleTimer = typeText(
+            secretSubtitle,
+            subtitleText,
+            secretSubtitleTimer,
+            secretTitleTypingInterval
+        );
     }
 }
 
@@ -154,7 +184,12 @@ function showPasswordHint(hint, shake = false) {
     if (!passwordHint) return;
 
     passwordHint.textContent = '';
-    passwordHintTimer = typeText(passwordHint, hint, passwordHintTimer);
+    passwordHintTimer = typeText(
+        passwordHint,
+        hint,
+        passwordHintTimer,
+        secretHintTypingInterval
+    );
 
     if (shake) {
         passwordHint.classList.add('shake');
