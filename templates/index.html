@@ -187,20 +187,25 @@
      情绪：余温
 ============================================================ -->
 <section id="page-ending" class="page">
+  <canvas id="heart-canvas"></canvas>
   <div class="ending-container">
-    <canvas id="ending-heart-canvas" class="particle-heart-canvas" aria-hidden="true"></canvas>
+    <!-- 顶部：生日快乐 + 名字 -->
     <div class="blessing-text">
       <h1 class="blessing">生日快乐</h1>
       <p class="her-name">亲爱的</p>
     </div>
 
-    <div class="ending-date">
-      <span>2025年X月X日</span>
+    <!-- 中间：爱心占位区域 -->
+    <div class="heart-spacer"></div>
+
+    <!-- 底部：日期 + 祝福语 + 按钮 -->
+    <div class="ending-bottom">
+      <div class="ending-date">
+        <span>2025年X月X日</span>
+      </div>
+      <p class="final-note">愿每一天都如今天这般特别</p>
+      <button class="restart-btn" id="restart-btn">从头再看一遍</button>
     </div>
-
-    <p class="final-note">愿每一天都如今天这般特别</p>
-
-    <button class="restart-btn" id="restart-btn">从头再看一遍</button>
   </div>
 </section>
 {% endblock %} {% block page_scripts %}
@@ -210,4 +215,5 @@
 <script src="{{ url_for('static', filename='js/letter.js') }}"></script>
 <script src="{{ url_for('static', filename='js/secret.js') }}"></script>
 <script src="{{ url_for('static', filename='js/ending.js') }}"></script>
+<script src="{{ url_for('static', filename='js/heart.js') }}"></script>
 {% endblock %}

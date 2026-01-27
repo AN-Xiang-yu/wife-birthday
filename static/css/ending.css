@@ -1,227 +1,154 @@
 /**
  * 结尾祝福页 · 落点样式
  * 
- * 极简设计，留白为主
+ * 粒子跳动爱心效果
  * 情绪：余温
- * 
- * 注：主要样式已在 secret.css 中定义
- * 此文件用于额外的结尾页定制
  */
 
-/* 结尾页额外定制（如有需要） */
-.ending-container {
+#page-ending {
     position: relative;
+    background: linear-gradient( 180deg, var(--color-bg) 0%, var(--color-secondary) 100%);
     overflow: hidden;
 }
 
-.ending-container > :not(.particle-heart-canvas) {
-    position: relative;
+
+/* 爱心画布 */
+
+#heart-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     z-index: 1;
 }
 
-.particle-heart-canvas {
-    position: absolute;
-    top: 45%;
-    left: 50%;
-    width: min(360px, 80vw);
-    height: min(320px, 70vw);
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-    z-index: 0;
-    filter: drop-shadow(0 0 22px rgba(111, 231, 211, 0.35));
+
+/* 内容容器 - 在画布之上 */
+
+#page-ending .ending-container {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 100vh;
+    padding: var(--spacing-xxl) var(--spacing-lg);
 }
 
-/* 背景粒子效果（可选） */
-#page-ending .particles {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    pointer-events: none;
+
+/* 顶部文字区域 */
+
+#page-ending .blessing-text {
+    text-align: center;
+    padding-top: var(--spacing-lg);
 }
 
-#page-ending .particle {
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    background: var(--color-accent);
-    border-radius: 50%;
-    opacity: 0.3;
-    animation: float 15s infinite ease-in-out;
+#page-ending .blessing {
+    font-family: var(--font-serif);
+    font-size: var(--text-4xl);
+    font-weight: 400;
+    color: var(--color-text);
+    margin-bottom: var(--spacing-md);
+    letter-spacing: 0.1em;
+    animation: endingFadeIn 1.5s ease forwards;
 }
 
-@keyframes float {
-    0%, 100% {
-        transform: translateY(0) translateX(0);
+#page-ending .her-name {
+    font-family: var(--font-serif);
+    font-size: var(--text-2xl);
+    color: var(--color-accent);
+    font-style: italic;
+}
+
+
+/* 中间爱心占位区域 */
+
+#page-ending .heart-spacer {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+}
+
+
+/* 底部文字区域 */
+
+#page-ending .ending-bottom {
+    text-align: center;
+    padding-bottom: var(--spacing-lg);
+}
+
+#page-ending .ending-date {
+    font-size: var(--text-base);
+    color: var(--color-text-light);
+    margin-bottom: var(--spacing-md);
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border-top: 1px solid var(--color-secondary);
+    border-bottom: 1px solid var(--color-secondary);
+}
+
+#page-ending .final-note {
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+    max-width: 400px;
+    line-height: 1.6;
+    text-align: center;
+    margin-bottom: var(--spacing-lg);
+}
+
+
+/* 返回首页按钮 */
+
+#page-ending .restart-btn {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    background: transparent;
+    border: 1px solid var(--color-text-muted);
+    color: var(--color-text-muted);
+    border-radius: var(--radius-full);
+    font-size: var(--text-sm);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    opacity: 0;
+    animation: fadeInDelay 1s ease 2s forwards;
+}
+
+#page-ending .restart-btn:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    background: var(--color-accent-soft);
+}
+
+@keyframes endingFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
     }
-    25% {
-        transform: translateY(-20px) translateX(10px);
-    }
-    50% {
-        transform: translateY(-10px) translateX(-10px);
-    }
-    75% {
-        transform: translateY(-30px) translateX(5px);
-    }
-}
-
-/* 渐变文字效果（生日快乐） */
-.blessing-animated {
-    background: linear-gradient(
-        90deg,
-        var(--color-text) 0%,
-        var(--color-accent) 50%,
-        var(--color-text) 100%
-    );
-    background-size: 200% auto;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: shimmer 3s linear infinite;
-}
-
-@keyframes shimmer {
     to {
-        background-position: 200% center;
-    }
-}
-
-/* 心跳动画（可选） */
-.heartbeat {
-    animation: heartbeat 1.5s ease-in-out infinite;
-}
-
-@keyframes heartbeat {
-    0%, 100% { transform: scale(1); }
-    14% { transform: scale(1.1); }
-    28% { transform: scale(1); }
-    42% { transform: scale(1.1); }
-    70% { transform: scale(1); }
-}
-
-/* 离子效果的心形装饰 */
-.ion-heart {
-    position: relative;
-    width: 140px;
-    height: 120px;
-    margin: 32px auto 12px;
-    display: grid;
-    place-items: center;
-    filter: drop-shadow(0 0 18px rgba(255, 120, 178, 0.35));
-}
-
-.ion-heart .ion-core {
-    position: relative;
-    width: 84px;
-    height: 74px;
-    transform: rotate(-45deg);
-    background: linear-gradient(135deg, #ff7ab6 0%, #ff97c7 45%, #ffc1de 100%);
-    border-radius: 16px;
-    box-shadow: 0 12px 26px rgba(255, 122, 182, 0.35);
-    animation: ion-pulse 2.8s ease-in-out infinite;
-}
-
-.ion-heart .ion-core::before,
-.ion-heart .ion-core::after {
-    content: "";
-    position: absolute;
-    width: 84px;
-    height: 74px;
-    border-radius: 50%;
-    background: inherit;
-}
-
-.ion-heart .ion-core::before {
-    top: -42px;
-    left: 0;
-}
-
-.ion-heart .ion-core::after {
-    left: 42px;
-    top: 0;
-}
-
-.ion-heart .ion-ring {
-    position: absolute;
-    inset: -8px;
-    border-radius: 50%;
-    border: 1px solid rgba(255, 160, 208, 0.35);
-    animation: ion-rotate 7s linear infinite;
-}
-
-.ion-heart .ion-ring::before,
-.ion-heart .ion-ring::after {
-    content: "";
-    position: absolute;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #ffd6ea;
-    box-shadow:
-        0 0 8px rgba(255, 214, 234, 0.8),
-        0 0 14px rgba(255, 160, 208, 0.6);
-}
-
-.ion-heart .ion-ring::before {
-    top: 6px;
-    left: 28px;
-}
-
-.ion-heart .ion-ring::after {
-    bottom: 18px;
-    right: 20px;
-}
-
-.ion-heart::before,
-.ion-heart::after {
-    content: "";
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: #ffe4f1;
-    box-shadow: 0 0 10px rgba(255, 228, 241, 0.9);
-    animation: ion-drift 6s ease-in-out infinite;
-}
-
-.ion-heart::before {
-    left: 8px;
-    top: 26px;
-}
-
-.ion-heart::after {
-    right: 6px;
-    bottom: 22px;
-    animation-delay: -2.4s;
-}
-
-@keyframes ion-pulse {
-    0%, 100% {
-        transform: rotate(-45deg) scale(1);
-        filter: brightness(1);
-    }
-    50% {
-        transform: rotate(-45deg) scale(1.08);
-        filter: brightness(1.08);
-    }
-}
-
-@keyframes ion-rotate {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-@keyframes ion-drift {
-    0%, 100% {
-        transform: translateY(0) translateX(0);
-        opacity: 0.7;
-    }
-    50% {
-        transform: translateY(-10px) translateX(6px);
         opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInDelay {
+    to {
+        opacity: 1;
+    }
+}
+
+
+/* 响应式 */
+
+@media (max-width: 768px) {
+    #page-ending .blessing {
+        font-size: var(--text-3xl);
+    }
+    #page-ending .her-name {
+        font-size: var(--text-xl);
+    }
+    #page-ending .heart-spacer {
+        min-height: 250px;
     }
 }
