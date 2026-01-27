@@ -465,25 +465,48 @@ function drawCake(centerX, baseY) {
         ctx.fill();
     });
 
-    // 蜡烛
-    const cc = Config.cake.candleCount,
-        cs = (w2 - 40 * scale) / (cc - 1);
+    // 蜡烛 - 分布在两层
+    const cc = Config.cake.candleCount;
     const ccols = Config.cake.candleColors;
-    const cby = y2 - h2 - 10 * scale;
-    for (let i = 0; i < cc; i++) {
-        const cx = centerX - w2 / 2 + 20 * scale + i * cs;
-        const ch = (25 + (i % 3) * 5) * scale,
-            cw = 5 * scale;
+
+    // 第一层蜡烛（底层）- 放置一半蜡烛
+    const layer1Count = Math.floor(cc / 2); // 13根
+    const cs1 = (w1 - 60 * scale) / (layer1Count - 1);
+    const cby1 = y1 - h1 - 10 * scale;
+    for (let i = 0; i < layer1Count; i++) {
+        const cx = centerX - w1 / 2 + 30 * scale + i * cs1;
+        const ch = (22 + (i % 3) * 4) * scale;
+        const cw = 5 * scale;
         ctx.fillStyle = ccols[i];
-        ctx.fillRect(cx - cw / 2, cby - ch, cw, ch);
+        ctx.fillRect(cx - cw / 2, cby1 - ch, cw, ch);
         ctx.strokeStyle = 'rgba(255,255,255,0.4)';
         ctx.lineWidth = 1.5 * scale;
         ctx.beginPath();
-        ctx.moveTo(cx - scale, cby - ch);
-        ctx.lineTo(cx - scale, cby);
+        ctx.moveTo(cx - scale, cby1 - ch);
+        ctx.lineTo(cx - scale, cby1);
         ctx.stroke();
-        drawFlame(cx, cby - ch - 10 * scale, scale);
+        drawFlame(cx, cby1 - ch - 10 * scale, scale);
     }
+
+    // 第二层蜡烛（顶层）- 放置另一半蜡烛
+    const layer2Count = cc - layer1Count; // 13根
+    const cs2 = (w2 - 40 * scale) / (layer2Count - 1);
+    const cby2 = y2 - h2 - 10 * scale;
+    for (let i = 0; i < layer2Count; i++) {
+        const cx = centerX - w2 / 2 + 20 * scale + i * cs2;
+        const ch = (25 + (i % 3) * 5) * scale;
+        const cw = 5 * scale;
+        ctx.fillStyle = ccols[layer1Count + i];
+        ctx.fillRect(cx - cw / 2, cby2 - ch, cw, ch);
+        ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+        ctx.lineWidth = 1.5 * scale;
+        ctx.beginPath();
+        ctx.moveTo(cx - scale, cby2 - ch);
+        ctx.lineTo(cx - scale, cby2);
+        ctx.stroke();
+        drawFlame(cx, cby2 - ch - 10 * scale, scale);
+    }
+
     ctx.restore();
 }
 

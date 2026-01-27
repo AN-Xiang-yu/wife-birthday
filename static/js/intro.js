@@ -141,7 +141,7 @@ function showTypingIndicator() {
  * 进入返回模式
  */
 function enterReturnMode() {
-    IntroState.isReturnMode = true;
+    // isReturnMode 标志已在 resetForReturnMode 中设置
     IntroState.returnMessageIndex = 0;
 
     // 如果之前已经重返过，清除上次重返的消息
@@ -221,6 +221,10 @@ async function playFinalMessages(messages) {
  */
 async function playInitialMessages() {
     if (!chatMessages) return;
+
+    // 如果是返回模式，不清空消息，也不播放初始消息
+    if (IntroState.isReturnMode) return;
+
     chatMessages.innerHTML = '';
 
     // 禁用输入区域，直到初始消息播放完成
@@ -243,7 +247,7 @@ async function playInitialMessages() {
     enableInput();
 
     // 显示提示
-    if (attemptHint && !IntroState.isReturnMode) {
+    if (attemptHint) {
         attemptHint.textContent = '想想今天是什么日子？';
     }
 
@@ -425,7 +429,10 @@ function enableInput() {
  * 重置为返回模式（从结尾页返回时调用）
  */
 function resetForReturnMode() {
-    // 不清空聊天记录，保留之前的对话
+    // 先设置返回模式标志，防止pageEnter事件重新播放初始消息
+    IntroState.isReturnMode = true;
+
+    // 然后进入返回模式，播放返回消息
     enterReturnMode();
 }
 
