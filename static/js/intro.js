@@ -418,7 +418,7 @@ function enableInput() {
 
     if (chatInput) {
         chatInput.disabled = false;
-        chatInput.placeholder = '说点什么吧...';
+        chatInput.placeholder = '宝宝到你啦 ~ ';
     }
     if (chatSend) {
         chatSend.disabled = false;
