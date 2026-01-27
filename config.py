@@ -39,7 +39,7 @@ class Config:
     ]
 
     # 起始页面（1-4 对应开场/时间线/故事放大/信件）
-    START_PAGE: int = 2
+    START_PAGE: int = 4
 
 
 class ChatConfig:
@@ -115,7 +115,7 @@ class SecretConfig:
     """
 
     # 标题打字速度（毫秒/字符）
-    TITLE_TYPING_INTERVAL_MS: int = 120
+    TITLE_TYPING_INTERVAL_MS: int = 300
 
     # 提示打字速度（毫秒/字符）
     HINT_TYPING_INTERVAL_MS: int = 90
