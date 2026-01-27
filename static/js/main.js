@@ -23,6 +23,71 @@ const AppState = {
 };
 
 // ============================================================
+// 点击特效（除开场页）
+// ============================================================
+
+const GlobalClickEffects = {
+    isInitialized: false,
+    symbols: [
+        { symbol: '💗', className: 'heart' },
+        { symbol: '🌹', className: 'rose' },
+        { symbol: '🌹', className: 'rose rose-red' },
+        { symbol: '🌹', className: 'rose rose-yellow' },
+        { symbol: '🌹', className: 'rose rose-white' },
+        { symbol: '🌹', className: 'rose rose-black' },
+        { symbol: '🌹', className: 'rose rose-blue' },
+        { symbol: '🌹', className: 'rose rose-peach' },
+        { symbol: '🌹', className: 'rose rose-gold' },
+        { symbol: '🌹', className: 'rose rose-purple' },
+        { symbol: '💐', className: 'bouquet' }
+    ]
+};
+
+function shouldSkipGlobalClickEffect() {
+    const currentName = AppState.pages[AppState.currentPage];
+    return currentName === 'intro' || currentName === 'timeline';
+}
+
+function createGlobalClickBurst(x, y) {
+    const burstCount = 4;
+    const container = document.body;
+
+    for (let i = 0; i < burstCount; i += 1) {
+        const config = GlobalClickEffects.symbols[Math.floor(Math.random() * GlobalClickEffects.symbols.length)];
+        const item = document.createElement('span');
+        item.className = `global-click-effect ${config.className}`;
+        item.textContent = config.symbol;
+
+        const size = 16 + Math.random() * 12;
+        const shift = (Math.random() * 2 - 1) * 50;
+        const rotation = (Math.random() * 2 - 1) * 30;
+
+        item.style.left = `${x}px`;
+        item.style.top = `${y}px`;
+        item.style.fontSize = `${size}px`;
+        item.style.setProperty('--click-shift', `${shift}px`);
+        item.style.setProperty('--click-rotate', `${rotation}deg`);
+
+        container.appendChild(item);
+
+        item.addEventListener('animationend', () => {
+            item.remove();
+        });
+    }
+}
+
+function initGlobalClickEffects() {
+    if (GlobalClickEffects.isInitialized) return;
+
+    document.addEventListener('click', (event) => {
+        if (shouldSkipGlobalClickEffect()) return;
+        createGlobalClickBurst(event.clientX, event.clientY);
+    }, { passive: true });
+
+    GlobalClickEffects.isInitialized = true;
+}
+
+// ============================================================
 // 页面切换
 // ============================================================
 
@@ -303,6 +368,9 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // 初始化进度指示器
     initProgressIndicator();
+
+    // 初始化全局点击特效
+    initGlobalClickEffects();
     
     // 确保初始页面正确显示
     const desiredStart = Number(window.AppConfig?.START_PAGE ?? 1);
