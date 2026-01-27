@@ -1,7 +1,7 @@
 /**
  * 故事放大页 · 那些被记住的瞬间样式
- * 
- * 可翻转的卡片设计
+ *
+ * 叠放的可翻转卡片设计
  * 情绪：回忆深化
  */
 
@@ -11,20 +11,62 @@
 
 /* 瞬间容器 */
 .moments-container {
+    position: relative;
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
-    gap: var(--spacing-lg);
-    max-width: 1000px;
-    perspective: 1000px;
+    align-items: center;
+    width: min(920px, 90vw);
+    height: 460px;
+    margin: 0 auto;
+    perspective: 1400px;
 }
 
 /* 瞬间卡片 - 翻转容器 */
 .moment-card {
-    width: 300px;
-    height: 400px;
+    --card-offset-x: 0px;
+    --card-offset-y: 0px;
+    --card-rotate: 0deg;
+    --card-scale: 1;
+    --hover-lift: 0px;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 320px;
+    height: 420px;
     cursor: pointer;
     perspective: 1000px;
+    transform: translate(-50%, var(--card-offset-y))
+        translateX(var(--card-offset-x))
+        rotate(var(--card-rotate))
+        scale(var(--card-scale))
+        translateY(var(--hover-lift));
+    transition: transform 0.6s ease, box-shadow 0.6s ease;
+}
+
+.moment-card.is-front {
+    --card-scale: 1.03;
+}
+
+.moment-card.is-front:hover {
+    --hover-lift: -12px;
+}
+
+.moment-card[data-position='0'] {
+    --card-offset-x: 0px;
+    --card-offset-y: -6px;
+    --card-rotate: 0deg;
+}
+
+.moment-card[data-position='1'] {
+    --card-offset-x: -90px;
+    --card-offset-y: 10px;
+    --card-rotate: -6deg;
+}
+
+.moment-card[data-position='2'] {
+    --card-offset-x: 90px;
+    --card-offset-y: 14px;
+    --card-rotate: 6deg;
 }
 
 .moment-card-inner {
@@ -96,6 +138,10 @@
     gap: 4px;
 }
 
+.moment-card:not(.is-front) .moment-flip-hint {
+    opacity: 0.8;
+}
+
 .moment-flip-hint::after {
     content: '↻';
     font-size: 1rem;
@@ -156,15 +202,6 @@
     color: rgba(255, 255, 255, 0.5);
 }
 
-/* 卡片悬浮效果 */
-.moment-card:hover .moment-card-inner {
-    transform: translateY(-8px);
-}
-
-.moment-card.flipped:hover .moment-card-inner {
-    transform: rotateY(180deg) translateY(-8px);
-}
-
 /* 继续按钮 */
 #page-moments .proceed-btn {
     margin-top: var(--spacing-xxl);
@@ -172,15 +209,39 @@
 
 /* 响应式 */
 @media (max-width: 768px) {
+    .moments-container {
+        height: 420px;
+    }
+
     .moment-card {
         width: 280px;
         height: 380px;
     }
+
+    .moment-card[data-position='1'] {
+        --card-offset-x: -70px;
+    }
+
+    .moment-card[data-position='2'] {
+        --card-offset-x: 70px;
+    }
 }
 
 @media (max-width: 480px) {
+    .moments-container {
+        height: 400px;
+    }
+
     .moment-card {
-        width: 100%;
-        max-width: 300px;
+        width: 92vw;
+        max-width: 320px;
+        height: 360px;
+    }
+
+    .moment-card[data-position='1'],
+    .moment-card[data-position='2'] {
+        --card-offset-x: 0px;
+        --card-rotate: 0deg;
+        --card-offset-y: 14px;
     }
 }

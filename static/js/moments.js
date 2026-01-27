@@ -1,7 +1,7 @@
 /**
  * 故事放大页 · 卡片翻转逻辑
- * 
- * 可翻转的卡片，展示深层感受
+ *
+ * 叠放式卡片，点击置顶后再翻转
  * 情绪：回忆深化
  */
 
@@ -10,6 +10,8 @@
 // ============================================================
 const MomentsState = {
     cards: [],
+    cardElements: new Map(),
+    order: [],
     isLoaded: false
 };
 
@@ -29,7 +31,7 @@ const momentsProceed = document.getElementById('moments-proceed');
 async function loadMomentsData() {
     try {
         const response = await App.getRequest('/api/content/moments');
-        MomentsState.cards = response.cards || [];
+        MomentsState.cards = (response.cards || []).slice(0, 3);
         renderMoments();
         MomentsState.isLoaded = true;
     } catch (error) {
@@ -42,18 +44,23 @@ async function loadMomentsData() {
  */
 function renderMoments() {
     if (!momentsContainer) return;
-    
+
     momentsContainer.innerHTML = '';
-    
+    MomentsState.cardElements.clear();
+    MomentsState.order = MomentsState.cards.map((_, index) => index);
+
     MomentsState.cards.forEach((card, index) => {
         const cardEl = createMomentCard(card, index);
         momentsContainer.appendChild(cardEl);
-        
+        MomentsState.cardElements.set(index, cardEl);
+
         // 延迟动画
         setTimeout(() => {
             cardEl.classList.add('fade-in');
         }, index * 200);
     });
+
+    updateCardPositions();
 }
 
 /**
@@ -65,7 +72,7 @@ function renderMoments() {
 function createMomentCard(card, index) {
     // 正面内容
     const frontContent = [
-        card.image 
+        card.image
             ? App.createElement('img', {
                 className: 'moment-front-image',
                 src: `/static/${card.image}`,
@@ -76,9 +83,9 @@ function createMomentCard(card, index) {
             App.createElement('h3', { className: 'moment-front-title' }, card.surface.title),
             App.createElement('p', { className: 'moment-front-brief' }, card.surface.brief)
         ]),
-        App.createElement('span', { className: 'moment-flip-hint' }, '点击翻转')
+        App.createElement('span', { className: 'moment-flip-hint' }, '点击置顶')
     ];
-    
+
     // 背面内容
     const backContent = [
         App.createElement('div', { className: 'moment-back-section moment-what-happened' }, [
@@ -91,18 +98,68 @@ function createMomentCard(card, index) {
         ]),
         App.createElement('span', { className: 'moment-back-hint' }, '再次点击翻回')
     ];
-    
+
     const front = App.createElement('div', { className: 'moment-front' }, frontContent);
     const back = App.createElement('div', { className: 'moment-back' }, backContent);
     const inner = App.createElement('div', { className: 'moment-card-inner' }, [front, back]);
-    
+
     const cardEl = App.createElement('div', {
         className: 'moment-card',
         'data-index': index,
-        onClick: () => toggleCard(cardEl)
+        onClick: () => handleCardClick(cardEl)
     }, inner);
-    
+
     return cardEl;
+}
+
+/**
+ * 处理卡片点击
+ * @param {HTMLElement} cardEl - 卡片元素
+ */
+function handleCardClick(cardEl) {
+    const clickedIndex = Number(cardEl.dataset.index);
+    const frontIndex = MomentsState.order[0];
+
+    if (clickedIndex === frontIndex) {
+        toggleCard(cardEl);
+        return;
+    }
+
+    bringCardToFront(clickedIndex);
+}
+
+/**
+ * 将卡片置顶，并把原本最前的卡片放到最后
+ * @param {number} clickedIndex - 被点击的卡片索引
+ */
+function bringCardToFront(clickedIndex) {
+    const currentFront = MomentsState.order[0];
+    const remaining = MomentsState.order.filter(
+        (index) => index !== clickedIndex && index !== currentFront
+    );
+
+    MomentsState.order = [clickedIndex, ...remaining, currentFront];
+    MomentsState.cardElements.forEach((cardEl) => cardEl.classList.remove('flipped'));
+    updateCardPositions();
+}
+
+/**
+ * 更新卡片位置和层级
+ */
+function updateCardPositions() {
+    MomentsState.order.forEach((cardIndex, position) => {
+        const cardEl = MomentsState.cardElements.get(cardIndex);
+        if (!cardEl) return;
+
+        cardEl.dataset.position = String(position);
+        cardEl.style.zIndex = String(MomentsState.order.length - position);
+        cardEl.classList.toggle('is-front', position === 0);
+
+        const hint = cardEl.querySelector('.moment-flip-hint');
+        if (hint) {
+            hint.textContent = position === 0 ? '点击翻转' : '点击置顶';
+        }
+    });
 }
 
 /**
