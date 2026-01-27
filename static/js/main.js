@@ -319,16 +319,16 @@ function restartFromEnding() {
             // 更新全局花雨效果
             updateGlobalRain('intro');
 
+            // 触发返回模式（先设置，防止 pageEnter 重播初始消息）
+            if (window.IntroModule && window.IntroModule.resetForReturnMode) {
+                window.IntroModule.resetForReturnMode();
+            }
+
             // 触发页面进入事件（用于音乐淡出等逻辑）
             const event = new CustomEvent('pageEnter', {
                 detail: { pageName: 'intro' }
             });
             document.dispatchEvent(event);
-
-            // 触发返回模式
-            if (window.IntroModule && window.IntroModule.resetForReturnMode) {
-                window.IntroModule.resetForReturnMode();
-            }
 
         }, 500);
     }, 500);
