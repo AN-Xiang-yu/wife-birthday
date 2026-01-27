@@ -28,6 +28,7 @@ const PlayfulState = {
 // 密码页标题打字效果
 // ============================================================
 let secretTitleTimer = null;
+const secretTitleTypingInterval = window.AppConfig?.SECRET_TITLE_TYPING_INTERVAL_MS || 120;
 
 // ============================================================
 // DOM 元素 - 密码页
@@ -76,7 +77,7 @@ function startSecretTitleTyping() {
             clearInterval(secretTitleTimer);
             secretTitleTimer = null;
         }
-    }, 120);
+    }, secretTitleTypingInterval);
 }
 
 // ============================================================

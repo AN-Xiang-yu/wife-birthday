@@ -114,6 +114,9 @@ class SecretConfig:
     （在这里写下你想对她说的隐藏话语）
     """
 
+    # 标题打字速度（毫秒/字符）
+    TITLE_TYPING_INTERVAL_MS: int = 120
+
 
 class RainEffectConfig:
     """花雨效果配置"""
