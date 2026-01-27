@@ -28,12 +28,15 @@ const PlayfulState = {
 // 密码页标题打字效果
 // ============================================================
 let secretTitleTimer = null;
+let secretSubtitleTimer = null;
+let passwordHintTimer = null;
 const secretTitleTypingInterval = window.AppConfig?.SECRET_TITLE_TYPING_INTERVAL_MS || 120;
 
 // ============================================================
 // DOM 元素 - 密码页
 // ============================================================
 const secretTitle = document.querySelector('#secret-lock h2');
+const secretSubtitle = document.querySelector('#secret-lock > p');
 
 // ============================================================
 // DOM 元素 - 密码页
@@ -57,28 +60,52 @@ const playfulProceed = document.getElementById('playful-proceed');
 // ============================================================
 // 密码页标题打字效果
 // ============================================================
-function startSecretTitleTyping() {
-    if (!secretTitle) return;
+function prepareTypingText(element) {
+    if (!element) return null;
 
-    const fullText = secretTitle.dataset.fullText || secretTitle.textContent.trim();
-    secretTitle.dataset.fullText = fullText;
-    secretTitle.textContent = '';
-    secretTitle.classList.add('typing');
+    const fullText = element.dataset.fullText || element.textContent.trim();
+    element.dataset.fullText = fullText;
+    element.textContent = '';
+    return fullText;
+}
 
-    let index = 0;
-    if (secretTitleTimer) {
-        clearInterval(secretTitleTimer);
+function typeText(element, text, currentTimer, withCursor = false) {
+    if (!element) return null;
+
+    if (withCursor) {
+        element.classList.add('typing');
     }
 
-    secretTitleTimer = setInterval(() => {
+    let index = 0;
+    if (currentTimer) {
+        clearInterval(currentTimer);
+    }
+
+    const timerId = setInterval(() => {
         index += 1;
-        secretTitle.textContent = fullText.slice(0, index);
-        if (index >= fullText.length) {
-            clearInterval(secretTitleTimer);
-            secretTitleTimer = null;
+        element.textContent = text.slice(0, index);
+        if (index >= text.length) {
+            clearInterval(timerId);
         }
     }, secretTitleTypingInterval);
+
+    return timerId;
 }
+
+function startSecretTitleTyping() {
+    const titleText = prepareTypingText(secretTitle);
+    if (titleText) {
+        secretTitleTimer = typeText(secretTitle, titleText, secretTitleTimer, true);
+    }
+
+    const subtitleText = prepareTypingText(secretSubtitle);
+    if (subtitleText) {
+        secretSubtitleTimer = typeText(secretSubtitle, subtitleText, secretSubtitleTimer);
+    }
+}
+
+prepareTypingText(secretTitle);
+prepareTypingText(secretSubtitle);
 
 // ============================================================
 // 密码验证逻辑
@@ -124,8 +151,11 @@ async function verifyPassword() {
  * @param {boolean} shake - 是否显示抖动动画
  */
 function showPasswordHint(hint, shake = false) {
-    passwordHint.textContent = hint;
-    
+    if (!passwordHint) return;
+
+    passwordHint.textContent = '';
+    passwordHintTimer = typeText(passwordHint, hint, passwordHintTimer);
+
     if (shake) {
         passwordHint.classList.add('shake');
         setTimeout(() => {
