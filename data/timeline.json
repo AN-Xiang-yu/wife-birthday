@@ -14,20 +14,20 @@
             "is_highlighted": true
         }, {
             "id": 2,
-            "date": "2023年X月X日",
-            "title": "第一次...",
-            "description": "我们的第一个里程碑",
+            "date": "2025年5月31日",
+            "title": "初见",
+            "description": "那天是我们第一次正式见面，以学习为名义，那天你笑的特别甜，特别好看，让我至今难忘。我记得那天你超级认真的备课分享，为了给你留下更好的印象，我也提前穿的正式，打了发胶，虽然紧张到脚趾抓地，但是还是觉得特别开心。",
             "emotion_note": "为什么重要：...",
-            "image": "images/photos/初遇.jpg",
+            "image": "images/photos/timelines/初见.jpg",
             "is_highlighted": false
         },
         {
             "id": 3,
-            "date": "2023年X月X日",
-            "title": "那个转折点",
-            "description": "故事在这里有了新的方向",
+            "date": "2025年6月8日",
+            "title": "正式表白",
+            "description": "那是我们第一次只有两个人的视频，继6月1日我向你挑明心意后的第一次单独交流。那天我单膝跪地，穿着西服，向你正式的表白，你接受了我。从那一刻起，我们的关系有了质的飞跃。",
             "emotion_note": "为什么重要：...",
-            "image": "images/photos/timeline3.jpg",
+            "image": "images/photos/timelines/表白日.png",
             "is_highlighted": false
         },
         {
@@ -36,7 +36,7 @@
             "title": "一起经历的事",
             "description": "某个共同的回忆",
             "emotion_note": "为什么重要：...",
-            "image": "images/photos/timeline4.jpg",
+            "image": "images/photos/timelines/满月.jpg",
             "is_highlighted": true
         },
         {
@@ -45,7 +45,7 @@
             "title": "那个特别的日子",
             "description": "一个值得纪念的时刻",
             "emotion_note": "为什么重要：...",
-            "image": "images/photos/timeline5.jpg",
+            "image": "images/photos/timelines/七夕.jpg",
             "is_highlighted": false
         },
         {
@@ -54,8 +54,35 @@
             "title": "直到今天",
             "description": "故事还在继续...",
             "emotion_note": "为什么重要：因为有你",
-            "image": "images/photos/timeline6.jpg",
+            "image": "images/photos/timelines/两个月.jpg",
             "is_highlighted": true
+        },
+        {
+            "id": 7,
+            "date": "2024年X月X日",
+            "title": "那个特别的日子",
+            "description": "一个值得纪念的时刻",
+            "emotion_note": "为什么重要：...",
+            "image": "images/photos/timelines/第一次见面.jpg",
+            "is_highlighted": false
+        },
+        {
+            "id": 8,
+            "date": "2025年X月X日",
+            "title": "直到今天",
+            "description": "故事还在继续...",
+            "emotion_note": "为什么重要：因为有你",
+            "image": "images/photos/timelines/结婚.jpg",
+            "is_highlighted": true
+        },
+        {
+            "id": 9,
+            "date": "2024年X月X日",
+            "title": "那个特别的日子",
+            "description": "一个值得纪念的时刻",
+            "emotion_note": "为什么重要：...",
+            "image": "images/photos/timelines/第一次见面.jpg",
+            "is_highlighted": false
         }
     ]
 }
