@@ -31,9 +31,15 @@ const GlobalClickEffects = {
     symbols: [
         { symbol: '💗', className: 'heart' },
         { symbol: '🌹', className: 'rose' },
+        { symbol: '🌹', className: 'rose rose-red' },
+        { symbol: '🌹', className: 'rose rose-yellow' },
+        { symbol: '🌹', className: 'rose rose-white' },
+        { symbol: '🌹', className: 'rose rose-black' },
+        { symbol: '🌹', className: 'rose rose-blue' },
         { symbol: '🌹', className: 'rose rose-peach' },
         { symbol: '🌹', className: 'rose rose-gold' },
-        { symbol: '🌹', className: 'rose rose-purple' }
+        { symbol: '🌹', className: 'rose rose-purple' },
+        { symbol: '💐', className: 'bouquet' }
     ]
 };
 
