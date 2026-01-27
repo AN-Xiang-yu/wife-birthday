@@ -9,6 +9,27 @@
  */
 
 /* 结尾页额外定制（如有需要） */
+.ending-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.ending-container > :not(.particle-heart-canvas) {
+    position: relative;
+    z-index: 1;
+}
+
+.particle-heart-canvas {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    width: min(360px, 80vw);
+    height: min(320px, 70vw);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 0;
+    filter: drop-shadow(0 0 22px rgba(111, 231, 211, 0.35));
+}
 
 /* 背景粒子效果（可选） */
 #page-ending .particles {

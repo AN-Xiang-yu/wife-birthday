@@ -188,14 +188,10 @@
 ============================================================ -->
 <section id="page-ending" class="page">
   <div class="ending-container">
+    <canvas id="ending-heart-canvas" class="particle-heart-canvas" aria-hidden="true"></canvas>
     <div class="blessing-text">
       <h1 class="blessing">生日快乐</h1>
       <p class="her-name">亲爱的</p>
-    </div>
-
-    <div class="ion-heart" aria-hidden="true">
-      <span class="ion-core"></span>
-      <span class="ion-ring"></span>
     </div>
 
     <div class="ending-date">
@@ -213,4 +209,5 @@
 <script src="{{ url_for('static', filename='js/moments.js') }}"></script>
 <script src="{{ url_for('static', filename='js/letter.js') }}"></script>
 <script src="{{ url_for('static', filename='js/secret.js') }}"></script>
+<script src="{{ url_for('static', filename='js/ending.js') }}"></script>
 {% endblock %}
