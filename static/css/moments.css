@@ -58,15 +58,15 @@
 }
 
 .moment-card[data-position='1'] {
-    --card-offset-x: -90px;
-    --card-offset-y: 10px;
-    --card-rotate: -6deg;
+    --card-offset-x: -110px;
+    --card-offset-y: 16px;
+    --card-rotate: -11deg;
 }
 
 .moment-card[data-position='2'] {
-    --card-offset-x: 90px;
-    --card-offset-y: 14px;
-    --card-rotate: 6deg;
+    --card-offset-x: 110px;
+    --card-offset-y: 20px;
+    --card-rotate: 11deg;
 }
 
 .moment-card-inner {
@@ -219,11 +219,13 @@
     }
 
     .moment-card[data-position='1'] {
-        --card-offset-x: -70px;
+        --card-offset-x: -85px;
+        --card-rotate: -9deg;
     }
 
     .moment-card[data-position='2'] {
-        --card-offset-x: 70px;
+        --card-offset-x: 85px;
+        --card-rotate: 9deg;
     }
 }
 
