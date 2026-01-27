@@ -25,6 +25,21 @@ const PlayfulState = {
 };
 
 // ============================================================
+// 密码页标题打字效果
+// ============================================================
+let secretTitleTimer = null;
+let secretSubtitleTimer = null;
+let passwordHintTimer = null;
+const secretTitleTypingInterval = window.AppConfig?.SECRET_TITLE_TYPING_INTERVAL_MS || 120;
+const secretHintTypingInterval = window.AppConfig?.SECRET_HINT_TYPING_INTERVAL_MS || 90;
+
+// ============================================================
+// DOM 元素 - 密码页
+// ============================================================
+const secretTitle = document.querySelector('#secret-lock h2');
+const secretSubtitle = document.querySelector('#secret-lock > p');
+
+// ============================================================
 // DOM 元素 - 密码页
 // ============================================================
 const secretLock = document.getElementById('secret-lock');
@@ -42,6 +57,85 @@ const questionText = document.getElementById('question-text');
 const optionsGroup = document.getElementById('options-group');
 const playfulResponse = document.getElementById('playful-response');
 const playfulProceed = document.getElementById('playful-proceed');
+
+// ============================================================
+// 密码页标题打字效果
+// ============================================================
+function prepareTypingText(element) {
+    if (!element) return null;
+
+    const fullText = element.dataset.fullText || element.textContent.trim();
+    element.dataset.fullText = fullText;
+    element.textContent = '';
+    return fullText;
+}
+
+function typeText(element, text, currentTimer, interval, withCursor = false, onComplete) {
+    if (!element) return null;
+
+    if (withCursor) {
+        element.classList.add('typing');
+    }
+
+    let index = 0;
+    if (currentTimer) {
+        clearInterval(currentTimer);
+    }
+
+    const timerId = setInterval(() => {
+        index += 1;
+        element.textContent = text.slice(0, index);
+        if (index >= text.length) {
+            clearInterval(timerId);
+            if (withCursor) {
+                element.classList.remove('typing');
+            }
+            if (onComplete) {
+                onComplete();
+            }
+        }
+    }, interval);
+
+    return timerId;
+}
+
+function startSecretTitleTyping() {
+    const titleText = prepareTypingText(secretTitle);
+    const subtitleText = prepareTypingText(secretSubtitle);
+
+    if (titleText) {
+        secretTitleTimer = typeText(
+            secretTitle,
+            titleText,
+            secretTitleTimer,
+            secretTitleTypingInterval,
+            true,
+            () => {
+                if (subtitleText) {
+                    secretSubtitleTimer = typeText(
+                        secretSubtitle,
+                        subtitleText,
+                        secretSubtitleTimer,
+                        secretTitleTypingInterval
+                    );
+                }
+            }
+        );
+        return;
+    }
+
+    if (subtitleText) {
+        secretSubtitleTimer = typeText(
+            secretSubtitle,
+            subtitleText,
+            secretSubtitleTimer,
+            secretTitleTypingInterval
+        );
+    }
+}
+
+prepareTypingText(secretTitle);
+prepareTypingText(secretSubtitle);
 
 // ============================================================
 // 密码验证逻辑
@@ -87,8 +181,16 @@ async function verifyPassword() {
  * @param {boolean} shake - 是否显示抖动动画
  */
 function showPasswordHint(hint, shake = false) {
-    passwordHint.textContent = hint;
-    
+    if (!passwordHint) return;
+
+    passwordHint.textContent = '';
+    passwordHintTimer = typeText(
+        passwordHint,
+        hint,
+        passwordHintTimer,
+        secretHintTypingInterval
+    );
+
     if (shake) {
         passwordHint.classList.add('shake');
         setTimeout(() => {
@@ -214,6 +316,7 @@ secretProceed?.addEventListener('click', () => {
 // 页面进入时加载数据
 document.addEventListener('pageEnter', (e) => {
     if (e.detail.pageName === 'secret') {
+        startSecretTitleTyping();
         passwordInput?.focus();
     }
     
