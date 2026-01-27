@@ -230,8 +230,20 @@ input[type="text"]::placeholder {
     filter: drop-shadow(0 4px 8px rgba(255, 105, 180, 0.35));
 }
 
-.global-click-effect.flower {
+.global-click-effect.rose {
     filter: hue-rotate(330deg) saturate(140%) drop-shadow(0 4px 8px rgba(255, 105, 180, 0.35));
+}
+
+.global-click-effect.rose-peach {
+    filter: hue-rotate(330deg) saturate(140%) drop-shadow(0 4px 8px rgba(255, 105, 180, 0.35));
+}
+
+.global-click-effect.rose-gold {
+    filter: hue-rotate(10deg) saturate(150%) drop-shadow(0 4px 8px rgba(255, 180, 140, 0.35));
+}
+
+.global-click-effect.rose-purple {
+    filter: hue-rotate(290deg) saturate(150%) drop-shadow(0 4px 8px rgba(180, 140, 255, 0.35));
 }
 
 @keyframes globalClick {

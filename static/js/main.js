@@ -30,7 +30,10 @@ const GlobalClickEffects = {
     isInitialized: false,
     symbols: [
         { symbol: '💗', className: 'heart' },
-        { symbol: '🌸', className: 'flower' }
+        { symbol: '🌹', className: 'rose' },
+        { symbol: '🌹', className: 'rose rose-peach' },
+        { symbol: '🌹', className: 'rose rose-gold' },
+        { symbol: '🌹', className: 'rose rose-purple' }
     ]
 };
 
