@@ -199,7 +199,7 @@ async function playFinalMessages(messages) {
     const messagesArray = Array.isArray(messages) ? messages : FINAL_MESSAGES;
 
     // 禁用输入区域
-    disableInput('听我说完...');
+    disableInput('请听我说完哦 ~');
 
     for (const msg of messagesArray) {
         await App.delay(msg.delay);
@@ -228,7 +228,7 @@ async function playInitialMessages() {
     chatMessages.innerHTML = '';
 
     // 禁用输入区域，直到初始消息播放完成
-    disableInput('听我说完...');
+    disableInput('请听我说完哦 ~');
 
     for (const msg of InitialMessages) {
         await App.delay(msg.delay);
