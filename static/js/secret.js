@@ -25,6 +25,16 @@ const PlayfulState = {
 };
 
 // ============================================================
+// 密码页标题打字效果
+// ============================================================
+let secretTitleTimer = null;
+
+// ============================================================
+// DOM 元素 - 密码页
+// ============================================================
+const secretTitle = document.querySelector('#secret-lock h2');
+
+// ============================================================
 // DOM 元素 - 密码页
 // ============================================================
 const secretLock = document.getElementById('secret-lock');
@@ -42,6 +52,32 @@ const questionText = document.getElementById('question-text');
 const optionsGroup = document.getElementById('options-group');
 const playfulResponse = document.getElementById('playful-response');
 const playfulProceed = document.getElementById('playful-proceed');
+
+// ============================================================
+// 密码页标题打字效果
+// ============================================================
+function startSecretTitleTyping() {
+    if (!secretTitle) return;
+
+    const fullText = secretTitle.dataset.fullText || secretTitle.textContent.trim();
+    secretTitle.dataset.fullText = fullText;
+    secretTitle.textContent = '';
+    secretTitle.classList.add('typing');
+
+    let index = 0;
+    if (secretTitleTimer) {
+        clearInterval(secretTitleTimer);
+    }
+
+    secretTitleTimer = setInterval(() => {
+        index += 1;
+        secretTitle.textContent = fullText.slice(0, index);
+        if (index >= fullText.length) {
+            clearInterval(secretTitleTimer);
+            secretTitleTimer = null;
+        }
+    }, 120);
+}
 
 // ============================================================
 // 密码验证逻辑
@@ -214,6 +250,7 @@ secretProceed?.addEventListener('click', () => {
 // 页面进入时加载数据
 document.addEventListener('pageEnter', (e) => {
     if (e.detail.pageName === 'secret') {
+        startSecretTitleTyping();
         passwordInput?.focus();
     }
     
