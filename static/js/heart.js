@@ -16,19 +16,38 @@ const Config = {
     },
     balloon: {
         count: 26,
-        colors: ['#ff6b6b', '#4ecdc4', '#ffe66d', '#95e1d3', '#f38181', '#aa96da', '#fcbad3', '#a8d8ea']
+        colors: [
+            '#ff6b6b', '#4ecdc4', '#ffe66d', '#95e1d3', '#f38181', '#aa96da',
+            '#fcbad3', '#a8d8ea', '#ffa07a', '#98d8c8', '#f7dc6f', '#bb8fce',
+            '#85c1e2', '#f8b500', '#ff91a4', '#00d2ff', '#ff7eb9', '#79d70f',
+            '#ffd700', '#ff69b4', '#00ced1', '#ff8c00', '#9370db', '#40e0d0',
+            '#ff1493', '#7fffd4'
+        ]
     },
     firework: {
         launchInterval: 800,
         particleCount: 150,
         trailLength: 8,
-        colors: ['#ff0000', '#ff4500', '#ffd700', '#ffff00', '#00ff00', '#00ffff', '#00bfff', '#0000ff', '#8a2be2', '#ff00ff', '#ff69b4', '#ffffff']
+        colors: [
+            '#ff0000', '#ff4500', '#ffd700', '#ffff00', '#00ff00', '#00ffff',
+            '#00bfff', '#0000ff', '#8a2be2', '#ff00ff', '#ff69b4', '#ffffff',
+            '#ff1493', '#7fffd4', '#ff8c00', '#9370db', '#40e0d0', '#ffa07a',
+            '#98d8c8', '#f7dc6f', '#bb8fce', '#85c1e2', '#f8b500', '#ff91a4',
+            '#79d70f', '#00d2ff'
+        ]
     },
     cake: {
         candleCount: 26,
         scale: 1.2,
         baseWidth: 200,
-        flameFlickerSpeed: 0.15
+        flameFlickerSpeed: 0.15,
+        candleColors: [
+            '#ff6b6b', '#4ecdc4', '#ffe66d', '#95e1d3', '#f38181', '#aa96da',
+            '#fcbad3', '#a8d8ea', '#ffa07a', '#98d8c8', '#f7dc6f', '#bb8fce',
+            '#85c1e2', '#f8b500', '#ff91a4', '#00d2ff', '#ff7eb9', '#79d70f',
+            '#ffd700', '#ff69b4', '#00ced1', '#ff8c00', '#9370db', '#40e0d0',
+            '#ff1493', '#7fffd4'
+        ]
     }
 };
 
@@ -128,19 +147,36 @@ function drawHeart(centerX, centerY) {
 // 气球相关
 // ============================================================
 class Balloon {
-    constructor(index, total) {
+    constructor(index, total, wave, waveDelay) {
         this.x = (canvas.width / (total + 1)) * (index + 1);
-        this.targetY = 30 + Math.random() * 40;
-        this.y = -100 - Math.random() * 200;
+        // 让气球有更多层次：分成3-4层，每层高度不同
+        const layer = index % 4; // 分成4层
+        const baseY = 20 + layer * 35; // 每层间隔35像素
+        this.targetY = baseY + Math.random() * 15; // 每层内也有小的随机变化
+        this.y = canvas.height + 50; // 从屏幕底部开始
         this.width = 35 + Math.random() * 15;
         this.height = this.width * 1.2;
-        this.color = Config.balloon.colors[Math.floor(Math.random() * Config.balloon.colors.length)];
+        this.color = Config.balloon.colors[index % Config.balloon.colors.length]; // 使用对应索引的颜色
         this.swayOffset = Math.random() * Math.PI * 2;
         this.swaySpeed = 0.02 + Math.random() * 0.01;
-        this.riseSpeed = 1 + Math.random() * 0.5;
+        this.riseSpeed = 1.5 + Math.random() * 0.8;
+        this.startDelay = waveDelay; // 该波次的延迟时间（毫秒）
+        this.startTime = Date.now(); // 记录创建时间
+        this.hasStarted = false; // 是否已经开始上升
     }
     update() {
-        if (this.y < this.targetY) this.y += this.riseSpeed;
+        // 检查是否到了开始上升的时间
+        if (!this.hasStarted) {
+            if (Date.now() - this.startTime >= this.startDelay) {
+                this.hasStarted = true;
+            } else {
+                return; // 还没到时间，不更新
+            }
+        }
+
+        if (this.y > this.targetY) {
+            this.y -= this.riseSpeed;
+        }
         this.swayOffset += this.swaySpeed;
     }
     draw() {
@@ -175,7 +211,26 @@ class Balloon {
 
 function initBalloons() {
     balloons = [];
-    for (let i = 0; i < Config.balloon.count; i++) balloons.push(new Balloon(i, Config.balloon.count));
+    const totalBalloons = Config.balloon.count;
+    let currentIndex = 0;
+
+    // 分成多波，每波1-5个气球
+    while (currentIndex < totalBalloons) {
+        const waveSize = Math.min(
+            Math.floor(Math.random() * 5) + 1, // 每波1-5个
+            totalBalloons - currentIndex // 不超过剩余数量
+        );
+
+        // 计算这一波的延迟时间（递增延迟）
+        const waveIndex = Math.floor(currentIndex / 5);
+        const waveDelay = waveIndex * 800; // 每波间隔800毫秒
+
+        // 创建这一波的气球
+        for (let i = 0; i < waveSize; i++) {
+            balloons.push(new Balloon(currentIndex, totalBalloons, waveIndex, waveDelay));
+            currentIndex++;
+        }
+    }
 }
 
 // ============================================================
@@ -404,13 +459,13 @@ function drawCake(centerX, baseY) {
     // 蜡烛
     const cc = Config.cake.candleCount,
         cs = (w2 - 40 * scale) / (cc - 1);
-    const ccols = ['#ffb6c1', '#87ceeb', '#98fb98', '#fffacd', '#dda0dd'];
+    const ccols = Config.cake.candleColors;
     const cby = y2 - h2 - 10 * scale;
     for (let i = 0; i < cc; i++) {
         const cx = centerX - w2 / 2 + 20 * scale + i * cs;
         const ch = (25 + (i % 3) * 5) * scale,
             cw = 5 * scale;
-        ctx.fillStyle = ccols[i % ccols.length];
+        ctx.fillStyle = ccols[i];
         ctx.fillRect(cx - cw / 2, cby - ch, cw, ch);
         ctx.strokeStyle = 'rgba(255,255,255,0.4)';
         ctx.lineWidth = 1.5 * scale;
