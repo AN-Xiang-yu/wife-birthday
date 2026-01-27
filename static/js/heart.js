@@ -212,24 +212,33 @@ class Balloon {
 function initBalloons() {
     balloons = [];
     const totalBalloons = Config.balloon.count;
-    let currentIndex = 0;
 
-    // 分成多波，每波1-5个气球
-    while (currentIndex < totalBalloons) {
-        const waveSize = Math.min(
-            Math.floor(Math.random() * 5) + 1, // 每波1-5个
-            totalBalloons - currentIndex // 不超过剩余数量
-        );
+    // 生成从中间向两边扩展的索引顺序
+    const centerIndex = Math.floor(totalBalloons / 2);
+    const balloonOrder = [centerIndex];
 
-        // 计算这一波的延迟时间（递增延迟）
-        const waveIndex = Math.floor(currentIndex / 5);
-        const waveDelay = waveIndex * 800; // 每波间隔800毫秒
-
-        // 创建这一波的气球
-        for (let i = 0; i < waveSize; i++) {
-            balloons.push(new Balloon(currentIndex, totalBalloons, waveIndex, waveDelay));
-            currentIndex++;
+    // 交替添加左右两边的索引
+    for (let offset = 1; offset < totalBalloons; offset++) {
+        if (centerIndex + offset < totalBalloons) {
+            balloonOrder.push(centerIndex + offset);
         }
+        if (centerIndex - offset >= 0) {
+            balloonOrder.push(centerIndex - offset);
+        }
+    }
+
+    // 按新顺序创建气球，分波次上升
+    let currentWaveIndex = 0;
+    for (let i = 0; i < balloonOrder.length; i++) {
+        const balloonIndex = balloonOrder[i];
+
+        // 每5个气球为一波，或者到达数组末尾时也算一波
+        if (i > 0 && i % 5 === 0) {
+            currentWaveIndex++;
+        }
+
+        const waveDelay = currentWaveIndex * 800; // 每波间隔800毫秒
+        balloons.push(new Balloon(balloonIndex, totalBalloons, currentWaveIndex, waveDelay));
     }
 }
 

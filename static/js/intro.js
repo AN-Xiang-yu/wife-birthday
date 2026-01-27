@@ -19,7 +19,9 @@ const IntroState = {
     isProcessing: false,
     isReturnMode: false, // 是否是返回模式
     returnMessageIndex: 0, // 返回模式下的消息索引
-    isLetterTransitioning: false
+    isLetterTransitioning: false,
+    originalMessagesCount: 0, // 保存原始聊天记录的消息数量
+    hasReturnedBefore: false // 是否已经重返过
 };
 
 const randomBetween = (min, max) => Math.random() * (max - min) + min;
@@ -36,7 +38,7 @@ const ReturnMessages = [
 // 初始进入页面的消息（每次进入页面都重新播放）
 const InitialMessages = [
     { delay: 500, text: "嘿，亲爱的，你终于来啦" },
-    { delay: 1500, text: "我等你很久了..." },
+    { delay: 1500, text: "我等你很久了 ~" },
     {
         delay: 2500,
         text: "知道今天是什么日子吗？"
@@ -66,8 +68,9 @@ const attemptHint = document.getElementById('attempt-hint');
  * @param {string} text - 消息内容
  * @param {string} type - 消息类型：'system' 或 'user'
  * @param {boolean} animate - 是否使用动画
+ * @param {boolean} isReturnMessage - 是否是重返消息（需要标记）
  */
-function addMessage(text, type = 'system', animate = true) {
+function addMessage(text, type = 'system', animate = true, isReturnMessage = false) {
     const avatarPath = type === 'system' ? '/static/images/photos/chat/相宇.jpg' : '/static/images/photos/chat/千禧.jpg';
     const avatarImg = App.createElement('img', {
         src: avatarPath,
@@ -75,7 +78,7 @@ function addMessage(text, type = 'system', animate = true) {
     });
 
     const messageEl = App.createElement('div', {
-        className: `message ${type}`
+        className: `message ${type}${isReturnMessage ? ' return-message' : ''}`
     }, [
         App.createElement('span', { className: 'avatar' }, [avatarImg]),
         App.createElement('div', { className: 'bubble' }, text)
@@ -141,6 +144,22 @@ function enterReturnMode() {
     IntroState.isReturnMode = true;
     IntroState.returnMessageIndex = 0;
 
+    // 如果之前已经重返过，清除上次重返的消息
+    if (IntroState.hasReturnedBefore) {
+        const returnMessages = chatMessages.querySelectorAll('.return-message');
+        returnMessages.forEach(msg => msg.remove());
+
+        // 清除继续按钮容器
+        const continueContainer = chatMessages.querySelector('.return-continue-container');
+        if (continueContainer) {
+            continueContainer.remove();
+        }
+    } else {
+        // 第一次重返，保存当前消息数量
+        IntroState.originalMessagesCount = chatMessages.children.length;
+        IntroState.hasReturnedBefore = true;
+    }
+
     // 隐藏输入区域
     const inputArea = document.querySelector('.chat-input-area');
     if (inputArea) {
@@ -162,7 +181,7 @@ function enterReturnMode() {
 function playReturnMessages() {
     ReturnMessages.forEach((msg, index) => {
         setTimeout(() => {
-            addMessage(msg.text, 'system');
+            addMessage(msg.text, 'system', true, true); // 标记为重返消息
 
             // 检查是否有特殊动作
             if (msg.action === 'showContinueButton') {

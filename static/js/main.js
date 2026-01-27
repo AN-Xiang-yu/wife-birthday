@@ -88,6 +88,128 @@ function initGlobalClickEffects() {
 }
 
 // ============================================================
+// 全局花雨效果（多页面共享）
+// ============================================================
+
+const GlobalRainEffect = {
+    isInitialized: false,
+    rainLayer: null,
+    rainInterval: null,
+    currentPage: null,
+    symbols: [
+        { symbol: '💗', className: 'heart' },
+        { symbol: '🌹', className: 'rose' }
+    ],
+    // 需要显示花雨的页面（除了 intro 和 ending）
+    enabledPages: ['timeline', 'moments', 'letter', 'secret', 'playful']
+};
+
+function initGlobalRainEffect() {
+    if (GlobalRainEffect.isInitialized) return;
+
+    // 创建全局花雨容器
+    GlobalRainEffect.rainLayer = App.createElement('div', {
+        className: 'global-rain-layer',
+        'aria-hidden': 'true'
+    });
+    document.body.appendChild(GlobalRainEffect.rainLayer);
+
+    GlobalRainEffect.isInitialized = true;
+}
+
+function shouldShowRain(pageName) {
+    return GlobalRainEffect.enabledPages.includes(pageName);
+}
+
+function startGlobalRain() {
+    if (GlobalRainEffect.rainInterval) return;
+
+    // 初始生成一些花雨
+    seedGlobalRainItems();
+
+    // 启动持续飘落
+    const interval = window.AppConfig?.RAIN_SPAWN_INTERVAL || 650;
+    GlobalRainEffect.rainInterval = setInterval(() => {
+        pruneGlobalRainItems();
+        GlobalRainEffect.rainLayer.appendChild(createGlobalRainItem());
+    }, interval);
+}
+
+function stopGlobalRain() {
+    if (!GlobalRainEffect.rainInterval) return;
+    clearInterval(GlobalRainEffect.rainInterval);
+    GlobalRainEffect.rainInterval = null;
+
+    // 清空所有花雨
+    if (GlobalRainEffect.rainLayer) {
+        GlobalRainEffect.rainLayer.innerHTML = '';
+    }
+}
+
+function seedGlobalRainItems() {
+    if (!GlobalRainEffect.rainLayer) return;
+
+    const totalItems = window.AppConfig?.RAIN_INITIAL_ITEMS || 36;
+    GlobalRainEffect.rainLayer.innerHTML = '';
+
+    for (let i = 0; i < totalItems; i++) {
+        GlobalRainEffect.rainLayer.appendChild(createGlobalRainItem(true));
+    }
+}
+
+function pruneGlobalRainItems() {
+    if (!GlobalRainEffect.rainLayer) return;
+
+    const maxItems = window.AppConfig?.RAIN_MAX_ITEMS || 120;
+    const items = GlobalRainEffect.rainLayer.querySelectorAll('.global-rain-item');
+    if (items.length <= maxItems) return;
+
+    const overflow = items.length - maxItems;
+    for (let i = 0; i < overflow; i++) {
+        items[i].remove();
+    }
+}
+
+function createGlobalRainItem(useDelay = false) {
+    const config = GlobalRainEffect.symbols[Math.floor(Math.random() * GlobalRainEffect.symbols.length)];
+    const item = document.createElement('span');
+    item.className = `global-rain-item ${config.className}`;
+    item.textContent = config.symbol;
+
+    const left = Math.random() * 100;
+    const duration = 6 + Math.random() * 6;
+    const delay = useDelay ? Math.random() * 6 : 0;
+    const size = 14 + Math.random() * 18;
+    const opacity = 0.5 + Math.random() * 0.5;
+    const drift = (Math.random() * 2 - 1) * 80;
+
+    item.style.left = `${left}%`;
+    item.style.fontSize = `${size}px`;
+    item.style.opacity = `${opacity}`;
+    item.style.setProperty('--fall-duration', `${duration}s`);
+    item.style.setProperty('--fall-delay', `${delay}s`);
+    item.style.setProperty('--fall-drift', `${drift}px`);
+
+    item.addEventListener('animationend', () => {
+        item.remove();
+    });
+
+    return item;
+}
+
+function updateGlobalRain(pageName) {
+    if (!GlobalRainEffect.isInitialized) return;
+
+    if (shouldShowRain(pageName)) {
+        startGlobalRain();
+    } else {
+        stopGlobalRain();
+    }
+
+    GlobalRainEffect.currentPage = pageName;
+}
+
+// ============================================================
 // 页面切换
 // ============================================================
 
@@ -97,50 +219,53 @@ function initGlobalClickEffects() {
  */
 function navigateTo(target) {
     if (AppState.isTransitioning) return;
-    
+
     let targetIndex;
-    
+
     if (typeof target === 'string') {
         targetIndex = AppState.pages.indexOf(target);
     } else {
         targetIndex = target;
     }
-    
+
     if (targetIndex < 0 || targetIndex >= AppState.pages.length) {
         console.warn('无效的页面目标:', target);
         return;
     }
-    
+
     if (targetIndex === AppState.currentPage) return;
-    
+
     AppState.isTransitioning = true;
-    
+
     const currentPageEl = document.getElementById(`page-${AppState.pages[AppState.currentPage]}`);
     const targetPageEl = document.getElementById(`page-${AppState.pages[targetIndex]}`);
-    
+
     // 淡出当前页面
     currentPageEl.classList.add('fade-out');
-    
+
     setTimeout(() => {
         currentPageEl.classList.remove('active', 'fade-out');
-        
+
         // 淡入目标页面
         targetPageEl.classList.add('active', 'fade-in');
-        
+
         setTimeout(() => {
             targetPageEl.classList.remove('fade-in');
             AppState.currentPage = targetIndex;
             AppState.isTransitioning = false;
-            
+
             // 更新进度指示器
             updateProgressIndicator();
-            
+
+            // 更新全局花雨效果
+            updateGlobalRain(AppState.pages[targetIndex]);
+
             // 触发页面进入事件
             const event = new CustomEvent('pageEnter', {
                 detail: { pageName: AppState.pages[targetIndex] }
             });
             document.dispatchEvent(event);
-            
+
         }, 500);
     }, 500);
 }
@@ -168,40 +293,43 @@ function prevPage() {
  */
 function restartFromEnding() {
     if (AppState.isTransitioning) return;
-    
+
     AppState.isTransitioning = true;
-    
+
     const currentPageEl = document.getElementById(`page-${AppState.pages[AppState.currentPage]}`);
     const introPageEl = document.getElementById('page-intro');
-    
+
     // 淡出当前页面
     currentPageEl.classList.add('fade-out');
-    
+
     setTimeout(() => {
         currentPageEl.classList.remove('active', 'fade-out');
-        
+
         // 淡入首页
         introPageEl.classList.add('active', 'fade-in');
-        
+
         setTimeout(() => {
             introPageEl.classList.remove('fade-in');
             AppState.currentPage = 0;
             AppState.isTransitioning = false;
-            
+
             // 更新进度指示器
             updateProgressIndicator();
+
+            // 更新全局花雨效果
+            updateGlobalRain('intro');
 
             // 触发页面进入事件（用于音乐淡出等逻辑）
             const event = new CustomEvent('pageEnter', {
                 detail: { pageName: 'intro' }
             });
             document.dispatchEvent(event);
-            
+
             // 触发返回模式
             if (window.IntroModule && window.IntroModule.resetForReturnMode) {
                 window.IntroModule.resetForReturnMode();
             }
-            
+
         }, 500);
     }, 500);
 }
@@ -215,7 +343,7 @@ function restartFromEnding() {
  */
 function updateProgressIndicator() {
     const dots = document.querySelectorAll('#progress-indicator .dot');
-    
+
     dots.forEach((dot, index) => {
         dot.classList.toggle('active', index === AppState.currentPage);
     });
@@ -226,7 +354,7 @@ function updateProgressIndicator() {
  */
 function initProgressIndicator() {
     const indicator = document.getElementById('progress-indicator');
-    
+
     // 开场页不显示进度指示器
     document.addEventListener('pageEnter', (e) => {
         if (e.detail.pageName === 'intro') {
@@ -235,7 +363,7 @@ function initProgressIndicator() {
             indicator.classList.remove('hidden');
         }
     });
-    
+
     updateProgressIndicator();
 }
 
@@ -258,11 +386,11 @@ async function postRequest(url, data) {
             },
             body: JSON.stringify(data)
         });
-        
+
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         return await response.json();
     } catch (error) {
         console.error('请求失败:', error);
@@ -278,11 +406,11 @@ async function postRequest(url, data) {
 async function getRequest(url) {
     try {
         const response = await fetch(url);
-        
+
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         return await response.json();
     } catch (error) {
         console.error('请求失败:', error);
@@ -311,7 +439,7 @@ function delay(ms) {
  */
 async function typeWriter(element, text, speed = 50) {
     element.textContent = '';
-    
+
     for (let i = 0; i < text.length; i++) {
         element.textContent += text.charAt(i);
         await delay(speed);
@@ -327,7 +455,7 @@ async function typeWriter(element, text, speed = 50) {
  */
 function createElement(tag, attrs = {}, children = null) {
     const el = document.createElement(tag);
-    
+
     Object.entries(attrs).forEach(([key, value]) => {
         if (key === 'className') {
             el.className = value;
@@ -339,7 +467,7 @@ function createElement(tag, attrs = {}, children = null) {
             el.setAttribute(key, value);
         }
     });
-    
+
     if (children) {
         if (Array.isArray(children)) {
             children.forEach(child => {
@@ -355,7 +483,7 @@ function createElement(tag, attrs = {}, children = null) {
             el.appendChild(children);
         }
     }
-    
+
     return el;
 }
 
@@ -365,15 +493,18 @@ function createElement(tag, attrs = {}, children = null) {
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log('🎂 生日纪念网站已加载');
-    
+
     // 初始化进度指示器
     initProgressIndicator();
 
     // 初始化全局点击特效
     initGlobalClickEffects();
-    
+
+    // 初始化全局花雨效果
+    initGlobalRainEffect();
+
     // 确保初始页面正确显示
-    const desiredStart = Number(window.AppConfig?.START_PAGE ?? 1);
+    const desiredStart = Number(window.AppConfig?.START_PAGE?? 1);
     const maxStartIndex = Math.min(3, AppState.pages.length - 1);
     const startIndex = Math.min(
         Math.max(Number.isFinite(desiredStart) ? desiredStart - 1 : 0, 0),
@@ -389,6 +520,9 @@ document.addEventListener('DOMContentLoaded', () => {
         targetPage.classList.add('active');
         AppState.currentPage = startIndex;
         updateProgressIndicator();
+
+        // 初始化花雨效果
+        updateGlobalRain(targetPageName);
 
         const event = new CustomEvent('pageEnter', {
             detail: { pageName: targetPageName }
