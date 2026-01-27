@@ -9,6 +9,355 @@
  */
 
 /* 结尾页额外定制（如有需要） */
+#page-ending {
+    position: relative;
+    overflow: hidden;
+}
+
+.ending-container {
+    position: relative;
+    z-index: 2;
+}
+
+#page-ending .ion-heart,
+#page-ending .ion-heart .ion-core,
+#page-ending .ion-heart .ion-ring,
+#page-ending .ion-heart::before,
+#page-ending .ion-heart::after,
+#page-ending .ion-heart .ion-ring::before,
+#page-ending .ion-heart .ion-ring::after {
+    animation: none;
+}
+
+/* 顶部气球 */
+.balloons {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: min(92vw, 720px);
+    height: 180px;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.balloon {
+    width: 64px;
+    height: 82px;
+    border-radius: 50% 50% 45% 45%;
+    position: relative;
+    box-shadow: inset -8px -12px 0 rgba(0, 0, 0, 0.06);
+    animation: balloon-rise 9s ease-in-out infinite;
+}
+
+.balloon::after {
+    content: "";
+    position: absolute;
+    bottom: -22px;
+    left: 50%;
+    width: 2px;
+    height: 36px;
+    background: rgba(112, 112, 112, 0.4);
+    transform: translateX(-50%);
+}
+
+.balloon::before {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    width: 12px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+    transform: translateX(-50%) rotate(12deg);
+}
+
+.balloon-pink {
+    background: #ffb1d6;
+    animation-delay: -1s;
+}
+
+.balloon-blue {
+    background: #9ad7ff;
+    animation-delay: -2.5s;
+}
+
+.balloon-peach {
+    background: #ffc9a6;
+    animation-delay: -4s;
+}
+
+.balloon-lavender {
+    background: #c7b7ff;
+    animation-delay: -6s;
+}
+
+.balloon-mint {
+    background: #b6f0dc;
+    animation-delay: -3.2s;
+}
+
+.balloon-gold {
+    background: #ffd58a;
+    animation-delay: -5.4s;
+}
+
+@keyframes balloon-rise {
+    0%,
+    100% {
+        transform: translateY(24px) translateX(0);
+        opacity: 0.85;
+    }
+    50% {
+        transform: translateY(0) translateX(8px);
+        opacity: 1;
+    }
+}
+
+/* 蛋糕 */
+.cake-wrapper {
+    margin: 10px 0 24px;
+    width: min(320px, 82vw);
+    position: relative;
+    z-index: 2;
+}
+
+.cake {
+    position: relative;
+    width: 100%;
+    height: 220px;
+}
+
+.cake-top,
+.cake-middle,
+.cake-bottom {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 60px;
+}
+
+.cake-top {
+    width: 220px;
+    height: 80px;
+    top: 56px;
+    background: #f7a0b5;
+    box-shadow: 0 8px 0 #e4879d;
+}
+
+.cake-top .icing {
+    position: absolute;
+    inset: 8px 16px 36px;
+    background: #fff4f8;
+    border-radius: 50px;
+}
+
+.cake-top .sprinkles {
+    position: absolute;
+    inset: 18px 26px 48px;
+    background-image:
+        radial-gradient(#ff6fa7 3px, transparent 3px),
+        radial-gradient(#ffd65f 3px, transparent 3px),
+        radial-gradient(#7ad3ff 3px, transparent 3px),
+        radial-gradient(#9ef0c3 3px, transparent 3px);
+    background-size: 28px 24px;
+    background-position: 0 0, 10px 8px, 18px 2px, 4px 14px;
+    border-radius: 40px;
+    opacity: 0.85;
+}
+
+.cake-middle {
+    width: 260px;
+    height: 80px;
+    top: 110px;
+    background: #fff1f4;
+    box-shadow: 0 8px 0 #f1d6df;
+}
+
+.cake-bottom {
+    width: 300px;
+    height: 74px;
+    top: 160px;
+    background: #fdebdc;
+    box-shadow: 0 8px 0 #f1d7c5;
+}
+
+.cake-plate {
+    position: absolute;
+    width: 320px;
+    height: 36px;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #f7f7f7;
+    border-radius: 50%;
+    box-shadow: inset 0 4px 0 rgba(255, 255, 255, 0.7),
+        0 6px 14px rgba(0, 0, 0, 0.08);
+}
+
+.candles {
+    position: absolute;
+    top: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 240px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center;
+}
+
+.candle {
+    position: relative;
+    width: 8px;
+    height: 28px;
+    background: repeating-linear-gradient(
+        45deg,
+        #ffffff,
+        #ffffff 4px,
+        #a9ddff 4px,
+        #a9ddff 8px
+    );
+    border-radius: 4px;
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.1);
+}
+
+.candle:nth-child(3n) {
+    background: repeating-linear-gradient(
+        45deg,
+        #ffffff,
+        #ffffff 4px,
+        #ffd07a 4px,
+        #ffd07a 8px
+    );
+}
+
+.candle:nth-child(4n) {
+    background: repeating-linear-gradient(
+        45deg,
+        #ffffff,
+        #ffffff 4px,
+        #ff98c2 4px,
+        #ff98c2 8px
+    );
+}
+
+.flame {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    width: 10px;
+    height: 14px;
+    background: radial-gradient(circle at 50% 30%, #ffe27d 0%, #ff9b3f 60%, #ff6b3b 100%);
+    border-radius: 50% 50% 50% 50%;
+    transform: translateX(-50%);
+    animation: flame-flicker 1.4s ease-in-out infinite;
+}
+
+@keyframes flame-flicker {
+    0%,
+    100% {
+        transform: translateX(-50%) scale(1);
+        opacity: 0.95;
+    }
+    50% {
+        transform: translateX(-50%) scale(1.12);
+        opacity: 0.8;
+    }
+}
+
+/* 底部烟火喷射 */
+.fireworks {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 200px;
+    pointer-events: none;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    z-index: 0;
+}
+
+.firework {
+    position: relative;
+    width: 12px;
+    height: 140px;
+}
+
+.firework::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(80, 80, 80, 0.5) 100%);
+    transform: translateX(-50%);
+}
+
+.firework::after {
+    content: "";
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    width: 8px;
+    height: 8px;
+    background: transparent;
+    box-shadow:
+        0 -20px 0 #ffd86a,
+        -8px -36px 0 #ffd86a,
+        8px -36px 0 #ffd86a,
+        -12px -52px 0 #ffe7a5,
+        12px -52px 0 #ffe7a5,
+        0 -68px 0 #ffe7a5;
+    transform: translateX(-50%);
+    animation: fountain 2.6s ease-in-out infinite;
+}
+
+.firework-left {
+    transform: translateX(-60px);
+}
+
+.firework-center {
+    transform: translateX(0);
+}
+
+.firework-right {
+    transform: translateX(60px);
+}
+
+.firework-left::after {
+    animation-delay: -0.8s;
+}
+
+.firework-right::after {
+    animation-delay: -1.4s;
+}
+
+@keyframes fountain {
+    0% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(40px) scale(0.6);
+    }
+    40% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0) scale(1);
+    }
+    80% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-30px) scale(0.9);
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-40px) scale(0.8);
+    }
+}
 
 /* 背景粒子效果（可选） */
 #page-ending .particles {
