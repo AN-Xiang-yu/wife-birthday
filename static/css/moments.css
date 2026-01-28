@@ -35,7 +35,9 @@
     perspective: 1400px;
 }
 
+
 /* 瞬间卡片 - 翻转容器 */
+
 .moment-card {
     --card-offset-x: 0px;
     --card-offset-y: 0px;
@@ -91,7 +93,9 @@
     transform: rotateY(180deg);
 }
 
+
 /* 卡片正面和背面 */
+
 .moment-front,
 .moment-back {
     position: absolute;
@@ -103,7 +107,9 @@
     box-shadow: var(--shadow-card);
 }
 
+
 /* 卡片正面 - 表层 */
+
 .moment-front {
     background: var(--color-card);
     display: flex;
@@ -157,13 +163,11 @@
     font-size: 1rem;
 }
 
+
 /* 卡片背面 - 深层 */
+
 .moment-back {
-    background: linear-gradient(
-        135deg,
-        var(--color-primary) 0%,
-        var(--color-primary-dark) 100%
-    );
+    background: linear-gradient( 135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
     transform: rotateY(180deg);
     padding: var(--spacing-lg);
     display: flex;
@@ -203,7 +207,9 @@
     color: var(--color-text-light);
 }
 
+
 /* 点击再次翻转的提示 */
+
 .moment-back-hint {
     position: absolute;
     bottom: var(--spacing-sm);
@@ -213,11 +219,16 @@
 }
 
 /* 继续按钮 */
+
 #page-moments .proceed-btn {
-    margin-top: var(--spacing-xxl);
+    position: relative;
+    z-index: 10;
+    margin-top: var(--spacing-xl);
 }
 
+
 /* 响应式 */
+
 @media (max-width: 768px) {
     #page-moments .page-header {
         margin-bottom: var(--spacing-lg);
