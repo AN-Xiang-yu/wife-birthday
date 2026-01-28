@@ -10,8 +10,8 @@ from typing import Dict, Any, Optional
 import json
 import os
 
-from config import (ChatConfig, Config, LetterConfig, RainEffectConfig,
-                    SecretConfig, TypographyConfig)
+from config import (ButtonConfig, ChatConfig, Config, LetterConfig,
+                    RainEffectConfig, SecretConfig, TypographyConfig)
 from utils.helpers import load_json_data, validate_password, process_chat_input
 
 
@@ -51,6 +51,7 @@ def index() -> str:
         "PLAYFUL_TEXT_SIZE_REM": TypographyConfig.PLAYFUL_TEXT_SIZE_REM,
         "ENDING_BLESSING_SIZE_REM": TypographyConfig.ENDING_BLESSING_SIZE_REM,
         "ENDING_NOTE_SIZE_REM": TypographyConfig.ENDING_NOTE_SIZE_REM,
+        "BUTTON_SCALE": ButtonConfig.BUTTON_SCALE,
         "LETTER_TYPING_INTERVAL_MS": LetterConfig.TYPING_INTERVAL_MS,
         "LETTER_PARAGRAPH_DELAY_MS": LetterConfig.PARAGRAPH_DELAY_MS
     }

@@ -187,12 +187,12 @@
 }
 
 .send-btn {
-    padding: var(--spacing-sm) var(--spacing-md);
+    padding: calc(var(--spacing-sm) * var(--button-scale)) calc(var(--spacing-md) * var(--button-scale));
     background: var(--color-primary);
     color: var(--color-text);
     border-radius: var(--radius-full);
     font-weight: 500;
-    font-size: var(--intro-text-size);
+    font-size: calc(var(--intro-text-size) * var(--button-scale));
 }
 
 .send-btn:hover {

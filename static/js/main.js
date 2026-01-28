@@ -37,6 +37,13 @@ function applyConfigStyles() {
         root.style.setProperty(name, `${parsed}rem`);
     };
 
+    const setNumberVar = (name, value) => {
+        if (value === undefined || value === null) return;
+        const parsed = typeof value === 'number' ? value : parseFloat(value);
+        if (Number.isNaN(parsed)) return;
+        root.style.setProperty(name, `${parsed}`);
+    };
+
     setRemVar('--page-title-size', config.PAGE_TITLE_SIZE_REM);
     setRemVar('--intro-text-size', config.INTRO_TEXT_SIZE_REM);
     setRemVar('--timeline-text-size', config.TIMELINE_TEXT_SIZE_REM);
@@ -47,6 +54,7 @@ function applyConfigStyles() {
     setRemVar('--playful-text-size', config.PLAYFUL_TEXT_SIZE_REM);
     setRemVar('--ending-blessing-size', config.ENDING_BLESSING_SIZE_REM);
     setRemVar('--ending-note-size', config.ENDING_NOTE_SIZE_REM);
+    setNumberVar('--button-scale', config.BUTTON_SCALE);
 }
 
 applyConfigStyles();

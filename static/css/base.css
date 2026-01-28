@@ -79,6 +79,8 @@
     --playful-text-size: 1.25rem;
     --ending-blessing-size: 2.8rem;
     --ending-note-size: 1.25rem;
+    /* 按钮缩放 */
+    --button-scale: 1;
 }
 
 
@@ -173,7 +175,7 @@ body {
 
 button {
     font-family: inherit;
-    font-size: var(--text-base);
+    font-size: calc(var(--text-base) * var(--button-scale));
     cursor: pointer;
     border: none;
     outline: none;
@@ -181,11 +183,11 @@ button {
 }
 
 .proceed-btn {
-    padding: var(--spacing-sm) var(--spacing-lg);
+    padding: calc(var(--spacing-sm) * var(--button-scale)) calc(var(--spacing-lg) * var(--button-scale));
     background: var(--color-primary);
     color: var(--color-text);
     border-radius: var(--radius-full);
-    font-size: var(--text-base);
+    font-size: calc(var(--text-base) * var(--button-scale));
     margin-top: var(--spacing-xl);
 }
 
