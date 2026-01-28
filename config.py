@@ -39,7 +39,7 @@ class Config:
     ]
 
     # 起始页面（1-4 对应开场/时间线/故事放大/信件）
-    START_PAGE: int = 1
+    START_PAGE: int = 4
 
 class ChatConfig:
     """开场页对话配置"""
@@ -159,14 +159,14 @@ class TypographyConfig:
     LETTER_TEXT_SIZE_REM: float = 1.5
 
     # 第 4 页（信件标题/红色文字）字号
-    LETTER_LABEL_SIZE_REM: float = 1.1
+    LETTER_LABEL_SIZE_REM: float = 1.35
 
 
 class LetterConfig:
     """信件页逐字显示配置"""
 
     # 打字速度（毫秒/字符）
-    TYPING_INTERVAL_MS: int = 45
+    TYPING_INTERVAL_MS: int = 1000
 
     # 段落之间的间隔（毫秒）
-    PARAGRAPH_DELAY_MS: int = 600
+    PARAGRAPH_DELAY_MS: int = 1500
