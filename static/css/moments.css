@@ -19,7 +19,7 @@
     display: flex;
     justify-content: center;
     width: 100%;
-    padding-top: var(--spacing-xxl);
+    padding-top: calc(var(--spacing-xxl) + var(--spacing-lg));
     padding-bottom: calc(var(--spacing-xxl) + var(--spacing-lg));
 }
 
@@ -31,7 +31,7 @@
     width: min(920px, 90vw);
     height: 540px;
     margin: var(--spacing-lg) auto 0;
-    --moment-card-top: var(--spacing-xl);
+    --moment-card-top: calc(var(--spacing-xxl) + var(--spacing-md));
     perspective: 1400px;
 }
 
@@ -224,13 +224,13 @@
     }
 
     .moments-stage {
-        padding-top: var(--spacing-xl);
+        padding-top: calc(var(--spacing-xl) + var(--spacing-md));
         padding-bottom: var(--spacing-xl);
     }
 
     .moments-container {
         height: 500px;
-        --moment-card-top: var(--spacing-lg);
+        --moment-card-top: calc(var(--spacing-xl) + var(--spacing-xs));
     }
 
     .moment-card {
@@ -246,13 +246,13 @@
     }
 
     .moments-stage {
-        padding-top: var(--spacing-lg);
+        padding-top: calc(var(--spacing-lg) + var(--spacing-sm));
         padding-bottom: var(--spacing-lg);
     }
 
     .moments-container {
         height: 460px;
-        --moment-card-top: var(--spacing-md);
+        --moment-card-top: calc(var(--spacing-lg) + var(--spacing-xs));
     }
 
     .moment-card {
