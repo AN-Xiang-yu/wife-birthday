@@ -139,6 +139,13 @@ body {
     transition: opacity var(--transition-slow);
 }
 
+
+/* 第一页特殊处理：无内边距 */
+
+#page-intro {
+    padding: 0;
+}
+
 .page.active {
     display: flex;
     opacity: 1;

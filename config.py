@@ -39,7 +39,7 @@ class Config:
     ]
 
     # 起始页面（1-4 对应开场/时间线/故事放大/信件）
-    START_PAGE: int = 1
+    START_PAGE: int = 3
 
 class ChatConfig:
     """开场页对话配置"""
@@ -185,7 +185,7 @@ class ButtonConfig:
     """按钮大小配置"""
 
     # 按钮整体缩放系数（1 为默认大小）
-    BUTTON_SCALE: float = 1.25
+    BUTTON_SCALE: float = 1
 
 
 class LetterConfig:
