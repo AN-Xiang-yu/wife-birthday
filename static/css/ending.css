@@ -105,12 +105,12 @@
 /* 返回首页按钮 */
 
 #page-ending .restart-btn {
-    padding: 0.75rem 2.5rem;
+    padding: calc(0.75rem * var(--button-scale)) calc(2.5rem * var(--button-scale));
     background: linear-gradient(135deg, #ff9fc8 0%, #ff6fa7 100%);
     border: none;
     color: #ffffff;
     border-radius: var(--radius-full);
-    font-size: var(--text-base);
+    font-size: calc(var(--text-base) * var(--button-scale));
     font-weight: 600;
     cursor: pointer;
     transition: all var(--transition-fast);

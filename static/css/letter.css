@@ -124,12 +124,12 @@
 /* 继续阅读按钮 */
 .letter-next-btn {
     margin-top: var(--spacing-lg);
-    padding: var(--spacing-sm) var(--spacing-lg);
+    padding: calc(var(--spacing-sm) * var(--button-scale)) calc(var(--spacing-lg) * var(--button-scale));
     background: transparent;
     border: 2px solid var(--color-primary);
     color: var(--color-text);
     border-radius: var(--radius-full);
-    font-size: var(--text-base);
+    font-size: calc(var(--text-base) * var(--button-scale));
     transition: all var(--transition-fast);
 }
 
