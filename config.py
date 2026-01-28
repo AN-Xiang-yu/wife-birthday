@@ -185,7 +185,7 @@ class ButtonConfig:
     """按钮大小配置"""
 
     # 按钮整体缩放系数（1 为默认大小）
-    BUTTON_SCALE: float = 1.0
+    BUTTON_SCALE: float = 1.25
 
 
 class LetterConfig:

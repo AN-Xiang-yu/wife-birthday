@@ -48,7 +48,7 @@
 }
 
 .chat-header-name {
-    font-size: var(--intro-text-size);
+    font-size: 1.5rem;
     font-weight: 600;
     color: white;
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
@@ -254,13 +254,13 @@
 }
 
 .letter-invite__title {
-    font-size: var(--text-base);
+    font-size: 1.25rem;
     font-weight: 600;
     margin-bottom: 4px;
 }
 
 .letter-invite__hint {
-    font-size: var(--text-sm);
+    font-size: 1rem;
     color: var(--color-text-muted);
 }
 
