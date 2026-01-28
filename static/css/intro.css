@@ -48,7 +48,7 @@
 }
 
 .chat-header-name {
-    font-size: var(--text-lg);
+    font-size: var(--intro-text-size);
     font-weight: 600;
     color: white;
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
@@ -150,7 +150,7 @@
 .message .bubble {
     padding: var(--spacing-sm) var(--spacing-md);
     border-radius: var(--radius-md);
-    font-size: var(--text-base);
+    font-size: var(--intro-text-size);
     line-height: 1.5;
 }
 
@@ -179,6 +179,7 @@
     flex: 1;
     border-radius: var(--radius-full);
     padding: var(--spacing-sm) var(--spacing-md);
+    font-size: var(--intro-text-size);
 }
 
 .send-btn {
@@ -187,6 +188,7 @@
     color: var(--color-text);
     border-radius: var(--radius-full);
     font-weight: 500;
+    font-size: var(--intro-text-size);
 }
 
 .send-btn:hover {
@@ -204,7 +206,7 @@
 .attempt-hint {
     text-align: center;
     padding: var(--spacing-sm);
-    font-size: var(--text-sm);
+    font-size: var(--intro-text-size);
     color: var(--color-text-muted);
     min-height: 2rem;
 }

@@ -145,3 +145,29 @@ class ContentConfig:
     
     # 你的签名
     YOUR_SIGNATURE: str = "永远爱你的人"
+
+
+class TypographyConfig:
+    """文字排版配置（单位：rem）"""
+
+    # 第 1 页（开场对话）字号
+    INTRO_TEXT_SIZE_REM: float = 1.25
+
+    # 第 2 页（时间线）字号
+    TIMELINE_TEXT_SIZE_REM: float = 1.25
+
+    # 第 4 页（信件正文/黑色文字）字号
+    LETTER_TEXT_SIZE_REM: float = 1.5
+
+    # 第 4 页（信件标题/红色文字）字号
+    LETTER_LABEL_SIZE_REM: float = 1.35
+
+
+class LetterConfig:
+    """信件页逐字显示配置"""
+
+    # 打字速度（毫秒/字符）
+    TYPING_INTERVAL_MS: int = 1000
+
+    # 段落之间的间隔（毫秒）
+    PARAGRAPH_DELAY_MS: int = 1500
