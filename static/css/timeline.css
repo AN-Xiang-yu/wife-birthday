@@ -129,7 +129,7 @@
 /* 事件日期 */
 
 .event-date {
-    font-size: var(--text-sm);
+    font-size: calc(var(--timeline-text-size) - 0.25rem);
     color: var(--color-accent);
     font-weight: 500;
     margin-bottom: var(--spacing-xs);
@@ -140,7 +140,7 @@
 
 .event-title {
     font-family: var(--font-serif);
-    font-size: var(--text-xl);
+    font-size: var(--timeline-text-size);
     color: var(--color-text);
     margin-bottom: var(--spacing-sm);
 }
@@ -149,7 +149,7 @@
 /* 事件描述 */
 
 .event-description {
-    font-size: var(--text-base);
+    font-size: var(--timeline-text-size);
     color: var(--color-text-light);
     line-height: 1.6;
 }

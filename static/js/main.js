@@ -23,6 +23,29 @@ const AppState = {
 };
 
 // ============================================================
+// 配置样式注入（字体大小）
+// ============================================================
+
+function applyConfigStyles() {
+    const config = window.AppConfig || {};
+    const root = document.documentElement;
+
+    const setRemVar = (name, value) => {
+        if (value === undefined || value === null) return;
+        const parsed = typeof value === 'number' ? value : parseFloat(value);
+        if (Number.isNaN(parsed)) return;
+        root.style.setProperty(name, `${parsed}rem`);
+    };
+
+    setRemVar('--intro-text-size', config.INTRO_TEXT_SIZE_REM);
+    setRemVar('--timeline-text-size', config.TIMELINE_TEXT_SIZE_REM);
+    setRemVar('--letter-text-size', config.LETTER_TEXT_SIZE_REM);
+    setRemVar('--letter-label-size', config.LETTER_LABEL_SIZE_REM);
+}
+
+applyConfigStyles();
+
+// ============================================================
 // 点击特效（除开场页）
 // ============================================================
 

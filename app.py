@@ -10,7 +10,8 @@ from typing import Dict, Any, Optional
 import json
 import os
 
-from config import ChatConfig, Config, RainEffectConfig, SecretConfig
+from config import (ChatConfig, Config, LetterConfig, RainEffectConfig,
+                    SecretConfig, TypographyConfig)
 from utils.helpers import load_json_data, validate_password, process_chat_input
 
 
@@ -39,7 +40,13 @@ def index() -> str:
         "RAIN_SPAWN_INTERVAL": RainEffectConfig.SPAWN_INTERVAL,
         "TIMELINE_MUSIC_PATH": Config.TIMELINE_MUSIC_PATH,
         "SECRET_TITLE_TYPING_INTERVAL_MS": SecretConfig.TITLE_TYPING_INTERVAL_MS,
-        "SECRET_HINT_TYPING_INTERVAL_MS": SecretConfig.HINT_TYPING_INTERVAL_MS
+        "SECRET_HINT_TYPING_INTERVAL_MS": SecretConfig.HINT_TYPING_INTERVAL_MS,
+        "INTRO_TEXT_SIZE_REM": TypographyConfig.INTRO_TEXT_SIZE_REM,
+        "TIMELINE_TEXT_SIZE_REM": TypographyConfig.TIMELINE_TEXT_SIZE_REM,
+        "LETTER_TEXT_SIZE_REM": TypographyConfig.LETTER_TEXT_SIZE_REM,
+        "LETTER_LABEL_SIZE_REM": TypographyConfig.LETTER_LABEL_SIZE_REM,
+        "LETTER_TYPING_INTERVAL_MS": LetterConfig.TYPING_INTERVAL_MS,
+        "LETTER_PARAGRAPH_DELAY_MS": LetterConfig.PARAGRAPH_DELAY_MS
     }
     return render_template("index.html", config=frontend_config)
 

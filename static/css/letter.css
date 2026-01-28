@@ -90,7 +90,7 @@
 }
 
 .letter-paragraph-label {
-    font-size: var(--text-sm);
+    font-size: var(--letter-label-size);
     color: var(--color-accent);
     font-weight: 500;
     margin-bottom: var(--spacing-xs);
@@ -100,7 +100,7 @@
 
 .letter-paragraph-text {
     font-family: var(--font-serif);
-    font-size: var(--text-lg);
+    font-size: var(--letter-text-size);
     color: var(--color-text);
     line-height: 1.9;
     text-align: justify;
@@ -116,7 +116,7 @@
 
 .signature {
     font-family: var(--font-serif);
-    font-size: var(--text-xl);
+    font-size: var(--letter-text-size);
     color: var(--color-text);
     font-style: italic;
 }
