@@ -61,9 +61,30 @@
     flex: 1;
     padding: var(--spacing-lg);
     overflow-y: auto;
+    overflow-x: hidden;
     display: flex;
     flex-direction: column;
     gap: var(--spacing-md);
+    position: relative;
+    background: var(--color-card);
+    isolation: isolate;
+}
+
+.chat-messages::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url('/static/images/photos/chat/background.jpg');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.2;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.chat-messages > * {
+    position: relative;
+    z-index: 1;
 }
 
 
