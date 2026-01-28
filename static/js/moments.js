@@ -152,7 +152,7 @@ function updateCardPositions() {
     const isCompact = viewportWidth <= 480;
     const isTablet = viewportWidth <= 768 && !isCompact;
     const xStep = isCompact ? 0 : isTablet ? 80 : 110;
-    const yStep = isCompact ? 10 : isTablet ? 12 : 14;
+    const yStep = isCompact ? 12 : isTablet ? 16 : 20;
     const angleStep = isCompact ? 0 : isTablet ? 8 : 11;
     const frontLift = isCompact ? -2 : -6;
 
@@ -167,7 +167,7 @@ function updateCardPositions() {
         const side = position === 0 ? 0 : position % 2 === 0 ? 1 : -1;
         const offsetX = side * depth * xStep;
         const verticalWave = isCompact ? 0 : side * depth * 6;
-        const offsetY = (position * yStep) + verticalWave + (position === 0 ? frontLift : 0);
+        const offsetY = (side * depth * yStep) + verticalWave + (position === 0 ? frontLift : 0);
         const rotate = side * depth * angleStep;
         cardEl.style.setProperty('--card-offset-x', `${offsetX}px`);
         cardEl.style.setProperty('--card-offset-y', `${offsetY}px`);
