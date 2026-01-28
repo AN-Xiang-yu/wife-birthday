@@ -72,13 +72,13 @@ function renderMoments() {
 function createMomentCard(card, index) {
     // 正面内容
     const frontContent = [
-        card.image
-            ? App.createElement('img', {
-                className: 'moment-front-image',
-                src: `/static/${card.image}`,
-                alt: card.surface.title
-            })
-            : App.createElement('div', { className: 'moment-front-image' }),
+        card.image ?
+        App.createElement('img', {
+            className: 'moment-front-image',
+            src: `/static/${card.image}`,
+            alt: card.surface.title
+        }) :
+        App.createElement('div', { className: 'moment-front-image' }),
         App.createElement('div', { className: 'moment-front-content' }, [
             App.createElement('h3', { className: 'moment-front-title' }, card.surface.title),
             App.createElement('p', { className: 'moment-front-brief' }, card.surface.brief)
@@ -153,7 +153,7 @@ function updateCardPositions() {
     const isTablet = viewportWidth <= 768 && !isCompact;
     const xStep = isCompact ? 40 : isTablet ? 70 : 90;
     const rowGap = isCompact ? 150 : isTablet ? 170 : 190;
-    const angleStep = isCompact ? 6 : isTablet ? 7 : 9;
+    const angleStep = isCompact ? 10 : isTablet ? 12 : 15;
     const frontLift = isCompact ? -4 : -6;
     const totalCards = MomentsState.order.length;
     const rowCounts = [];
