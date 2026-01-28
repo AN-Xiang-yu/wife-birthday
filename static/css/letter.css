@@ -90,7 +90,7 @@
 }
 
 .letter-paragraph-label {
-    font-size: var(--text-sm);
+    font-size: var(--letter-red-size, var(--text-lg));
     color: var(--color-accent);
     font-weight: 500;
     margin-bottom: var(--spacing-xs);
@@ -100,7 +100,7 @@
 
 .letter-paragraph-text {
     font-family: var(--font-serif);
-    font-size: var(--text-lg);
+    font-size: var(--letter-black-size, var(--text-xl));
     color: var(--color-text);
     line-height: 1.9;
     text-align: justify;
@@ -153,7 +153,7 @@
     }
     
     .letter-paragraph-text {
-        font-size: var(--text-base);
+        font-size: var(--letter-black-size, var(--text-xl));
         text-align: left;
     }
 }
