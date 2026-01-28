@@ -39,7 +39,7 @@ class Config:
     ]
 
     # 起始页面（1-4 对应开场/时间线/故事放大/信件）
-    START_PAGE: int = 3
+    START_PAGE: int = 1
 
 class ChatConfig:
     """开场页对话配置"""

@@ -225,15 +225,15 @@
 }
 
 .letter-invite {
-    width: min(260px, 85%);
+    width: min(320px, 90%);
     border: none;
     background: var(--color-secondary);
     border-radius: var(--radius-md);
-    padding: var(--spacing-sm);
+    padding: var(--spacing-md);
     box-shadow: var(--shadow-card);
     display: flex;
     align-items: center;
-    gap: var(--spacing-sm);
+    gap: var(--spacing-md);
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -244,9 +244,9 @@
 }
 
 .letter-invite__image {
-    width: 72px;
-    height: 54px;
-    border-radius: 8px;
+    width: 96px;
+    height: 72px;
+    border-radius: 12px;
     background-image: url('../images/letter-preview.svg');
     background-size: cover;
     background-position: center;
@@ -254,13 +254,13 @@
 }
 
 .letter-invite__title {
-    font-size: 1.1rem;
+    font-size: 1.25rem;
     font-weight: 600;
     margin-bottom: 4px;
 }
 
 .letter-invite__hint {
-    font-size: 0.9rem;
+    font-size: 1rem;
     color: var(--color-text-muted);
 }
 
