@@ -39,7 +39,7 @@ class Config:
     ]
 
     # 起始页面（1-4 对应开场/时间线/故事放大/信件）
-    START_PAGE: int = 1
+    START_PAGE: int = 4
 
 class ChatConfig:
     """开场页对话配置"""
@@ -109,12 +109,13 @@ class SecretConfig:
     
     # 解锁后的隐藏内容
     SECRET_CONTENT: str = """
-    这是只属于我们的秘密...
-    （在这里写下你想对她说的隐藏话语）
+    其实当你对我说出 “我爱你”之前，我早就在心里演练过无数次，
+    但没有想到的是，你首先，顺着我的话，对我说出了那三个字。
+    那一刻，我的心跳得很快，很快，很快……
     """
 
     # 标题打字速度（毫秒/字符）
-    TITLE_TYPING_INTERVAL_MS: int = 300
+    TITLE_TYPING_INTERVAL_MS: int = 200
 
     # 提示打字速度（毫秒/字符）
     HINT_TYPING_INTERVAL_MS: int = 90
