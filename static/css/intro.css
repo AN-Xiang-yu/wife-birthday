@@ -67,15 +67,19 @@
     gap: var(--spacing-md);
     position: relative;
     background-color: var(--color-card);
-    background-image: linear-gradient(
-        rgba(255, 255, 255, 0.5),
-        rgba(255, 255, 255, 0.5)
-    ),
-    url('/static/images/photos/chat/background.jpg');
+    background-image: linear-gradient( rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('/static/images/photos/chat/background.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-attachment: local;
+    background-attachment: fixed;
+}
+
+
+/* 确保消息内容在背景之上 */
+
+.chat-messages>* {
+    position: relative;
+    z-index: 1;
 }
 
 

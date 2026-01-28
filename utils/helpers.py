@@ -143,7 +143,7 @@ def _get_gentle_hint(attempt_count: int) -> str:
     """
     hints = [
         "想想今天是什么日子？",
-        "和「我们」有关哦...",
+        "和「妈妈」有关哦...",
         "最后一次机会，想想最重要的那个词"
     ]
     return hints[min(attempt_count, len(hints) - 1)]

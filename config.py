@@ -115,7 +115,7 @@ class SecretConfig:
     """
 
     # 标题打字速度（毫秒/字符）
-    TITLE_TYPING_INTERVAL_MS: int = 200
+    TITLE_TYPING_INTERVAL_MS: int = 150
 
     # 提示打字速度（毫秒/字符）
     HINT_TYPING_INTERVAL_MS: int = 90
@@ -170,4 +170,4 @@ class LetterConfig:
     TYPING_INTERVAL_MS: int = 1000
 
     # 段落之间的间隔（毫秒）
-    PARAGRAPH_DELAY_MS: int = 1500
+    PARAGRAPH_DELAY_MS: int = 10000
