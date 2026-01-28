@@ -151,24 +151,64 @@ function updateCardPositions() {
     const viewportWidth = window.innerWidth;
     const isCompact = viewportWidth <= 480;
     const isTablet = viewportWidth <= 768 && !isCompact;
-    const xStep = isCompact ? 0 : isTablet ? 80 : 110;
-    const yStep = isCompact ? 12 : isTablet ? 16 : 20;
-    const angleStep = isCompact ? 0 : isTablet ? 8 : 11;
+    const xStep = isCompact ? 0 : isTablet ? 70 : 90;
+    const rowGap = isCompact ? 150 : isTablet ? 170 : 190;
+    const angleStep = isCompact ? 0 : isTablet ? 7 : 9;
     const frontLift = isCompact ? -2 : -6;
+    const totalCards = MomentsState.order.length;
+    const rowCounts = [];
+    let remaining = totalCards;
+
+    while (remaining > 0) {
+        if (remaining === 1 && rowCounts.length > 0) {
+            rowCounts[rowCounts.length - 1] -= 1;
+            rowCounts.push(2);
+            remaining = 0;
+            continue;
+        }
+
+        const count = Math.min(3, remaining);
+        rowCounts.push(count);
+        remaining -= count;
+    }
+
+    const rowIndexForGroup = (group) => {
+        if (group === 0) return 0;
+        const offset = Math.ceil(group / 2);
+        return group % 2 === 1 ? -offset : offset;
+    };
+
+    const rowPositions = [];
+    let positionPointer = 0;
+    rowCounts.forEach((count, groupIndex) => {
+        const rowIndex = rowIndexForGroup(groupIndex);
+        for (let i = 0; i < count; i += 1) {
+            rowPositions[positionPointer] = {
+                rowIndex,
+                count,
+                indexInRow: i
+            };
+            positionPointer += 1;
+        }
+    });
 
     MomentsState.order.forEach((cardIndex, position) => {
         const cardEl = MomentsState.cardElements.get(cardIndex);
         if (!cardEl) return;
 
+        const rowConfig = rowPositions[position] || { rowIndex: 0, count: 1, indexInRow: 0 };
         cardEl.dataset.position = String(position);
         cardEl.style.zIndex = String(MomentsState.order.length - position);
         cardEl.classList.toggle('is-front', position === 0);
-        const depth = position === 0 ? 0 : Math.ceil(position / 2);
-        const side = position === 0 ? 0 : position % 2 === 0 ? 1 : -1;
-        const offsetX = side * depth * xStep;
-        const verticalWave = isCompact ? 0 : side * depth * 6;
-        const offsetY = (side * depth * yStep) + verticalWave + (position === 0 ? frontLift : 0);
-        const rotate = side * depth * angleStep;
+        const { rowIndex, count, indexInRow } = rowConfig;
+        let offsetX = 0;
+        if (count === 2) {
+            offsetX = indexInRow === 0 ? -xStep / 2 : xStep / 2;
+        } else if (count === 3) {
+            offsetX = (indexInRow - 1) * xStep;
+        }
+        const offsetY = (rowIndex * rowGap) + (position === 0 ? frontLift : 0);
+        const rotate = Math.sign(offsetX) * angleStep;
         cardEl.style.setProperty('--card-offset-x', `${offsetX}px`);
         cardEl.style.setProperty('--card-offset-y', `${offsetY}px`);
         cardEl.style.setProperty('--card-rotate', `${rotate}deg`);
