@@ -140,10 +140,11 @@ body {
 }
 
 
-/* 第一页特殊处理：无内边距 */
+/* 第一页特殊处理：无内边距，顶部对齐 */
 
 #page-intro {
     padding: 0;
+    justify-content: flex-start;
 }
 
 .page.active {
