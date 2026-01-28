@@ -65,6 +65,7 @@ let flameTime = 0;
 let cakeSprinkles = [];
 let cakeChocolateDrips = [];
 let cakeInitialized = false;
+let lastCanvasWidth = 0;
 
 // ============================================================
 // 爱心相关
@@ -542,13 +543,17 @@ function initCanvas() {
 
 function resizeCanvas() {
     if (!canvas) return;
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    if (isRunning) {
+    const nextWidth = window.innerWidth;
+    const nextHeight = window.innerHeight;
+    const widthChanged = lastCanvasWidth && nextWidth !== lastCanvasWidth;
+    canvas.width = nextWidth;
+    canvas.height = nextHeight;
+    if (isRunning && widthChanged) {
         initBalloons();
         initFireworks();
         cakeInitialized = false;
     }
+    lastCanvasWidth = nextWidth;
 }
 
 function animate() {
