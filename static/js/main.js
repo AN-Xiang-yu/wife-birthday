@@ -37,10 +37,16 @@ function applyConfigStyles() {
         root.style.setProperty(name, `${parsed}rem`);
     };
 
+    setRemVar('--page-title-size', config.PAGE_TITLE_SIZE_REM);
     setRemVar('--intro-text-size', config.INTRO_TEXT_SIZE_REM);
     setRemVar('--timeline-text-size', config.TIMELINE_TEXT_SIZE_REM);
+    setRemVar('--timeline-emotion-text-size', config.TIMELINE_EMOTION_TEXT_SIZE_REM);
     setRemVar('--letter-text-size', config.LETTER_TEXT_SIZE_REM);
     setRemVar('--letter-label-size', config.LETTER_LABEL_SIZE_REM);
+    setRemVar('--playful-title-size', config.PLAYFUL_TITLE_SIZE_REM);
+    setRemVar('--playful-text-size', config.PLAYFUL_TEXT_SIZE_REM);
+    setRemVar('--ending-blessing-size', config.ENDING_BLESSING_SIZE_REM);
+    setRemVar('--ending-note-size', config.ENDING_NOTE_SIZE_REM);
 }
 
 applyConfigStyles();

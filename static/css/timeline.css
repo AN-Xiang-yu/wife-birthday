@@ -129,7 +129,7 @@
 /* 事件日期 */
 
 .event-date {
-    font-size: calc(var(--timeline-text-size) - 0.25rem);
+    font-size: var(--timeline-text-size);
     color: var(--color-accent);
     font-weight: 500;
     margin-bottom: var(--spacing-xs);
@@ -183,7 +183,7 @@
     margin-top: var(--spacing-sm);
     padding-top: var(--spacing-sm);
     border-top: 1px solid var(--color-secondary);
-    font-size: var(--text-sm);
+    font-size: var(--timeline-emotion-text-size);
     color: var(--color-text-muted);
     font-style: italic;
 }

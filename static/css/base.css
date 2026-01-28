@@ -57,8 +57,8 @@
     --transition-normal: 0.3s ease;
     --transition-slow: 0.5s ease;
     /* 字体 */
-    --font-main: "SimSun", "Songti SC", "STSong", "Noto Serif SC", "Source Han Serif CN", serif;
-    --font-serif: "SimSun", "Songti SC", "STSong", "Noto Serif SC", "Source Han Serif CN", serif;
+    --font-main: "KaiTi", "Kaiti SC", "STKaiti", "KaiTi_GB2312", "Songti SC", "STSong", "Noto Serif SC", serif;
+    --font-serif: "KaiTi", "Kaiti SC", "STKaiti", "KaiTi_GB2312", "Songti SC", "STSong", "Noto Serif SC", serif;
     /* 字号 */
     --text-xs: 0.75rem;
     --text-sm: 0.875rem;
@@ -69,10 +69,16 @@
     --text-3xl: 2rem;
     --text-4xl: 2.5rem;
     /* 页面可配置字号 */
+    --page-title-size: 2.3rem;
     --intro-text-size: 1.25rem;
     --timeline-text-size: 1.25rem;
+    --timeline-emotion-text-size: 1rem;
     --letter-text-size: 1.5rem;
     --letter-label-size: 1.1rem;
+    --playful-title-size: 1.5rem;
+    --playful-text-size: 1.25rem;
+    --ending-blessing-size: 2.8rem;
+    --ending-note-size: 1.25rem;
 }
 
 
@@ -146,8 +152,8 @@ body {
 
 .page-header h1 {
     font-family: var(--font-serif);
-    font-size: var(--text-3xl);
-    font-weight: 500;
+    font-size: var(--page-title-size);
+    font-weight: 700;
     color: var(--color-text);
     margin-bottom: var(--spacing-sm);
 }
