@@ -531,6 +531,11 @@ chatInput?.addEventListener('keypress', (e) => {
 // 页面进入时聚焦输入框
 document.addEventListener('pageEnter', (e) => {
     if (e.detail.pageName === 'intro') {
+        if (window.App?.state?.isReturningFromEnding) {
+            window.App.state.isReturningFromEnding = false;
+            resetForReturnMode();
+            return;
+        }
         if (!IntroState.isReturnMode) {
             playInitialMessages();
             chatInput?.focus();

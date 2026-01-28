@@ -19,7 +19,8 @@ const AppState = {
         'playful',
         'ending'
     ],
-    isTransitioning: false
+    isTransitioning: false,
+    isReturningFromEnding: false
 };
 
 // ============================================================
@@ -295,6 +296,7 @@ function restartFromEnding() {
     if (AppState.isTransitioning) return;
 
     AppState.isTransitioning = true;
+    AppState.isReturningFromEnding = true;
 
     const currentPageEl = document.getElementById(`page-${AppState.pages[AppState.currentPage]}`);
     const introPageEl = document.getElementById('page-intro');
@@ -324,11 +326,6 @@ function restartFromEnding() {
                 detail: { pageName: 'intro' }
             });
             document.dispatchEvent(event);
-
-            // 触发返回模式
-            if (window.IntroModule && window.IntroModule.resetForReturnMode) {
-                window.IntroModule.resetForReturnMode();
-            }
 
         }, 500);
     }, 500);
