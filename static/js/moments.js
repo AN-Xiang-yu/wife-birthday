@@ -151,10 +151,10 @@ function updateCardPositions() {
     const viewportWidth = window.innerWidth;
     const isCompact = viewportWidth <= 480;
     const isTablet = viewportWidth <= 768 && !isCompact;
-    const xStep = isCompact ? 0 : isTablet ? 70 : 90;
+    const xStep = isCompact ? 40 : isTablet ? 70 : 90;
     const rowGap = isCompact ? 150 : isTablet ? 170 : 190;
-    const angleStep = isCompact ? 0 : isTablet ? 7 : 9;
-    const frontLift = isCompact ? -2 : -6;
+    const angleStep = isCompact ? 6 : isTablet ? 7 : 9;
+    const frontLift = isCompact ? -4 : -6;
     const totalCards = MomentsState.order.length;
     const rowCounts = [];
     let remaining = totalCards;
