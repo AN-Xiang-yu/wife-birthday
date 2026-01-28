@@ -134,6 +134,22 @@ class RainEffectConfig:
     SPAWN_INTERVAL: int = 650
 
 
+class LetterConfig:
+    """信件页文字配置"""
+
+    # 红色标题文字大小
+    RED_TEXT_SIZE: str = "1.25rem"
+
+    # 黑色正文文字大小
+    BLACK_TEXT_SIZE: str = "1.35rem"
+
+    # 文字渐显速度（毫秒/字）
+    TYPING_INTERVAL_MS: int = 150
+
+    # 段落之间的停顿（毫秒）
+    PARAGRAPH_DELAY_MS: int = 650
+
+
 class ContentConfig:
     """内容配置"""
     

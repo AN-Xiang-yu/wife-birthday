@@ -1,7 +1,7 @@
 /**
  * 信件页 · 分段展示逻辑
  * 
- * 分段呈现信件内容，需要交互才能看下一段
+ * 分段呈现信件内容，自动渐显并可点击跳过
  * 情绪：共鸣（情绪高峰）
  */
 
@@ -12,7 +12,10 @@ const LetterState = {
     paragraphs: [],
     currentParagraph: 0,
     isLoaded: false,
-    isComplete: false
+    isComplete: false,
+    isTyping: false,
+    skipRequested: false,
+    runId: 0
 };
 
 // ============================================================
@@ -20,6 +23,7 @@ const LetterState = {
 // ============================================================
 const letterContent = document.getElementById('letter-content');
 const letterNextBtn = document.getElementById('letter-next');
+const letterPage = document.getElementById('page-letter');
 
 // ============================================================
 // 信件渲染
@@ -44,55 +48,133 @@ async function loadLetterData() {
  */
 function initLetter() {
     if (!letterContent) return;
-    
-    letterContent.innerHTML = '';
+
+    applyLetterConfig();
+    resetLetterState();
+    createParagraphElements();
+    startAutoReveal();
+}
+
+function applyLetterConfig() {
+    if (!letterPage) return;
+
+    const redSize = window.AppConfig?.LETTER_RED_TEXT_SIZE;
+    const blackSize = window.AppConfig?.LETTER_BLACK_TEXT_SIZE;
+
+    if (redSize) {
+        letterPage.style.setProperty('--letter-red-size', redSize);
+    }
+
+    if (blackSize) {
+        letterPage.style.setProperty('--letter-black-size', blackSize);
+    }
+}
+
+function resetLetterState() {
     LetterState.currentParagraph = 0;
     LetterState.isComplete = false;
-    
-    // 创建所有段落元素（但不显示）
+    LetterState.isTyping = false;
+    LetterState.skipRequested = false;
+    LetterState.runId += 1;
+    letterContent.innerHTML = '';
+
+    if (letterNextBtn) {
+        letterNextBtn.textContent = '继续阅读';
+    }
+}
+
+function createParagraphElements() {
     LetterState.paragraphs.forEach((para, index) => {
+        const labelEl = App.createElement('span', {
+            className: 'letter-paragraph-label',
+            'data-full-text': para.section
+        }, '');
+
+        const textEl = App.createElement('p', {
+            className: 'letter-paragraph-text',
+            'data-full-text': para.content
+        }, '');
+
         const paraEl = App.createElement('div', {
             className: 'letter-paragraph',
             'data-index': index
-        }, [
-            App.createElement('span', { className: 'letter-paragraph-label' }, para.section),
-            App.createElement('p', { className: 'letter-paragraph-text' }, para.content)
-        ]);
-        
+        }, [labelEl, textEl]);
+
         letterContent.appendChild(paraEl);
     });
-    
-    // 显示第一段
-    showNextParagraph();
 }
 
 /**
- * 显示下一段
+ * 渐进显示内容
  */
-async function showNextParagraph() {
-    if (LetterState.currentParagraph >= LetterState.paragraphs.length) {
-        completeLetter();
-        return;
+async function startAutoReveal() {
+    const runId = LetterState.runId;
+    const typingInterval = resolveInterval(window.AppConfig?.LETTER_TYPING_INTERVAL_MS, 55);
+    const paragraphDelay = resolveInterval(window.AppConfig?.LETTER_PARAGRAPH_DELAY_MS, 600);
+
+    LetterState.isTyping = true;
+
+    for (let i = 0; i < LetterState.paragraphs.length; i++) {
+        if (shouldAbortTyping(runId)) return;
+        LetterState.currentParagraph = i;
+        await revealParagraph(i, typingInterval, runId);
+        if (shouldAbortTyping(runId)) return;
+        await App.delay(paragraphDelay);
     }
-    
+
+    if (shouldAbortTyping(runId)) return;
+    completeLetter();
+}
+
+function resolveInterval(value, fallback) {
+    if (value === null || value === undefined || value === '') {
+        return fallback;
+    }
+
+    const parsed = Number(value);
+    if (!Number.isFinite(parsed) || parsed <= 0) {
+        return fallback;
+    }
+
+    return parsed;
+}
+
+function shouldAbortTyping(runId) {
+    return LetterState.skipRequested || runId !== LetterState.runId;
+}
+
+async function revealParagraph(index, typingInterval, runId) {
     const paraEl = letterContent.querySelector(
-        `.letter-paragraph[data-index="${LetterState.currentParagraph}"]`
+        `.letter-paragraph[data-index="${index}"]`
     );
-    
-    if (paraEl) {
-        // 显示段落
-        await App.delay(300);
-        paraEl.classList.add('visible');
-        
-        // 滚动到视图
-        paraEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        
-        LetterState.currentParagraph++;
-        
-        // 更新按钮文字
-        if (LetterState.currentParagraph >= LetterState.paragraphs.length) {
-            letterNextBtn.textContent = '继续';
+
+    if (!paraEl) return;
+
+    const labelEl = paraEl.querySelector('.letter-paragraph-label');
+    const textEl = paraEl.querySelector('.letter-paragraph-text');
+
+    paraEl.classList.add('visible');
+    paraEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    if (labelEl) {
+        await typeText(labelEl, labelEl.dataset.fullText || '', typingInterval, runId);
+    }
+
+    if (textEl) {
+        await typeText(textEl, textEl.dataset.fullText || '', typingInterval, runId);
+    }
+}
+
+async function typeText(element, text, typingInterval, runId) {
+    element.textContent = '';
+
+    for (let i = 0; i < text.length; i++) {
+        if (shouldAbortTyping(runId)) {
+            element.textContent = text;
+            return;
         }
+        element.textContent += text.charAt(i);
+        await App.delay(typingInterval);
     }
 }
 
@@ -101,30 +183,37 @@ async function showNextParagraph() {
  */
 function completeLetter() {
     LetterState.isComplete = true;
-    
-    // 隐藏继续按钮
-    letterNextBtn.classList.add('hidden');
+    LetterState.isTyping = false;
     
     // 显示信件完成状态
     const letterPaper = document.querySelector('.letter-paper');
     letterPaper?.classList.add('letter-complete');
-    
-    // 延迟后添加前往下一页的按钮
-    setTimeout(() => {
-        const proceedBtn = App.createElement('button', {
-            className: 'proceed-btn',
-            onClick: () => App.navigateTo('secret')
-        }, '继续我们的秘密');
-        
-        const container = document.querySelector('.letter-container');
-        container.appendChild(proceedBtn);
-        
-        proceedBtn.style.opacity = '0';
-        requestAnimationFrame(() => {
-            proceedBtn.style.transition = 'opacity 0.5s ease';
-            proceedBtn.style.opacity = '1';
-        });
-    }, 1000);
+
+    if (letterNextBtn) {
+        letterNextBtn.textContent = '进入下一页';
+    }
+}
+
+function revealAllText() {
+    LetterState.skipRequested = true;
+    LetterState.runId += 1;
+
+    const paragraphs = letterContent.querySelectorAll('.letter-paragraph');
+    paragraphs.forEach((paraEl) => {
+        paraEl.classList.add('visible');
+        const labelEl = paraEl.querySelector('.letter-paragraph-label');
+        const textEl = paraEl.querySelector('.letter-paragraph-text');
+
+        if (labelEl) {
+            labelEl.textContent = labelEl.dataset.fullText || '';
+        }
+
+        if (textEl) {
+            textEl.textContent = textEl.dataset.fullText || '';
+        }
+    });
+
+    completeLetter();
 }
 
 // ============================================================
@@ -133,14 +222,24 @@ function completeLetter() {
 
 // 页面进入时加载数据
 document.addEventListener('pageEnter', (e) => {
-    if (e.detail.pageName === 'letter' && !LetterState.isLoaded) {
+    if (e.detail.pageName !== 'letter') return;
+
+    if (!LetterState.isLoaded) {
         loadLetterData();
+        return;
     }
+
+    initLetter();
 });
 
-// 继续阅读按钮
-letterNextBtn?.addEventListener('click', () => {
+function handleLetterAdvance() {
     if (!LetterState.isComplete) {
-        showNextParagraph();
+        revealAllText();
+        return;
     }
-});
+
+    App.navigateTo('secret');
+}
+
+letterNextBtn?.addEventListener('click', handleLetterAdvance);
+letterContent?.addEventListener('click', handleLetterAdvance);
