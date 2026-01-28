@@ -177,7 +177,7 @@ class TypographyConfig:
     # 结尾页“生日快乐”字号
     ENDING_BLESSING_SIZE_REM: float = 2.8
 
-    # 结尾页“愿每一天都如今天这般特别 / 日期”字号
+    # 结尾页“愿岁月温柔以待，如我待你一般 / 日期”字号
     ENDING_NOTE_SIZE_REM: float = 1.25
 
 
