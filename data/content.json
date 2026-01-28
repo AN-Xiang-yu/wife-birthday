@@ -19,38 +19,85 @@
         "cards": [{
                 "id": 1,
                 "surface": {
-                    "title": "那天的阳光",
-                    "brief": "2023年某月某日"
+                    "title": "在一起那天的爱心",
+                    "brief": "2025年6月8日"
                 },
                 "deep": {
-                    "what_happened": "在这里写发生了什么...",
-                    "what_i_felt": "在这里写你当时的感受..."
+                    "what_happened": "在一起的那天，你对着我用手比了一个爱心，出现了好多小心心",
+                    "what_i_felt": "好喜欢你笑起来的样子，那一刻，我的心都要融化了"
                 },
-                "image": "images/photos/moment1.jpg"
-            },
-            {
+                "image": "images/photos/moments/在一起那天的爱心.png"
+            }, {
                 "id": 2,
                 "surface": {
-                    "title": "那个拥抱",
-                    "brief": "某个特别的时刻"
+                    "title": "某人偷拍我之后坏笑",
+                    "brief": "2025年9月20某日"
                 },
                 "deep": {
-                    "what_happened": "在这里写发生了什么...",
-                    "what_i_felt": "在这里写你当时的感受..."
+                    "what_happened": "那天我们准备休息呢，趴着床上时，你轻轻的托起我的下巴，以迅雷不及掩耳之势按下了快门，拍下了我毫无防备的模样。事后你还坏笑着说：“这张照片太美了，必须收藏！”",
+                    "what_i_felt": "好喜欢你这样偷偷记录我们的点滴瞬间，每次看到这些照片，都会想起当时的温暖和幸福。谢谢你，亲爱的。"
                 },
-                "image": "images/photos/moment2.jpg"
+                "image": "images/photos/moments/偷拍.jpg"
             },
             {
                 "id": 3,
                 "surface": {
-                    "title": "第三个瞬间",
-                    "brief": "另一个特别的日子"
+                    "title": "玫瑰和可乐",
+                    "brief": "2025年9月20某日"
                 },
                 "deep": {
-                    "what_happened": "在这里写发生了什么...",
-                    "what_i_felt": "在这里写你当时的感受..."
+                    "what_happened": "那天你说想和可乐，我就偷偷准备了你最喜欢的可乐和玫瑰花",
+                    "what_i_felt": "你的笑真的好甜好灿烂，喜欢你的每一张笑脸"
                 },
-                "image": "images/photos/moment3.jpg"
+                "image": "images/photos/moments/送花和可乐.jpg"
+            },
+            {
+                "id": 4,
+                "surface": {
+                    "title": "第一次见的离别",
+                    "brief": "2025年9月23日"
+                },
+                "deep": {
+                    "what_happened": "我们退房后，你又偷偷拍下我睡眼惺忪的样子，还说这是你见过我最可爱的样子。",
+                    "what_i_felt": "哼，趁着你比我高偷偷拍我，真是坏蛋。不过看到你笑得那么开心，我也觉得好开心！"
+                },
+                "image": "images/photos/moments/我离开那一天.jpg"
+            },
+            {
+                "id": 5,
+                "surface": {
+                    "title": "结婚那天吃火锅",
+                    "brief": "2025年12月31日"
+                },
+                "deep": {
+                    "what_happened": "领完证，看完电影，我们去了那家素食餐厅吃火锅。整理照片时发现的这张照片，记录了我们婚后的第一个用餐时光。本想用于美食拍摄，没想到排到了宝宝的绝美侧脸",
+                    "what_i_felt": "好喜欢和宝宝一起吃火锅，我们要一起多多吃各种好吃的火锅！"
+                },
+                "image": "images/photos/moments/结婚那天吃火锅.jpg"
+            },
+            {
+                "id": 6,
+                "surface": {
+                    "title": "结婚那天吃火锅",
+                    "brief": "2025年12月31日"
+                },
+                "deep": {
+                    "what_happened": "回头酒店的抓拍，嘿嘿你嘟嘟嘴",
+                    "what_i_felt": "宝宝的每一个表情都好可爱，我都想收藏起来"
+                },
+                "image": "images/photos/moments/结婚那天.jpg"
+            },
+            {
+                "id": 7,
+                "surface": {
+                    "title": "1月2日你的美绝代了",
+                    "brief": "2026年1月2日"
+                },
+                "deep": {
+                    "what_happened": "我们在正定临济寺拍照，阳光斜射下，你的笑倾国倾城，美得像画一样",
+                    "what_i_felt": "我被老婆迷晕啦！"
+                },
+                "image": "images/photos/moments/1月2日你的美绝代了.jpg"
             }
         ]
     },
@@ -58,8 +105,8 @@
     "letter": {
         "title": "我想对你说的话",
         "paragraphs": [{
-                "section": "现在",
-                "content": "写下这些话的时候，我在想...\n\n（第一段：你此刻写下这些话的原因）"
+                "section": "亲爱的",
+                "content": "今天，不仅是我们结婚后为你过的第一个生日，也是我们在一起后第一次为你过生日，我想借此机会，写下我对你的心里话。老婆，"
             },
             {
                 "section": "理解",
