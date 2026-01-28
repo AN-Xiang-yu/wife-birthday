@@ -39,7 +39,7 @@ class Config:
     ]
 
     # 起始页面（1-4 对应开场/时间线/故事放大/信件）
-    START_PAGE: int = 3
+    START_PAGE: int = 4
 
 
 class ChatConfig:
@@ -138,16 +138,16 @@ class LetterConfig:
     """信件页文字配置"""
 
     # 红色标题文字大小
-    RED_TEXT_SIZE: str = "1.25rem"
+    RED_TEXT_SIZE: str = "1.55rem"
 
     # 黑色正文文字大小
     BLACK_TEXT_SIZE: str = "1.35rem"
 
     # 文字渐显速度（毫秒/字）
-    TYPING_INTERVAL_MS: int = 45
+    TYPING_INTERVAL_MS: int = 150
 
     # 段落之间的停顿（毫秒）
-    PARAGRAPH_DELAY_MS: int = 650
+    PARAGRAPH_DELAY_MS: int = 2000
 
 
 class ContentConfig:

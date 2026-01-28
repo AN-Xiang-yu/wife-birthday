@@ -58,8 +58,8 @@ function initLetter() {
 function applyLetterConfig() {
     if (!letterPage) return;
 
-    const redSize = window.AppConfig?.LETTER_RED_TEXT_SIZE;
-    const blackSize = window.AppConfig?.LETTER_BLACK_TEXT_SIZE;
+    const redSize = window.AppConfig ?.LETTER_RED_TEXT_SIZE;
+    const blackSize = window.AppConfig ?.LETTER_BLACK_TEXT_SIZE;
 
     if (redSize) {
         letterPage.style.setProperty('--letter-red-size', redSize);
@@ -109,8 +109,14 @@ function createParagraphElements() {
  */
 async function startAutoReveal() {
     const runId = LetterState.runId;
-    const typingInterval = Number(window.AppConfig?.LETTER_TYPING_INTERVAL_MS ?? 55);
-    const paragraphDelay = Number(window.AppConfig?.LETTER_PARAGRAPH_DELAY_MS ?? 600);
+    const typingInterval = Number(window.AppConfig ?.LETTER_TYPING_INTERVAL_MS?? 150);
+    const paragraphDelay = Number(window.AppConfig ?.LETTER_PARAGRAPH_DELAY_MS?? 600);
+
+    console.log('Letter typing config:', {
+        raw: window.AppConfig ?.LETTER_TYPING_INTERVAL_MS,
+        typingInterval,
+        paragraphDelay
+    });
 
     LetterState.isTyping = true;
 
@@ -171,10 +177,10 @@ async function typeText(element, text, typingInterval, runId) {
 function completeLetter() {
     LetterState.isComplete = true;
     LetterState.isTyping = false;
-    
+
     // 显示信件完成状态
     const letterPaper = document.querySelector('.letter-paper');
-    letterPaper?.classList.add('letter-complete');
+    letterPaper ?.classList.add('letter-complete');
 
     if (letterNextBtn) {
         letterNextBtn.textContent = '进入下一页';
@@ -228,5 +234,4 @@ function handleLetterAdvance() {
     App.navigateTo('secret');
 }
 
-letterNextBtn?.addEventListener('click', handleLetterAdvance);
-letterContent?.addEventListener('click', handleLetterAdvance);
+letterNextBtn ?.addEventListener('click', handleLetterAdvance);
