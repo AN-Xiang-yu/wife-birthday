@@ -7,49 +7,21 @@
 
 #page-moments {
     background: var(--color-bg-alt);
-    display: flex;
-    flex-direction: column;
+    justify-content: flex-start;
 }
 
-
-/* 页面头部确保不被卡片覆盖 */
-
 #page-moments .page-header {
-    position: relative;
-    z-index: 100;
-    flex-shrink: 0;
     margin-bottom: var(--spacing-xl);
 }
 
-
-/* 卡片独立区域包装器 */
-
-.moments-cards-wrapper {
-    position: relative;
-    flex: 1;
+/* 瞬间容器 */
+.moments-stage {
     display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    overflow: visible;
-    min-height: 0;
-    padding-top: 20px;
-    padding-bottom: 80px;
-}
-
-
-/* 瞬间内容区域 */
-
-.moments-content {
-    position: relative;
+    justify-content: center;
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    padding-top: calc(var(--spacing-xxl) + var(--spacing-xxl));
+    padding-bottom: calc(var(--spacing-xxl) + var(--spacing-lg));
 }
-
-
-/* 瞬间容器 - 卡片区域 */
 
 .moments-container {
     position: relative;
@@ -57,10 +29,10 @@
     justify-content: center;
     align-items: center;
     width: min(920px, 90vw);
-    height: 500px;
-    margin: 0 auto var(--spacing-xl);
+    height: 540px;
+    margin: var(--spacing-lg) auto 0;
+    --moment-card-top: calc(var(--spacing-xxl) + var(--spacing-lg));
     perspective: 1400px;
-    z-index: 1;
 }
 
 
@@ -73,14 +45,18 @@
     --card-scale: 1;
     --hover-lift: 0px;
     position: absolute;
-    top: 50%;
+    top: var(--moment-card-top, 0);
     left: 50%;
     width: 320px;
     height: 420px;
     cursor: pointer;
     perspective: 1000px;
     opacity: 0;
-    transform: translate(-50%, -50%) translateX(var(--card-offset-x)) translateY(var(--card-offset-y)) rotate(var(--card-rotate)) scale(var(--card-scale)) translateY(var(--hover-lift));
+    transform: translate(-50%, var(--card-offset-y))
+        translateX(var(--card-offset-x))
+        rotate(var(--card-rotate))
+        scale(var(--card-scale))
+        translateY(var(--hover-lift));
     transition: transform 0.6s ease, box-shadow 0.6s ease;
 }
 
@@ -242,7 +218,6 @@
     color: rgba(255, 255, 255, 0.5);
 }
 
-
 /* 继续按钮 */
 
 #page-moments .proceed-btn {
@@ -255,22 +230,46 @@
 /* 响应式 */
 
 @media (max-width: 768px) {
-    .moments-container {
-        height: 420px;
+    #page-moments .page-header {
+        margin-bottom: var(--spacing-lg);
     }
+
+    .moments-stage {
+        padding-top: calc(var(--spacing-xxl) + var(--spacing-sm));
+        padding-bottom: var(--spacing-xl);
+    }
+
+    .moments-container {
+        height: 500px;
+        --moment-card-top: calc(var(--spacing-xl) + var(--spacing-sm));
+    }
+
     .moment-card {
         width: 280px;
         height: 380px;
     }
+
 }
 
 @media (max-width: 480px) {
-    .moments-container {
-        height: 400px;
+    #page-moments .page-header {
+        margin-bottom: var(--spacing-md);
     }
+
+    .moments-stage {
+        padding-top: calc(var(--spacing-xl) + var(--spacing-sm));
+        padding-bottom: var(--spacing-lg);
+    }
+
+    .moments-container {
+        height: 460px;
+        --moment-card-top: calc(var(--spacing-lg) + var(--spacing-sm));
+    }
+
     .moment-card {
         width: 92vw;
         max-width: 320px;
         height: 360px;
     }
+
 }
