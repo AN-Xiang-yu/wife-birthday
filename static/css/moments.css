@@ -7,6 +7,7 @@
 
 #page-moments {
     background: var(--color-bg-alt);
+    justify-content: flex-start;
 }
 
 #page-moments .page-header {
@@ -28,8 +29,8 @@
     justify-content: center;
     align-items: center;
     width: min(920px, 90vw);
-    height: 460px;
-    margin: var(--spacing-md) auto 0;
+    height: 540px;
+    margin: var(--spacing-lg) auto 0;
     perspective: 1400px;
 }
 
@@ -227,7 +228,7 @@
     }
 
     .moments-container {
-        height: 420px;
+        height: 500px;
     }
 
     .moment-card {
@@ -248,7 +249,7 @@
     }
 
     .moments-container {
-        height: 400px;
+        height: 460px;
     }
 
     .moment-card {
