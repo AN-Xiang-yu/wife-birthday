@@ -170,4 +170,4 @@ class LetterConfig:
     TYPING_INTERVAL_MS: int = 1000
 
     # 段落之间的间隔（毫秒）
-    PARAGRAPH_DELAY_MS: int = 10000
+    PARAGRAPH_DELAY_MS: int = 5000
