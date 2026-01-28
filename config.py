@@ -150,17 +150,35 @@ class ContentConfig:
 class TypographyConfig:
     """文字排版配置（单位：rem）"""
 
+    # 页面标题字号
+    PAGE_TITLE_SIZE_REM: float = 2.3
+
     # 第 1 页（开场对话）字号
     INTRO_TEXT_SIZE_REM: float = 1.25
 
     # 第 2 页（时间线）字号
     TIMELINE_TEXT_SIZE_REM: float = 1.25
 
+    # 第 2 页（时间线小字：情感备注）
+    TIMELINE_EMOTION_TEXT_SIZE_REM: float = 1.0
+
     # 第 4 页（信件正文/黑色文字）字号
     LETTER_TEXT_SIZE_REM: float = 1.5
 
     # 第 4 页（信件标题/红色文字）字号
     LETTER_LABEL_SIZE_REM: float = 1.35
+
+    # 彩蛋页二标题（最后一个小问题）
+    PLAYFUL_TITLE_SIZE_REM: float = 1.5
+
+    # 彩蛋页二正文（问题/选项/回应）
+    PLAYFUL_TEXT_SIZE_REM: float = 1.25
+
+    # 结尾页“生日快乐”字号
+    ENDING_BLESSING_SIZE_REM: float = 2.8
+
+    # 结尾页“愿每一天都如今天这般特别 / 日期”字号
+    ENDING_NOTE_SIZE_REM: float = 1.25
 
 
 class LetterConfig:
