@@ -31,7 +31,7 @@ const momentsProceed = document.getElementById('moments-proceed');
 async function loadMomentsData() {
     try {
         const response = await App.getRequest('/api/content/moments');
-        MomentsState.cards = (response.cards || []).slice(0, 3);
+        MomentsState.cards = response.cards || [];
         renderMoments();
         MomentsState.isLoaded = true;
     } catch (error) {
@@ -147,6 +147,14 @@ function bringCardToFront(clickedIndex) {
  * 更新卡片位置和层级
  */
 function updateCardPositions() {
+    const viewportWidth = window.innerWidth;
+    const isCompact = viewportWidth <= 480;
+    const isTablet = viewportWidth <= 768 && !isCompact;
+    const xStep = isCompact ? 0 : isTablet ? 80 : 110;
+    const yStep = isCompact ? 12 : 8;
+    const angleStep = isCompact ? 0 : isTablet ? 8 : 11;
+    const frontLift = isCompact ? -2 : -6;
+
     MomentsState.order.forEach((cardIndex, position) => {
         const cardEl = MomentsState.cardElements.get(cardIndex);
         if (!cardEl) return;
@@ -154,6 +162,14 @@ function updateCardPositions() {
         cardEl.dataset.position = String(position);
         cardEl.style.zIndex = String(MomentsState.order.length - position);
         cardEl.classList.toggle('is-front', position === 0);
+        const depth = position === 0 ? 0 : Math.ceil(position / 2);
+        const side = position === 0 ? 0 : position % 2 === 0 ? 1 : -1;
+        const offsetX = side * depth * xStep;
+        const offsetY = (position * yStep) + (position === 0 ? frontLift : 0);
+        const rotate = side * depth * angleStep;
+        cardEl.style.setProperty('--card-offset-x', `${offsetX}px`);
+        cardEl.style.setProperty('--card-offset-y', `${offsetY}px`);
+        cardEl.style.setProperty('--card-rotate', `${rotate}deg`);
 
         const hint = cardEl.querySelector('.moment-flip-hint');
         if (hint) {
@@ -184,4 +200,10 @@ document.addEventListener('pageEnter', (e) => {
 // 继续按钮
 momentsProceed?.addEventListener('click', () => {
     App.navigateTo('letter');
+});
+
+window.addEventListener('resize', () => {
+    if (MomentsState.isLoaded) {
+        updateCardPositions();
+    }
 });
